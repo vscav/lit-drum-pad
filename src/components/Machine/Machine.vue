@@ -81,7 +81,7 @@ export default class Machine extends Vue {
 
   // Public functions
 
-  public decodeShim(arrayBuffer: ArrayBuffer): Promise<any> {
+  public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
     return new Promise((resolve, reject) => {
       audioContext.decodeAudioData(
         arrayBuffer,
@@ -95,7 +95,7 @@ export default class Machine extends Vue {
     });
   }
 
-  public async load(file: RequestInfo): Promise<AudioBuffer> {
+  public async load(file: RequestInfo): Promise<AudioBuffer | null> {
     if (afBuffers.has(file)) {
       return afBuffers.get(file);
     }
