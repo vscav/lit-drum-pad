@@ -4,11 +4,12 @@
     :class="{ active: value, highlight: highlight }"
     @click="changeStatus"
   >
+    <audio :src="file"></audio>
   </span>
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class StepButton extends Vue {
@@ -16,6 +17,8 @@ export default class StepButton extends Vue {
   readonly value!: boolean;
   @Prop({ required: true, type: Boolean, default: false })
   readonly highlight!: boolean;
+  @Prop({ required: true, type: String })
+  readonly file!: string;
 
   public changeStatus(): void {
     this.$emit("input", !this.value);

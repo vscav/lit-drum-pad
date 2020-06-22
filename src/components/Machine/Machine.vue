@@ -5,6 +5,7 @@
       <step-button
         v-for="(step, j) in stepCount"
         :key="`drumCount-${j}`"
+        :file="drum.fileName"
         :value="pattern[i][j].active"
         :highlight="currentStep == j"
         @input="(val) => (pattern[i][j].active = val)"
@@ -29,6 +30,7 @@ export default class Machine extends Vue {
   private pattern: Array<Array<{ active: boolean }>> = [];
 
   created() {
+    this.readSounds();
     for (let i = 0; i < 4; i += 1) {
       this.drums.push({
         fileName: "fileName.wav",
@@ -42,6 +44,16 @@ export default class Machine extends Vue {
         this.pattern[i].push({ active: false });
       }
     }
+  }
+
+  public readSounds(): void {
+    const images = require.context("../../assets/sounds", false, /\.wav$/);
+    const files: { [char: string]: string } = {};
+    images.keys().forEach((filename) => {
+      filename = filename.slice(2);
+      this.drums.push({ fileName: filename });
+    });
+    console.log(this.drums);
   }
 
   get drumsCount() {
