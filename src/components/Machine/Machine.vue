@@ -70,8 +70,6 @@ export default class Machine extends Vue {
   private lastScheduledTime = 0;
   private nextStepTime = 0;
 
-  // Hooks
-
   mounted() {
     if (!window.AudioContext) this.playing = false;
   }
@@ -103,13 +101,9 @@ export default class Machine extends Vue {
     this.updateAudioTime();
   }
 
-  // Getters
-
   get drumsCount(): number {
     return this.drums.length;
   }
-
-  // Public functions
 
   public pausePlay(): void {
     this.playing = !this.playing;
@@ -229,4 +223,4 @@ export default class Machine extends Vue {
 }
 </script>
 
-<style></style>
+<style lang="scss"></style>

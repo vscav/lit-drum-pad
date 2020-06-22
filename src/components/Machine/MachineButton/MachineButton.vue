@@ -30,7 +30,7 @@ export default class MachineButton extends Vue {
 }
 </script>
 
-<style scoped>
+<style lang="scss">
 .button {
   display: inline-block;
   height: 32px;
@@ -46,10 +46,11 @@ export default class MachineButton extends Vue {
   line-height: 32px;
   padding: 0px 10px;
   color: #666;
-}
-.button.active {
-  border-bottom-width: 1px;
-  box-shadow: 0px 1px 0px 1px rgba(0, 0, 0, 0.3),
-    inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
+
+  &.active {
+    border-bottom-width: 1px;
+    box-shadow: 0px 1px 0px 1px rgba(0, 0, 0, 0.3),
+      inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
+  }
 }
 </style>

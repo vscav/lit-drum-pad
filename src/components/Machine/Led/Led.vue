@@ -20,20 +20,22 @@ export default class Led extends Vue {
   text-align: center;
   margin: 2px 3px;
   transition: all 0.2s ease-in-out;
-}
 
-.led:before {
-  content: "";
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 10px;
-  background-color: #bbb;
-  box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.1);
-}
+  &:before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    background-color: #bbb;
+    box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.1);
+  }
 
-.led.lit:before {
-  background-color: #1fcb02;
-  box-shadow: 0px 0px 7px 0px #1fcb02;
+  &.lit {
+    &:before {
+      background-color: #1fcb02;
+      box-shadow: 0px 0px 7px 0px #1fcb02;
+    }
+  }
 }
 </style>
