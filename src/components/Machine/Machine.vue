@@ -1,6 +1,11 @@
 <template>
   <div class="machine">
     <h1>Machine component</h1>
+    <div>
+      <machine-button color="#B7C6D8" :pressed="playing" @click="pausePlay"
+        >Play</machine-button
+      >
+    </div>
     <led
       v-for="(step, i) in stepCount"
       :key="`stepCount-${i}`"
@@ -22,6 +27,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Led from "@/components/Machine/Led/Led.vue";
+import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
 
 // Audio files dictionary
@@ -44,6 +50,7 @@ for (let i = 0; i < bufferSize; i += 1) {
 @Component({
   components: {
     Led,
+    MachineButton,
     StepButton,
   },
 })
