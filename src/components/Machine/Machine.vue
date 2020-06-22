@@ -1,6 +1,11 @@
 <template>
   <div class="machine">
     <h1>Machine component</h1>
+    <led
+      v-for="(step, i) in stepCount"
+      :key="`stepCount-${i}`"
+      :active="i == currentStep"
+    ></led>
     <div v-for="(drum, i) in drums" :key="i">
       <step-button
         v-for="(step, j) in stepCount"
@@ -16,6 +21,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import Led from "@/components/Machine/Led/Led.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
 
 // Audio files dictionary
@@ -37,6 +43,7 @@ for (let i = 0; i < bufferSize; i += 1) {
 
 @Component({
   components: {
+    Led,
     StepButton,
   },
 })
@@ -152,10 +159,15 @@ export default class Machine extends Vue {
     });
   }
 
+  public scheduleNote(drum: { fileName: string }, startTime: number): void {
+    console.log(drum, startTime);
+  }
+
   public getSchedule(step: number, currentTime: number): number {
     let stepTime =
       step * this.secondsPerStep +
       (currentTime - (currentTime % (this.secondsPerStep * this.stepCount)));
+
     if (stepTime < currentTime) {
       stepTime += this.secondsPerStep * this.stepCount;
     }
@@ -165,31 +177,33 @@ export default class Machine extends Vue {
 
   public updateAudioTime(): void {
     if (this.playing) {
-      const LOOK_AHEAD = 0.1;
+      const INCREMENT = 0.1;
       this.secondsPerStep = 60 / this.tempo / 4;
       this.audioTime = audioContext.currentTime;
       this.currentStep = Math.floor(
         (this.audioTime / this.secondsPerStep) % this.stepCount
       );
+
       for (const inst in this.pattern) {
         if (!this.mutes[inst]) {
           for (const step in this.pattern[inst]) {
             if (this.pattern[inst][step].active) {
               const schedule = this.getSchedule(parseInt(step), this.audioTime);
-              // console.log(schedule);
-              // if (
-              //   schedule > 0 &&
-              //   schedule - this.audioTime < LOOK_AHEAD &&
-              //   schedule > this.lastScheduledTime
-              // ) {
-              //   this.scheduleNote(this.instruments[inst], schedule);
-              // }
+              if (
+                schedule > 0 &&
+                schedule - this.audioTime < INCREMENT &&
+                schedule > this.lastScheduledTime
+              ) {
+                //this.scheduleNote(this.drums[inst], schedule);
+              }
             }
           }
         }
       }
-      this.lastScheduledTime = this.audioTime + LOOK_AHEAD;
+
+      this.lastScheduledTime = this.audioTime + INCREMENT;
     }
+
     // Recursive
     requestAnimationFrame(this.updateAudioTime);
   }

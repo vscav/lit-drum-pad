@@ -21,7 +21,6 @@ export default class StepButton extends Vue {
   readonly file!: string;
 
   public changeStatus(): void {
-    console.log("changeStatus");
     this.$emit("input", !this.value);
   }
 
@@ -36,12 +35,12 @@ export default class StepButton extends Vue {
   display: inline-block;
   width: 32px;
   height: 32px;
-  border-radius: 7px;
+  border-radius: 50px;
   border: 0px solid rgba(0, 0, 0, 0.5);
   border-width: 0px 1px 4px 1px;
   box-shadow: 0px 5px 1px 1px rgba(0, 0, 0, 0.3),
     inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
-  background-color: #cdd7b8;
+  background-color: #9aa6b0;
   cursor: pointer;
   margin: 16px 3px;
   transition: all 0.1s ease-in-out;
@@ -50,6 +49,6 @@ export default class StepButton extends Vue {
   border-bottom-width: 1px;
   box-shadow: 0px 1px 0px 1px rgba(0, 0, 0, 0.3),
     inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
-  background-color: #bac2ab;
+  background-color: #575e63;
 }
 </style>
