@@ -18,9 +18,10 @@
 import { Component, Vue } from "vue-property-decorator";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
 
+// Audio files dictionary
 const afBuffers = new Map();
+// Audio context
 const audioContext = new AudioContext();
-// const isUnlocked = false;
 
 const bufferSize = 2 * audioContext.sampleRate;
 const noiseBuffer = audioContext.createBuffer(
@@ -52,20 +53,17 @@ export default class Machine extends Vue {
   private lastScheduledTime = 0;
   private nextStepTime = 0;
 
+  // Hooks
+
   mounted() {
     if (!window.AudioContext) this.playing = false;
+    // this.unlockAudio();
   }
 
   created() {
-    this.readSounds();
+    this.readSoundsDirectory();
 
-    for (let i = 0; i < this.drumsCount; i += 1) {
-      this.pattern.push([]);
-      this.mutes.push(false);
-      for (let j = 0; j < this.stepCount; j += 1) {
-        this.pattern[i].push({ active: false });
-      }
-    }
+    this.feedPattern();
 
     // Set active to true on a certain step (to test)
     this.pattern[0][0].active = true;
@@ -75,41 +73,54 @@ export default class Machine extends Vue {
     this.updateAudioTime();
   }
 
-  get drumsCount() {
+  // Getters
+
+  get drumsCount(): number {
     return this.drums.length;
   }
 
-  // public decodeShim(arraybuffer: ArrayBuffer): Promise<any> {
-  //   return new Promise((resolve, reject) => {
-  //     audioContext.decodeAudioData(
-  //       arraybuffer,
-  //       (buffer) => {
-  //         return resolve(buffer);
-  //       },
-  //       (err) => {
-  //         return reject(err);
-  //       }
-  //     );
-  //   });
-  // }
+  // Public functions
+
+  public decodeShim(arrayBuffer: ArrayBuffer): Promise<any> {
+    return new Promise((resolve, reject) => {
+      audioContext.decodeAudioData(
+        arrayBuffer,
+        (buffer) => {
+          return resolve(buffer);
+        },
+        (err) => {
+          return reject(err);
+        }
+      );
+    });
+  }
 
   public async load(file: RequestInfo): Promise<AudioBuffer> {
     if (afBuffers.has(file)) {
       return afBuffers.get(file);
     }
+
     const _file = await fetch(file);
-    console.log(_file);
-    const arraybuffer = await _file.arrayBuffer();
-    const audiobuffer = await audioContext.decodeAudioData(arraybuffer);
-    console.log(audiobuffer);
-    afBuffers.set(file, audiobuffer);
-    return audiobuffer;
+    const arrayBuffer = await _file.arrayBuffer();
+    let audioBuffer;
+
+    try {
+      audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    } catch (e) {
+      audioBuffer = await this.decodeShim(arrayBuffer);
+    }
+
+    afBuffers.set(file, audioBuffer);
+
+    return audioBuffer;
   }
 
-  public playSound(file: string) {
+  public playSound(file: string): Promise<AudioBufferSourceNode> {
     file = require(`../../assets/sounds/${file}`);
+
     return this.load(file).then((audioBuffer) => {
       const sourceNode = audioContext.createBufferSource();
+
       sourceNode.buffer = audioBuffer;
       sourceNode.connect(audioContext.destination);
       sourceNode.start();
@@ -122,14 +133,24 @@ export default class Machine extends Vue {
     this.playing = !this.playing;
   }
 
-  public readSounds(): void {
+  public feedPattern(): void {
+    for (let i = 0; i < this.drumsCount; i += 1) {
+      this.pattern.push([]);
+      this.mutes.push(false);
+      for (let j = 0; j < this.stepCount; j += 1) {
+        this.pattern[i].push({ active: false });
+      }
+    }
+  }
+
+  public readSoundsDirectory(): void {
     const filenames = require.context("../../assets/sounds", false, /\.wav$/);
     const files: { [char: string]: string } = {};
+
     filenames.keys().forEach((filename) => {
       filename = filename.slice(2);
       this.drums.push({ fileName: filename });
     });
-    console.log(this.drums);
   }
 
   public getSchedule(step: number, currentTime: number): number {
@@ -139,6 +160,7 @@ export default class Machine extends Vue {
     if (stepTime < currentTime) {
       stepTime += this.secondsPerStep * this.stepCount;
     }
+
     return stepTime;
   }
 

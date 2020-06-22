@@ -31,7 +31,7 @@ export default class StepButton extends Vue {
 }
 </script>
 
-<style>
+<style lang="scss">
 .stepbutton {
   display: inline-block;
   width: 32px;
