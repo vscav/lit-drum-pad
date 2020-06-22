@@ -57,7 +57,6 @@ export default class Machine extends Vue {
 
   mounted() {
     if (!window.AudioContext) this.playing = false;
-    // this.unlockAudio();
   }
 
   created() {
