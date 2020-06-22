@@ -53,6 +53,7 @@ export default class Machine extends Vue {
 
   public async playSound(file: string): Promise<void> {
     const audio = new Audio(require(`../../assets/sounds/${file}`));
+    audio.currentTime = 0;
     const playPromise = await audio.play();
     if (playPromise == undefined) {
       return;
