@@ -21,7 +21,10 @@
         @input="(val) => (pattern[i][j].active = val)"
         @fire="playSound"
       ></step-button>
-      <machine-button :pressed="mutes[i]" @click="mutes[i] = !mutes[i]"
+      <machine-button
+        :pressed="mutes[i]"
+        @click="mutes[i] = !mutes[i]"
+        style="float: right;"
         >M</machine-button
       >
     </div>
@@ -59,12 +62,12 @@ for (let i = 0; i < bufferSize; i += 1) {
 })
 export default class Machine extends Vue {
   private drums: Array<{ fileName: string }> = [];
-  private stepCount = 16;
+  private stepCount = 24;
   private currentStep = 0;
   private mutes: Array<boolean> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
   private audioTime = 0;
-  private tempo = 130;
+  private tempo = 128;
   private playing = true;
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
@@ -79,24 +82,40 @@ export default class Machine extends Vue {
 
     this.feedPattern();
 
-    // TEST
+    // TEST (metro-boomin kit)
     this.pattern[0][0].active = true;
-    this.pattern[1][1].active = true;
+    this.pattern[0][14].active = true;
+    this.pattern[2][0].active = true;
+    this.pattern[2][1].active = true;
+    this.pattern[2][2].active = true;
+    this.pattern[2][3].active = true;
+    this.pattern[2][4].active = true;
     this.pattern[2][5].active = true;
-    this.pattern[3][0].active = true;
-    this.pattern[3][1].active = true;
-    this.pattern[3][2].active = true;
-    this.pattern[3][3].active = true;
-    this.pattern[3][4].active = true;
-    this.pattern[3][5].active = true;
-    this.pattern[3][6].active = true;
-    this.pattern[3][7].active = true;
+    this.pattern[2][6].active = true;
+    this.pattern[2][7].active = true;
+    this.pattern[2][8].active = true;
+    this.pattern[2][9].active = true;
+    this.pattern[2][12].active = true;
+    this.pattern[2][13].active = true;
+    this.pattern[2][14].active = true;
+    this.pattern[2][16].active = true;
+    this.pattern[2][17].active = true;
+    this.pattern[2][18].active = true;
+    this.pattern[2][19].active = true;
+    this.pattern[2][20].active = true;
+    this.pattern[2][21].active = true;
+    this.pattern[2][22].active = true;
+    this.pattern[2][23].active = true;
     this.pattern[3][9].active = true;
-    this.pattern[3][10].active = true;
     this.pattern[3][11].active = true;
-    this.pattern[3][13].active = true;
-    this.pattern[3][14].active = true;
     this.pattern[3][15].active = true;
+    this.pattern[6][12].active = true;
+    this.pattern[6][14].active = true;
+    this.pattern[7][7].active = true;
+    this.pattern[7][8].active = true;
+    this.pattern[7][10].active = true;
+    this.pattern[7][17].active = true;
+    this.pattern[7][18].active = true;
 
     this.updateAudioTime();
   }
