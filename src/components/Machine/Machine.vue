@@ -18,7 +18,9 @@
 import { Component, Vue } from "vue-property-decorator";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
 
+const afBuffers = new Map();
 const audioContext = new AudioContext();
+// const isUnlocked = false;
 
 const bufferSize = 2 * audioContext.sampleRate;
 const noiseBuffer = audioContext.createBuffer(
@@ -77,27 +79,57 @@ export default class Machine extends Vue {
     return this.drums.length;
   }
 
+  // public decodeShim(arraybuffer: ArrayBuffer): Promise<any> {
+  //   return new Promise((resolve, reject) => {
+  //     audioContext.decodeAudioData(
+  //       arraybuffer,
+  //       (buffer) => {
+  //         return resolve(buffer);
+  //       },
+  //       (err) => {
+  //         return reject(err);
+  //       }
+  //     );
+  //   });
+  // }
+
+  public async load(file: RequestInfo): Promise<AudioBuffer> {
+    if (afBuffers.has(file)) {
+      return afBuffers.get(file);
+    }
+    const _file = await fetch(file);
+    console.log(_file);
+    const arraybuffer = await _file.arrayBuffer();
+    const audiobuffer = await audioContext.decodeAudioData(arraybuffer);
+    console.log(audiobuffer);
+    afBuffers.set(file, audiobuffer);
+    return audiobuffer;
+  }
+
+  public playSound(file: string) {
+    file = require(`../../assets/sounds/${file}`);
+    return this.load(file).then((audioBuffer) => {
+      const sourceNode = audioContext.createBufferSource();
+      sourceNode.buffer = audioBuffer;
+      sourceNode.connect(audioContext.destination);
+      sourceNode.start();
+
+      return sourceNode;
+    });
+  }
+
   public pausePlay(): void {
     this.playing = !this.playing;
   }
 
   public readSounds(): void {
-    const images = require.context("../../assets/sounds", false, /\.wav$/);
+    const filenames = require.context("../../assets/sounds", false, /\.wav$/);
     const files: { [char: string]: string } = {};
-    images.keys().forEach((filename) => {
+    filenames.keys().forEach((filename) => {
       filename = filename.slice(2);
       this.drums.push({ fileName: filename });
     });
     console.log(this.drums);
-  }
-
-  public async playSound(file: string): Promise<void> {
-    const audio = new Audio(require(`../../assets/sounds/${file}`));
-    audio.currentTime = 0;
-    const playPromise = await audio.play();
-    if (playPromise == undefined) {
-      return;
-    }
   }
 
   public getSchedule(step: number, currentTime: number): number {
@@ -115,11 +147,9 @@ export default class Machine extends Vue {
       const LOOK_AHEAD = 0.1;
       this.secondsPerStep = 60 / this.tempo / 4;
       this.audioTime = audioContext.currentTime;
-      console.log(this.audioTime);
       this.currentStep = Math.floor(
         (this.audioTime / this.secondsPerStep) % this.stepCount
       );
-      console.log(this.currentStep);
       for (const inst in this.pattern) {
         if (!this.mutes[inst]) {
           for (const step in this.pattern[inst]) {
@@ -140,7 +170,7 @@ export default class Machine extends Vue {
       this.lastScheduledTime = this.audioTime + LOOK_AHEAD;
     }
     // Recursive
-    // requestAnimationFrame(this.updateAudioTime);
+    requestAnimationFrame(this.updateAudioTime);
   }
 }
 </script>
