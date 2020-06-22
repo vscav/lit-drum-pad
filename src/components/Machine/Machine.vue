@@ -2,7 +2,7 @@
   <div class="machine">
     <h1>Machine component</h1>
     <div>
-      <machine-button color="#B7C6D8" :pressed="playing" @click="pausePlay"
+      <machine-button :pressed="playing" @click="pausePlay"
         >Play</machine-button
       >
     </div>
@@ -21,6 +21,9 @@
         @input="(val) => (pattern[i][j].active = val)"
         @fire="playSound"
       ></step-button>
+      <machine-button :pressed="mutes[i]" @click="mutes[i] = !mutes[i]"
+        >M</machine-button
+      >
     </div>
   </div>
 </template>
@@ -78,10 +81,24 @@ export default class Machine extends Vue {
 
     this.feedPattern();
 
-    // Set active to true on a certain step (to test)
+    // TEST
     this.pattern[0][0].active = true;
     this.pattern[1][1].active = true;
     this.pattern[2][5].active = true;
+    this.pattern[3][0].active = true;
+    this.pattern[3][1].active = true;
+    this.pattern[3][2].active = true;
+    this.pattern[3][3].active = true;
+    this.pattern[3][4].active = true;
+    this.pattern[3][5].active = true;
+    this.pattern[3][6].active = true;
+    this.pattern[3][7].active = true;
+    this.pattern[3][9].active = true;
+    this.pattern[3][10].active = true;
+    this.pattern[3][11].active = true;
+    this.pattern[3][13].active = true;
+    this.pattern[3][14].active = true;
+    this.pattern[3][15].active = true;
 
     this.updateAudioTime();
   }
@@ -94,17 +111,41 @@ export default class Machine extends Vue {
 
   // Public functions
 
-  public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
-    return new Promise((resolve, reject) => {
-      audioContext.decodeAudioData(
-        arrayBuffer,
-        (buffer) => {
-          return resolve(buffer);
-        },
-        (err) => {
-          return reject(err);
-        }
-      );
+  public pausePlay(): void {
+    this.playing = !this.playing;
+  }
+
+  public playSound(file: string, time: number): Promise<AudioBufferSourceNode> {
+    file = require(`../../assets/sounds/${file}`);
+
+    return this.load(file).then((audioBuffer) => {
+      const sourceNode = audioContext.createBufferSource();
+
+      sourceNode.buffer = audioBuffer;
+      sourceNode.connect(audioContext.destination);
+      sourceNode.start(time);
+
+      return sourceNode;
+    });
+  }
+
+  public feedPattern(): void {
+    for (let i = 0; i < this.drumsCount; i += 1) {
+      this.pattern.push([]);
+      this.mutes.push(false);
+      for (let j = 0; j < this.stepCount; j += 1) {
+        this.pattern[i].push({ active: false });
+      }
+    }
+  }
+
+  public readSoundsDirectory(): void {
+    const filenames = require.context("../../assets/sounds", false, /\.wav$/);
+    const files: { [char: string]: string } = {};
+
+    filenames.keys().forEach((filename) => {
+      filename = filename.slice(2);
+      this.drums.push({ fileName: filename });
     });
   }
 
@@ -128,46 +169,18 @@ export default class Machine extends Vue {
     return audioBuffer;
   }
 
-  public playSound(file: string): Promise<AudioBufferSourceNode> {
-    file = require(`../../assets/sounds/${file}`);
-
-    return this.load(file).then((audioBuffer) => {
-      const sourceNode = audioContext.createBufferSource();
-
-      sourceNode.buffer = audioBuffer;
-      sourceNode.connect(audioContext.destination);
-      sourceNode.start();
-
-      return sourceNode;
+  public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
+    return new Promise((resolve, reject) => {
+      audioContext.decodeAudioData(
+        arrayBuffer,
+        (buffer) => {
+          return resolve(buffer);
+        },
+        (err) => {
+          return reject(err);
+        }
+      );
     });
-  }
-
-  public pausePlay(): void {
-    this.playing = !this.playing;
-  }
-
-  public feedPattern(): void {
-    for (let i = 0; i < this.drumsCount; i += 1) {
-      this.pattern.push([]);
-      this.mutes.push(false);
-      for (let j = 0; j < this.stepCount; j += 1) {
-        this.pattern[i].push({ active: false });
-      }
-    }
-  }
-
-  public readSoundsDirectory(): void {
-    const filenames = require.context("../../assets/sounds", false, /\.wav$/);
-    const files: { [char: string]: string } = {};
-
-    filenames.keys().forEach((filename) => {
-      filename = filename.slice(2);
-      this.drums.push({ fileName: filename });
-    });
-  }
-
-  public scheduleNote(drum: { fileName: string }, startTime: number): void {
-    console.log(drum, startTime);
   }
 
   public getSchedule(step: number, currentTime: number): number {
@@ -201,7 +214,7 @@ export default class Machine extends Vue {
                 schedule - this.audioTime < INCREMENT &&
                 schedule > this.lastScheduledTime
               ) {
-                //this.scheduleNote(this.drums[inst], schedule);
+                this.playSound(this.drums[inst].fileName, schedule);
               }
             }
           }
@@ -211,7 +224,6 @@ export default class Machine extends Vue {
       this.lastScheduledTime = this.audioTime + INCREMENT;
     }
 
-    // Recursive
     requestAnimationFrame(this.updateAudioTime);
   }
 }
