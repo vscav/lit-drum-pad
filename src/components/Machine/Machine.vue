@@ -110,7 +110,7 @@ export default class Machine extends Vue {
   }
 
   public playSound(file: string, time: number): Promise<AudioBufferSourceNode> {
-    file = require(`../../assets/sounds/${file}`);
+    file = require(`../../assets/sounds/metro-boomin/${file}`);
 
     return this.load(file).then((audioBuffer) => {
       const sourceNode = audioContext.createBufferSource();
@@ -134,13 +134,18 @@ export default class Machine extends Vue {
   }
 
   public readSoundsDirectory(): void {
-    const filenames = require.context("../../assets/sounds", false, /\.wav$/);
+    const filenames = require.context(
+      "../../assets/sounds/metro-boomin",
+      false,
+      /\.wav$/
+    );
     const files: { [char: string]: string } = {};
 
     filenames.keys().forEach((filename) => {
       filename = filename.slice(2);
       this.drums.push({ fileName: filename });
     });
+    console.log(this.drums);
   }
 
   public async load(file: RequestInfo): Promise<AudioBuffer | null> {
