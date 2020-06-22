@@ -9,6 +9,7 @@
         :value="pattern[i][j].active"
         :highlight="currentStep == j"
         @input="(val) => (pattern[i][j].active = val)"
+        @fire="playSound"
       ></step-button>
     </div>
   </div>
@@ -31,12 +32,6 @@ export default class Machine extends Vue {
 
   created() {
     this.readSounds();
-    for (let i = 0; i < 4; i += 1) {
-      this.drums.push({
-        fileName: "fileName.wav",
-      });
-      this.mutes.push(false);
-    }
 
     for (let i = 0; i < this.drumsCount; i += 1) {
       this.pattern.push([]);
@@ -54,6 +49,14 @@ export default class Machine extends Vue {
       this.drums.push({ fileName: filename });
     });
     console.log(this.drums);
+  }
+
+  public async playSound(file: string): Promise<void> {
+    const audio = new Audio(require(`../../assets/sounds/${file}`));
+    const playPromise = await audio.play();
+    if (playPromise == undefined) {
+      return;
+    }
   }
 
   get drumsCount() {

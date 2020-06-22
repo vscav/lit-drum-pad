@@ -3,8 +3,8 @@
     class="stepbutton"
     :class="{ active: value, highlight: highlight }"
     @click="changeStatus"
+    @mouseenter="playSound"
   >
-    <audio :src="file"></audio>
   </span>
 </template>
 
@@ -21,7 +21,12 @@ export default class StepButton extends Vue {
   readonly file!: string;
 
   public changeStatus(): void {
+    console.log("changeStatus");
     this.$emit("input", !this.value);
+  }
+
+  public playSound(): void {
+    this.$emit("fire", this.file);
   }
 }
 </script>
