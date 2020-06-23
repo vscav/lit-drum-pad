@@ -52,7 +52,7 @@ const noiseBuffer = audioContext.createBuffer(
 );
 const output = noiseBuffer.getChannelData(0);
 
-for (let i = 0; i < bufferSize; i += 1) {
+for (let i = 0; i < bufferSize; i++) {
   output[i] = Math.random() * 2 - 1;
 }
 
@@ -163,10 +163,10 @@ export default class Machine extends Vue {
   }
 
   public feedPattern(): void {
-    for (let i = 0; i < this.drumsCount; i += 1) {
+    for (let i = 0; i < this.drumsCount; i++) {
       this.pattern.push([]);
       this.mutes.push(false);
-      for (let j = 0; j < this.stepCount; j += 1) {
+      for (let j = 0; j < this.stepCount; j++) {
         this.pattern[i].push({ active: false });
       }
     }
@@ -219,13 +219,21 @@ export default class Machine extends Vue {
     });
   }
 
+  public randomize() {
+    for (let i = 0; i < this.pattern.length; i++) {
+      for (let j = 0; j < this.pattern[i].length; j++) {
+        this.pattern[i][j].active = Math.random() > 0.5;
+      }
+    }
+  }
+
   public clearSteps(): void {
-    for (let i = 0; i < this.pattern.length; i += 1) {
-      for (let j = 0; j < this.pattern[i].length; j += 1) {
+    for (let i = 0; i < this.pattern.length; i++) {
+      for (let j = 0; j < this.pattern[i].length; j++) {
         this.pattern[i][j].active = false;
       }
     }
-    for (let i = 0; i < this.mutes.length; i += 1) {
+    for (let i = 0; i < this.mutes.length; i++) {
       this.mutes[i] = false;
     }
   }
