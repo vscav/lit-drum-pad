@@ -92,7 +92,7 @@ export default class Machine extends Vue {
   }
 
   created() {
-    this.readSoundsDirectory();
+    this.readSoundsDirectory(this.currentKit.directory);
 
     this.feedPattern();
 
@@ -147,6 +147,7 @@ export default class Machine extends Vue {
         console.error(reason);
       }
     );
+
     this.updateAudioTime();
   }
 
@@ -166,8 +167,13 @@ export default class Machine extends Vue {
     audioContext.createBufferSource().start(0, 0, 0.1);
   }
 
-  public playSound(file: string, time: number): Promise<AudioBufferSourceNode> {
-    file = require(`../../assets/sounds/metro-boomin/${file}`);
+  public playSound(
+    file: string,
+    directory: string = this.currentKit.directory,
+    time = 0
+  ): Promise<AudioBufferSourceNode> {
+    console.log(file, directory, time);
+    file = require(`../../assets/sounds/${directory}/${file}`);
 
     return this.load(file).then((audioBuffer) => {
       const sourceNode = audioContext.createBufferSource();
@@ -190,30 +196,44 @@ export default class Machine extends Vue {
     }
   }
 
-  // public readSoundsDirectory(): void {
-  //   const filenames = require.context(
-  //     "../../assets/sounds/metro-boomin",
-  //     false,
-  //     /\.wav$/
-  //   );
-
-  //   filenames.keys().forEach((filename) => {
-  //     filename = filename.slice(2);
-  //     this.drums.push({ fileName: filename });
-  //   });
-  // }
-
-  public readSoundsDirectory(): void {
-    const filenames = require.context(
-      "../../assets/sounds/metro-boomin",
-      false,
-      /\.wav$/
-    );
-
-    filenames.keys().forEach((filename) => {
-      filename = filename.slice(2);
-      this.drums.push({ fileName: filename });
-    });
+  public readSoundsDirectory(directoryName: string): void {
+    let filenames: __WebpackModuleApi.RequireContext | undefined;
+    switch (directoryName) {
+      case "metro-boomin":
+        filenames = require.context(
+          "../../assets/sounds/metro-boomin",
+          false,
+          /\.wav$/
+        );
+        break;
+      case "murda-beatz":
+        filenames = require.context(
+          "../../assets/sounds/murda-beatz",
+          false,
+          /\.wav$/
+        );
+        break;
+      case "pierre-bourne":
+        filenames = require.context(
+          "../../assets/sounds/pierre-bourne",
+          false,
+          /\.wav$/
+        );
+        break;
+      case "travis-scott":
+        filenames = require.context(
+          "../../assets/sounds/travis-scott",
+          false,
+          /\.wav$/
+        );
+        break;
+    }
+    if (this.drums.length > 0) this.drums.splice(0, this.drums.length);
+    if (filenames !== undefined)
+      filenames.keys().forEach((filename) => {
+        filename = filename.slice(2);
+        this.drums.push({ fileName: filename });
+      });
   }
 
   public async load(file: RequestInfo): Promise<AudioBuffer | null> {
@@ -238,11 +258,13 @@ export default class Machine extends Vue {
 
   public loadKit(kit: string): void {
     const key = this.getFolderNameByKitName(this.drumsKits, kit);
+
     if (kit && key) {
       this.currentKit.name = kit;
       this.currentKit.directory = key;
     }
-    this.readSoundsDirectory();
+
+    this.readSoundsDirectory(this.currentKit.directory);
     this.feedPattern();
   }
 
@@ -311,7 +333,11 @@ export default class Machine extends Vue {
                 schedule - this.audioTime < INCREMENT &&
                 schedule > this.lastScheduledTime
               ) {
-                this.playSound(this.drums[inst].fileName, schedule);
+                this.playSound(
+                  this.drums[inst].fileName,
+                  this.currentKit.directory,
+                  schedule
+                );
               }
             }
           }
