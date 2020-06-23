@@ -13,7 +13,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
 export default class MachineButton extends Vue {
-  @Prop({ required: true, type: Boolean, default: false })
+  @Prop({ required: false, type: Boolean, default: false })
   readonly pressed!: boolean;
 
   private tempPressed = false;

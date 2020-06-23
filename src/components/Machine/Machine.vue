@@ -5,6 +5,8 @@
       <machine-button :pressed="playing" @click="pausePlay"
         >Play</machine-button
       >
+      <machine-button @click="randomize">Random</machine-button>
+      <machine-button @click="clearSteps">Clear</machine-button>
     </div>
     <led
       v-for="(step, i) in stepCount"
@@ -84,39 +86,39 @@ export default class Machine extends Vue {
     this.feedPattern();
 
     // TEST (metro-boomin kit)
-    // this.pattern[0][0].active = true;
-    // this.pattern[0][14].active = true;
-    // this.pattern[2][0].active = true;
-    // this.pattern[2][1].active = true;
-    // this.pattern[2][2].active = true;
-    // this.pattern[2][3].active = true;
-    // this.pattern[2][4].active = true;
-    // this.pattern[2][5].active = true;
-    // this.pattern[2][6].active = true;
-    // this.pattern[2][7].active = true;
-    // this.pattern[2][8].active = true;
-    // this.pattern[2][9].active = true;
-    // this.pattern[2][12].active = true;
-    // this.pattern[2][13].active = true;
-    // this.pattern[2][14].active = true;
-    // this.pattern[2][16].active = true;
-    // this.pattern[2][17].active = true;
-    // this.pattern[2][18].active = true;
-    // this.pattern[2][19].active = true;
-    // this.pattern[2][20].active = true;
-    // this.pattern[2][21].active = true;
-    // this.pattern[2][22].active = true;
-    // this.pattern[2][23].active = true;
-    // this.pattern[3][9].active = true;
-    // this.pattern[3][11].active = true;
-    // this.pattern[3][15].active = true;
-    // this.pattern[6][12].active = true;
-    // this.pattern[6][14].active = true;
-    // this.pattern[7][7].active = true;
-    // this.pattern[7][8].active = true;
-    // this.pattern[7][10].active = true;
-    // this.pattern[7][17].active = true;
-    // this.pattern[7][18].active = true;
+    this.pattern[0][0].active = true;
+    this.pattern[0][14].active = true;
+    this.pattern[2][0].active = true;
+    this.pattern[2][1].active = true;
+    this.pattern[2][2].active = true;
+    this.pattern[2][3].active = true;
+    this.pattern[2][4].active = true;
+    this.pattern[2][5].active = true;
+    this.pattern[2][6].active = true;
+    this.pattern[2][7].active = true;
+    this.pattern[2][8].active = true;
+    this.pattern[2][9].active = true;
+    this.pattern[2][12].active = true;
+    this.pattern[2][13].active = true;
+    this.pattern[2][14].active = true;
+    this.pattern[2][16].active = true;
+    this.pattern[2][17].active = true;
+    this.pattern[2][18].active = true;
+    this.pattern[2][19].active = true;
+    this.pattern[2][20].active = true;
+    this.pattern[2][21].active = true;
+    this.pattern[2][22].active = true;
+    this.pattern[2][23].active = true;
+    this.pattern[3][9].active = true;
+    this.pattern[3][11].active = true;
+    this.pattern[3][15].active = true;
+    this.pattern[6][12].active = true;
+    this.pattern[6][14].active = true;
+    this.pattern[7][7].active = true;
+    this.pattern[7][8].active = true;
+    this.pattern[7][10].active = true;
+    this.pattern[7][17].active = true;
+    this.pattern[7][18].active = true;
 
     webAudioTouchUnlock(audioContext).then(
       (unlocked: boolean) => {
@@ -215,6 +217,17 @@ export default class Machine extends Vue {
         }
       );
     });
+  }
+
+  public clearSteps(): void {
+    for (let i = 0; i < this.pattern.length; i += 1) {
+      for (let j = 0; j < this.pattern[i].length; j += 1) {
+        this.pattern[i][j].active = false;
+      }
+    }
+    for (let i = 0; i < this.mutes.length; i += 1) {
+      this.mutes[i] = false;
+    }
   }
 
   public getSchedule(step: number, currentTime: number): number {
