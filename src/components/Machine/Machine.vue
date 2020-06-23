@@ -7,7 +7,6 @@
       >
       <machine-button @click="randomize">Random</machine-button>
       <machine-button @click="clearSteps">Clear</machine-button>
-      <machine-button @click="clearSteps">Clear</machine-button>
       <machine-button
         v-for="(kit, i) in drumsKits"
         :key="i"
@@ -147,8 +146,6 @@ export default class Machine extends Vue {
         console.error(reason);
       }
     );
-
-    this.updateAudioTime();
   }
 
   get drumsCount(): number {
@@ -165,6 +162,11 @@ export default class Machine extends Vue {
   public pausePlay(): void {
     this.playing = !this.playing;
     audioContext.createBufferSource().start(0, 0, 0.1);
+    if (this.playing) {
+      audioContext.resume();
+      this.updateAudioTime();
+    } else audioContext.suspend();
+    console.log(audioContext.currentTime);
   }
 
   public playSound(
@@ -172,7 +174,6 @@ export default class Machine extends Vue {
     directory: string = this.currentKit.directory,
     time = 0
   ): Promise<AudioBufferSourceNode> {
-    console.log(file, directory, time);
     file = require(`../../assets/sounds/${directory}/${file}`);
 
     return this.load(file).then((audioBuffer) => {
