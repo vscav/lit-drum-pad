@@ -7,6 +7,14 @@
       >
       <machine-button @click="randomize">Random</machine-button>
       <machine-button @click="clearSteps">Clear</machine-button>
+      <machine-button @click="clearSteps">Clear</machine-button>
+      <machine-button
+        v-for="(kit, i) in drumsKits"
+        :key="i"
+        :pressed="currentKit.name === kit"
+        @click="loadKit(kit)"
+        >{{ kit }}</machine-button
+      >
     </div>
     <led
       v-for="(step, i) in stepCount"
@@ -39,22 +47,15 @@ import Led from "@/components/Machine/Led/Led.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
 
-// Audio files dictionary
+interface KitObject {
+  [char: string]: string;
+}
+
 const afBuffers = new Map();
-// Audio context
+
 const audioContext = new AudioContext();
 
 const bufferSize = 2 * audioContext.sampleRate;
-const noiseBuffer = audioContext.createBuffer(
-  1,
-  bufferSize,
-  audioContext.sampleRate
-);
-const output = noiseBuffer.getChannelData(0);
-
-for (let i = 0; i < bufferSize; i++) {
-  output[i] = Math.random() * 2 - 1;
-}
 
 @Component({
   components: {
@@ -75,6 +76,16 @@ export default class Machine extends Vue {
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
   private nextStepTime = 0;
+  private drumsKits: KitObject = {
+    "metro-boomin": "Metro Boomin",
+    "murda-beatz": "Murda Beatz",
+    "pierre-bourne": "Pierre Bourne",
+    "travis-scott": "Travis Scott",
+  };
+  private currentKit: KitObject = {
+    name: "Metro Boomin",
+    directory: "metro-boomin",
+  };
 
   mounted() {
     if (!window.AudioContext) this.playing = false;
@@ -143,6 +154,13 @@ export default class Machine extends Vue {
     return this.drums.length;
   }
 
+  public getFolderNameByKitName(
+    drumsKit: KitObject,
+    kitName: string
+  ): string | undefined {
+    return Object.keys(drumsKit).find((key) => drumsKit[key] === kitName);
+  }
+
   public pausePlay(): void {
     this.playing = !this.playing;
     audioContext.createBufferSource().start(0, 0, 0.1);
@@ -171,6 +189,19 @@ export default class Machine extends Vue {
       }
     }
   }
+
+  // public readSoundsDirectory(): void {
+  //   const filenames = require.context(
+  //     "../../assets/sounds/metro-boomin",
+  //     false,
+  //     /\.wav$/
+  //   );
+
+  //   filenames.keys().forEach((filename) => {
+  //     filename = filename.slice(2);
+  //     this.drums.push({ fileName: filename });
+  //   });
+  // }
 
   public readSoundsDirectory(): void {
     const filenames = require.context(
@@ -205,6 +236,16 @@ export default class Machine extends Vue {
     return audioBuffer;
   }
 
+  public loadKit(kit: string): void {
+    const key = this.getFolderNameByKitName(this.drumsKits, kit);
+    if (kit && key) {
+      this.currentKit.name = kit;
+      this.currentKit.directory = key;
+    }
+    this.readSoundsDirectory();
+    this.feedPattern();
+  }
+
   public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
     return new Promise((resolve, reject) => {
       audioContext.decodeAudioData(
@@ -233,6 +274,7 @@ export default class Machine extends Vue {
         this.pattern[i][j].active = false;
       }
     }
+
     for (let i = 0; i < this.mutes.length; i++) {
       this.mutes[i] = false;
     }
