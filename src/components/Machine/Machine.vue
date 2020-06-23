@@ -32,6 +32,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
 import Led from "@/components/Machine/Led/Led.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
@@ -68,7 +69,7 @@ export default class Machine extends Vue {
   private pattern: Array<Array<{ active: boolean }>> = [];
   private audioTime = 0;
   private tempo = 128;
-  private playing = true;
+  private playing = false;
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
   private nextStepTime = 0;
@@ -83,40 +84,56 @@ export default class Machine extends Vue {
     this.feedPattern();
 
     // TEST (metro-boomin kit)
-    this.pattern[0][0].active = true;
-    this.pattern[0][14].active = true;
-    this.pattern[2][0].active = true;
-    this.pattern[2][1].active = true;
-    this.pattern[2][2].active = true;
-    this.pattern[2][3].active = true;
-    this.pattern[2][4].active = true;
-    this.pattern[2][5].active = true;
-    this.pattern[2][6].active = true;
-    this.pattern[2][7].active = true;
-    this.pattern[2][8].active = true;
-    this.pattern[2][9].active = true;
-    this.pattern[2][12].active = true;
-    this.pattern[2][13].active = true;
-    this.pattern[2][14].active = true;
-    this.pattern[2][16].active = true;
-    this.pattern[2][17].active = true;
-    this.pattern[2][18].active = true;
-    this.pattern[2][19].active = true;
-    this.pattern[2][20].active = true;
-    this.pattern[2][21].active = true;
-    this.pattern[2][22].active = true;
-    this.pattern[2][23].active = true;
-    this.pattern[3][9].active = true;
-    this.pattern[3][11].active = true;
-    this.pattern[3][15].active = true;
-    this.pattern[6][12].active = true;
-    this.pattern[6][14].active = true;
-    this.pattern[7][7].active = true;
-    this.pattern[7][8].active = true;
-    this.pattern[7][10].active = true;
-    this.pattern[7][17].active = true;
-    this.pattern[7][18].active = true;
+    // this.pattern[0][0].active = true;
+    // this.pattern[0][14].active = true;
+    // this.pattern[2][0].active = true;
+    // this.pattern[2][1].active = true;
+    // this.pattern[2][2].active = true;
+    // this.pattern[2][3].active = true;
+    // this.pattern[2][4].active = true;
+    // this.pattern[2][5].active = true;
+    // this.pattern[2][6].active = true;
+    // this.pattern[2][7].active = true;
+    // this.pattern[2][8].active = true;
+    // this.pattern[2][9].active = true;
+    // this.pattern[2][12].active = true;
+    // this.pattern[2][13].active = true;
+    // this.pattern[2][14].active = true;
+    // this.pattern[2][16].active = true;
+    // this.pattern[2][17].active = true;
+    // this.pattern[2][18].active = true;
+    // this.pattern[2][19].active = true;
+    // this.pattern[2][20].active = true;
+    // this.pattern[2][21].active = true;
+    // this.pattern[2][22].active = true;
+    // this.pattern[2][23].active = true;
+    // this.pattern[3][9].active = true;
+    // this.pattern[3][11].active = true;
+    // this.pattern[3][15].active = true;
+    // this.pattern[6][12].active = true;
+    // this.pattern[6][14].active = true;
+    // this.pattern[7][7].active = true;
+    // this.pattern[7][8].active = true;
+    // this.pattern[7][10].active = true;
+    // this.pattern[7][17].active = true;
+    // this.pattern[7][18].active = true;
 
+    webAudioTouchUnlock(audioContext).then(
+      (unlocked: boolean) => {
+        if (unlocked) {
+          console.log(
+            "AudioContext was unlocked from an explicit user action."
+          );
+        } else {
+          console.log(
+            "There was no need for unlocking devices (other than IOS)."
+          );
+        }
+      },
+      (reason: any) => {
+        console.error(reason);
+      }
+    );
     this.updateAudioTime();
   }
 
@@ -126,6 +143,7 @@ export default class Machine extends Vue {
 
   public pausePlay(): void {
     this.playing = !this.playing;
+    audioContext.createBufferSource().start(0, 0, 0.1);
   }
 
   public playSound(file: string, time: number): Promise<AudioBufferSourceNode> {
@@ -158,13 +176,11 @@ export default class Machine extends Vue {
       false,
       /\.wav$/
     );
-    const files: { [char: string]: string } = {};
 
     filenames.keys().forEach((filename) => {
       filename = filename.slice(2);
       this.drums.push({ fileName: filename });
     });
-    console.log(this.drums);
   }
 
   public async load(file: RequestInfo): Promise<AudioBuffer | null> {
