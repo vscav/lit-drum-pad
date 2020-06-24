@@ -14,6 +14,20 @@
         @click="loadKit(kit)"
         >{{ kit }}</machine-button
       >
+      <circle-slider
+        v-model="tempo"
+        :min="0"
+        :max="220"
+        :step-size="1"
+        :side="60"
+        :circle-width-rel="30"
+        :progress-width-rel="15"
+        :knob-radius-rel="8"
+        circle-color="#cecece"
+        progress-color="#575e63"
+        knob-color="#575e63"
+      ></circle-slider>
+      <div>{{ tempo }}</div>
     </div>
     <led
       v-for="(step, i) in stepCount"
