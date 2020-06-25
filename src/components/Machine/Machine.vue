@@ -31,6 +31,20 @@
         knob-color="#575e63"
       ></circle-slider>
       <div>{{ tempo }}</div>
+      <circle-slider
+        v-model="dbfs"
+        :min="-80"
+        :max="0"
+        :step-size="1"
+        :side="60"
+        :circle-width-rel="30"
+        :progress-width-rel="15"
+        :knob-radius-rel="8"
+        circle-color="#cecece"
+        progress-color="#575e63"
+        knob-color="#575e63"
+      ></circle-slider>
+      <div>{{ dbfs }} db</div>
     </div>
     <led
       v-for="(step, i) in stepCount"
@@ -47,16 +61,24 @@
         @input="(val) => (pattern[i][j].active = val)"
         @fire="playSound"
       ></step-button>
-      <machine-button
-        :pressed="mutes[i]"
-        @click="muteTrack(i)"
-        style="float: right;"
+      <circle-slider
+        v-model="volumes[i]"
+        :min="-80"
+        :max="0"
+        :step-size="1"
+        :side="35"
+        :circle-width-rel="30"
+        :progress-width-rel="15"
+        :knob-radius-rel="8"
+        circle-color="#cecece"
+        progress-color="#575e63"
+        knob-color="#575e63"
+      ></circle-slider>
+      <div>{{ volumes[i] }} db</div>
+      <machine-button :pressed="mutes[i]" @click="muteTrack(i)"
         >M</machine-button
       >
-      <machine-button
-        :pressed="solos[i]"
-        @click="soloTrack(i)"
-        style="float: right;"
+      <machine-button :pressed="solos[i]" @click="soloTrack(i)"
         >S</machine-button
       >
     </div>
@@ -92,12 +114,13 @@ export default class Machine extends Vue {
   private currentStep = 0;
   private mutes: Array<boolean> = [];
   private solos: Array<boolean> = [];
+  private volumes: Array<number> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
   private audioTime = 0;
   private tempo = 105;
   private playing = false;
   private mute = false;
-  private dbfs = -6;
+  private dbfs = -3;
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
   private nextStepTime = 0;
@@ -121,7 +144,11 @@ export default class Machine extends Vue {
 
     //this.setDefaultStatus();
 
-    this.setDefaultPattern();
+    this.setDefaultPattern(false);
+
+    this.setDefaultAudioStates(false);
+
+    this.setDefaultVolumes(this.dbfs);
 
     // TEST (metro-boomin kit)
     this.pattern[0][0].active = true;
@@ -174,9 +201,6 @@ export default class Machine extends Vue {
         console.error(reason);
       }
     );
-
-    const dbfs = 0;
-    console.log("The calculated gain is : " + this.DBFSToGain(dbfs));
   }
 
   get drumsCount(): number {
@@ -191,6 +215,29 @@ export default class Machine extends Vue {
       });
       return count;
     } else return -1;
+  }
+
+  public setDefaultPattern(state: boolean): void {
+    //if (this.pattern.length > 0) this.pattern.splice(0, this.pattern.length);
+    for (let i = 0; i < this.drumsCount; i++) {
+      this.pattern.push([]);
+      for (let j = 0; j < this.stepCount; j++) {
+        this.pattern[i].push({ active: state });
+      }
+    }
+  }
+
+  public setDefaultAudioStates(state: boolean): void {
+    for (let i = 0; i < this.drumsCount; i++) {
+      this.mutes[i] = false;
+      this.solos[i] = false;
+    }
+  }
+
+  public setDefaultVolumes(volume: number): void {
+    for (let i = 0; i < this.drumsCount; i++) {
+      this.volumes[i] = volume;
+    }
   }
 
   public DBFSToGain(dbfs: number): number {
@@ -237,10 +284,10 @@ export default class Machine extends Vue {
   public soloTrack(index: number): void {
     this.solos[index] = !this.solos[index];
     if (this.mutes[index] === true) this.mutes[index] = false;
-    this.updateTracksStatus();
+    this.updateTracksState();
   }
 
-  public updateTracksStatus(): void {
+  public updateTracksState(): void {
     if (!this.solos.every((val, i, arr) => val === arr[0])) {
       for (let i = 0; i < this.solos.length; i++) {
         if (this.solos[i] === false) this.mutes[i] = true;
@@ -255,10 +302,10 @@ export default class Machine extends Vue {
   public playSound(
     file: string,
     directory: string = this.currentKit.directory,
+    volume = -3,
     time = 0
   ): Promise<AudioBufferSourceNode> {
     file = require(`../../assets/sounds/${directory}/${file}`);
-
     return this.load(file).then((audioBuffer) => {
       const sourceNode = audioContext.createBufferSource();
       const gainNode = audioContext.createGain();
@@ -266,25 +313,13 @@ export default class Machine extends Vue {
       sourceNode.connect(gainNode);
       gainNode.connect(audioContext.destination);
       gainNode.gain.setValueAtTime(
-        this.DBFSToGain(this.dbfs),
+        this.DBFSToGain(this.dbfs) * this.DBFSToGain(volume),
         audioContext.currentTime
       );
       sourceNode.start(time);
 
       return sourceNode;
     });
-  }
-
-  public setDefaultPattern(): void {
-    //if (this.pattern.length > 0) this.pattern.splice(0, this.pattern.length);
-    for (let i = 0; i < this.drumsCount; i++) {
-      this.pattern.push([]);
-      this.mutes.push(false);
-      this.solos.push(false);
-      for (let j = 0; j < this.stepCount; j++) {
-        this.pattern[i].push({ active: false });
-      }
-    }
   }
 
   public readSoundsDirectory(directoryName: string): void {
@@ -356,7 +391,7 @@ export default class Machine extends Vue {
     }
 
     this.readSoundsDirectory(this.currentKit.directory);
-    this.setDefaultPattern();
+    this.setDefaultPattern(false);
   }
 
   public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
@@ -414,6 +449,7 @@ export default class Machine extends Vue {
         (this.audioTime / this.secondsPerStep) % this.stepCount
       );
 
+      let i = 0;
       for (const inst in this.pattern) {
         if (!this.mutes[inst]) {
           for (const step in this.pattern[inst]) {
@@ -427,12 +463,14 @@ export default class Machine extends Vue {
                 this.playSound(
                   this.drums[inst].fileName,
                   this.currentKit.directory,
+                  this.volumes[i],
                   schedule
                 );
               }
             }
           }
         }
+        i++;
       }
 
       this.lastScheduledTime = this.audioTime + INCREMENT;
