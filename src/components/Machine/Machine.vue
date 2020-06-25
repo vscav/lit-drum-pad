@@ -211,9 +211,15 @@ export default class Machine extends Vue {
   public muteMaster(): void {
     this.mute = !this.mute;
 
-    if (this.mutes.length) this.mutes.splice(0, this.mutes.length);
-    for (let i = 0; i < this.drumsCount; i++) {
-      this.mutes.push(this.mute ? true : false);
+    if (!this.solos.every((val, i, arr) => val === arr[0])) {
+      for (let i = 0; i < this.solos.length; i++) {
+        if (this.solos[i] === true) this.mutes[i] = this.mute ? true : false;
+      }
+    } else {
+      if (this.mutes.length) this.mutes.splice(0, this.mutes.length);
+      for (let i = 0; i < this.drumsCount; i++) {
+        this.mutes.push(this.mute ? true : false);
+      }
     }
   }
 
