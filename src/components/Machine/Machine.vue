@@ -180,7 +180,7 @@ export default class Machine extends Vue {
 
   get mutedTracks(): number {
     let count = 0;
-    if (this.mutes.length > 0) {
+    if (this.mutes.length) {
       this.mutes.forEach((drum) => {
         if (drum === true) count++;
       });
@@ -211,7 +211,7 @@ export default class Machine extends Vue {
   public muteMaster(): void {
     this.mute = !this.mute;
 
-    if (this.mutes.length > 0) this.mutes.splice(0, this.mutes.length);
+    if (this.mutes.length) this.mutes.splice(0, this.mutes.length);
     for (let i = 0; i < this.drumsCount; i++) {
       this.mutes.push(this.mute ? true : false);
     }
@@ -305,7 +305,7 @@ export default class Machine extends Vue {
         );
         break;
     }
-    if (this.drums.length > 0) this.drums.splice(0, this.drums.length);
+    if (this.drums.length) this.drums.splice(0, this.drums.length);
     if (filenames !== undefined)
       filenames.keys().forEach((filename) => {
         filename = filename.slice(2);
