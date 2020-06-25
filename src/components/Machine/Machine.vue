@@ -97,7 +97,7 @@ export default class Machine extends Vue {
   private tempo = 105;
   private playing = false;
   private mute = false;
-  private gain = 0.5;
+  private dbfs = -6;
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
   private nextStepTime = 0;
@@ -172,6 +172,9 @@ export default class Machine extends Vue {
         console.error(reason);
       }
     );
+
+    const dbfs = 0;
+    console.log("The calculated gain is : " + this.DBFSToGain(dbfs));
   }
 
   get drumsCount(): number {
@@ -188,8 +191,8 @@ export default class Machine extends Vue {
     } else return -1;
   }
 
-  get soloTracks(): number {
-    return -1;
+  public DBFSToGain(dbfs: number): number {
+    return Math.pow(10, dbfs / 20);
   }
 
   public getFolderNameByKitName(
@@ -260,7 +263,10 @@ export default class Machine extends Vue {
       sourceNode.buffer = audioBuffer;
       sourceNode.connect(gainNode);
       gainNode.connect(audioContext.destination);
-      gainNode.gain.setValueAtTime(this.gain, audioContext.currentTime);
+      gainNode.gain.setValueAtTime(
+        this.DBFSToGain(this.dbfs),
+        audioContext.currentTime
+      );
       sourceNode.start(time);
 
       return sourceNode;
