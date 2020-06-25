@@ -86,7 +86,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
+import webAudioTouchUnlock from "@/webAudioTouchUnlock";
 import Led from "@/components/Machine/Led/Led.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";

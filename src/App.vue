@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Machine from "./components/Machine/Machine.vue";
+import Machine from "@/components/Machine/Machine.vue";
 
 @Component({
   components: {
