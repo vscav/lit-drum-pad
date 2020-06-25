@@ -119,7 +119,9 @@ export default class Machine extends Vue {
   created() {
     this.readSoundsDirectory(this.currentKit.directory);
 
-    this.feedPattern();
+    //this.setDefaultStatus();
+
+    this.setDefaultPattern();
 
     // TEST (metro-boomin kit)
     this.pattern[0][0].active = true;
@@ -273,7 +275,7 @@ export default class Machine extends Vue {
     });
   }
 
-  public feedPattern(): void {
+  public setDefaultPattern(): void {
     //if (this.pattern.length > 0) this.pattern.splice(0, this.pattern.length);
     for (let i = 0; i < this.drumsCount; i++) {
       this.pattern.push([]);
@@ -354,7 +356,7 @@ export default class Machine extends Vue {
     }
 
     this.readSoundsDirectory(this.currentKit.directory);
-    this.feedPattern();
+    this.setDefaultPattern();
   }
 
   public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
