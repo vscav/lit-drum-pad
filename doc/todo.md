@@ -1,6 +1,6 @@
 # TODO
 
-- [ ] Circle slider component
+- [x] Circle slider component
 - [ ] Select component
 - [ ] Global gain (all tracks)
 - [ ] Gain by track
