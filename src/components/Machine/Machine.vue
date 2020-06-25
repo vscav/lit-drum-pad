@@ -53,6 +53,12 @@
         style="float: right;"
         >M</machine-button
       >
+      <machine-button
+        :pressed="solos[i]"
+        @click="soloTrack(i)"
+        style="float: right;"
+        >S</machine-button
+      >
     </div>
   </div>
 </template>
@@ -85,6 +91,7 @@ export default class Machine extends Vue {
   private stepCount = 24;
   private currentStep = 0;
   private mutes: Array<boolean> = [];
+  private solos: Array<boolean> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
   private audioTime = 0;
   private tempo = 105;
@@ -181,6 +188,10 @@ export default class Machine extends Vue {
     } else return -1;
   }
 
+  get soloTracks(): number {
+    return -1;
+  }
+
   public getFolderNameByKitName(
     drumsKit: KitObject,
     kitName: string
@@ -212,6 +223,24 @@ export default class Machine extends Vue {
     if (this.mutedTracks !== this.drums.length) this.mute = false;
   }
 
+  public soloTrack(index: number): void {
+    this.solos[index] = !this.solos[index];
+    if (this.mutes[index] === true) this.mutes[index] = false;
+    this.updateTracksStatus();
+  }
+
+  public updateTracksStatus(): void {
+    if (!this.solos.every((val, i, arr) => val === arr[0])) {
+      for (let i = 0; i < this.solos.length; i++) {
+        if (this.solos[i] === false) this.mutes[i] = true;
+      }
+    } else {
+      for (let i = 0; i < this.mutes.length; i++) {
+        this.mutes[i] = this.solos[i];
+      }
+    }
+  }
+
   public playSound(
     file: string,
     directory: string = this.currentKit.directory,
@@ -237,6 +266,7 @@ export default class Machine extends Vue {
     for (let i = 0; i < this.drumsCount; i++) {
       this.pattern.push([]);
       this.mutes.push(false);
+      this.solos.push(false);
       for (let j = 0; j < this.stepCount; j++) {
         this.pattern[i].push({ active: false });
       }
