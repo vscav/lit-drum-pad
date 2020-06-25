@@ -142,12 +142,8 @@ export default class Machine extends Vue {
   created() {
     this.readSoundsDirectory(this.currentKit.directory);
 
-    //this.setDefaultStatus();
-
     this.setDefaultPattern(false);
-
     this.setDefaultAudioStates(false);
-
     this.setDefaultVolumes(this.dbfs);
 
     // TEST (metro-boomin kit)

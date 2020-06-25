@@ -2,9 +2,9 @@
 
 - [x] Circle slider component
 - [ ] Select component
-- [ ] Global gain (all tracks)
-- [ ] Gain by track
+- [x] Global gain (all tracks)
+- [x] Gain by track
 - [ ] Sort drums (one or two by type)
-- [ ] Presets by artist/kit
+- [ ] Presets by artist/kit [optional]
 - [ ] Style (UI/UX)
 - [ ] Refactor code
