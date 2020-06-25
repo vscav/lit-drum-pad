@@ -1,6 +1,6 @@
 <template>
   <div class="machine">
-    <h1>Machine component</h1>
+    <h1>Lit Drum Machine</h1>
     <div>
       <machine-button :pressed="playing" @click="pausePlay"
         >Play</machine-button
@@ -62,7 +62,7 @@
         @fire="playSound"
       ></step-button>
       <circle-slider
-        v-model="trackStates[i].volume"
+        v-model="tracksStates[i].volume"
         :min="-80"
         :max="0"
         :step-size="1"
@@ -74,11 +74,11 @@
         progress-color="#575e63"
         knob-color="#575e63"
       ></circle-slider>
-      <div>{{ volumes[i] }} db</div>
-      <machine-button :pressed="trackStates[i].mute" @click="muteTrack(i)"
+      <div>{{ tracksStates[i].volume }} db</div>
+      <machine-button :pressed="tracksStates[i].mute" @click="muteTrack(i)"
         >M</machine-button
       >
-      <machine-button :pressed="trackStates[i].solo" @click="soloTrack(i)"
+      <machine-button :pressed="tracksStates[i].solo" @click="soloTrack(i)"
         >S</machine-button
       >
     </div>
@@ -92,9 +92,7 @@ import Led from "@/components/Machine/Led/Led.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
 
-interface KitObject {
-  [char: string]: string;
-}
+import { KitObject, TrackStateObject } from "@/interfaces";
 
 const afBuffers = new Map();
 
@@ -110,26 +108,17 @@ const bufferSize = 2 * audioContext.sampleRate;
   },
 })
 export default class Machine extends Vue {
-  private drums: Array<{ fileName: string }> = [];
+  private playing = false;
+  private tempo = 105;
+  private dbfs = -3;
+  private mute = false;
   private stepCount = 24;
   private currentStep = 0;
-  private mutes: Array<boolean> = [];
-  private solos: Array<boolean> = [];
-  private volumes: Array<number> = [];
-  private trackStates: Array<{
-    mute: boolean;
-    solo: boolean;
-    volume: number;
-  }> = [];
-  private pattern: Array<Array<{ active: boolean }>> = [];
   private audioTime = 0;
-  private tempo = 105;
-  private playing = false;
-  private mute = false;
-  private dbfs = -3;
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
   private nextStepTime = 0;
+  private drums: Array<{ fileName: string }> = [];
   private drumsKits: KitObject = {
     "metro-boomin": "Metro Boomin",
     "murda-beatz": "Murda Beatz",
@@ -140,6 +129,8 @@ export default class Machine extends Vue {
     name: "Metro Boomin",
     directory: "metro-boomin",
   };
+  private tracksStates: Array<TrackStateObject> = [];
+  private pattern: Array<Array<{ active: boolean }>> = [];
 
   mounted() {
     if (!window.AudioContext) this.playing = false;
@@ -147,12 +138,8 @@ export default class Machine extends Vue {
 
   created() {
     this.readSoundsDirectory(this.currentKit.directory);
-
     this.setDefaultTracksStates(false, false, this.dbfs);
-
     this.setDefaultPattern(false);
-    // this.setDefaultAudioStates(false);
-    // this.setDefaultVolumes(this.dbfs);
 
     // TEST (metro-boomin kit)
     this.pattern[0][0].active = true;
@@ -213,8 +200,8 @@ export default class Machine extends Vue {
 
   get mutedTracks(): number {
     let count = 0;
-    if (this.trackStates.length) {
-      this.trackStates.forEach((drum) => {
+    if (this.tracksStates.length) {
+      this.tracksStates.forEach((drum) => {
         if (drum.mute === true) count++;
       });
       return count;
@@ -231,26 +218,13 @@ export default class Machine extends Vue {
     }
   }
 
-  public setDefaultAudioStates(state: boolean): void {
-    for (let i = 0; i < this.drumsCount; i++) {
-      this.mutes[i] = false;
-      this.solos[i] = false;
-    }
-  }
-
-  public setDefaultVolumes(volume: number): void {
-    for (let i = 0; i < this.drumsCount; i++) {
-      this.volumes[i] = volume;
-    }
-  }
-
   public setDefaultTracksStates(
     mute: boolean,
     solo: boolean,
     volume: number
   ): void {
     for (let i = 0; i < this.drumsCount; i++) {
-      this.trackStates.push({
+      this.tracksStates.push({
         mute: mute,
         solo: solo,
         volume: volume,
@@ -281,42 +255,43 @@ export default class Machine extends Vue {
   public muteMaster(): void {
     this.mute = !this.mute;
 
-    if (!this.trackStates.every((obj, i, arr) => obj.solo === arr[0].solo)) {
-      for (let i = 0; i < this.trackStates.length; i++) {
-        if (this.trackStates[i].solo === true)
-          this.trackStates[i].mute = this.mute ? true : false;
+    if (!this.tracksStates.every((obj, i, arr) => obj.solo === arr[0].solo)) {
+      for (let i = 0; i < this.tracksStates.length; i++) {
+        if (this.tracksStates[i].solo === true)
+          this.tracksStates[i].mute = this.mute ? true : false;
       }
     } else {
-      this.trackStates.forEach((track) => {
+      this.tracksStates.forEach((track) => {
         track.mute = this.mute ? true : false;
       });
     }
   }
 
   public muteTrack(index: number): void {
-    this.trackStates[index].mute = !this.trackStates[index].mute;
+    this.tracksStates[index].mute = !this.tracksStates[index].mute;
 
     const mutedTracks = this.mutedTracks;
-    if (this.mutedTracks !== this.drums.length) this.mute = false;
+    if (this.mutedTracks !== this.drumsCount) this.mute = false;
   }
 
   public soloTrack(index: number): void {
-    this.trackStates[index].solo = !this.trackStates[index].solo;
+    this.tracksStates[index].solo = !this.tracksStates[index].solo;
 
-    if (this.trackStates[index].mute === true)
-      this.trackStates[index].mute = false;
+    if (this.tracksStates[index].mute === true)
+      this.tracksStates[index].mute = false;
 
     this.updateTracksStates();
   }
 
   public updateTracksStates(): void {
-    if (!this.trackStates.every((obj, i, arr) => obj.solo === arr[0].solo)) {
-      for (let i = 0; i < this.trackStates.length; i++) {
-        if (this.trackStates[i].solo === false) this.trackStates[i].mute = true;
+    if (!this.tracksStates.every((obj, i, arr) => obj.solo === arr[0].solo)) {
+      for (let i = 0; i < this.tracksStates.length; i++) {
+        if (this.tracksStates[i].solo === false)
+          this.tracksStates[i].mute = true;
       }
     } else {
-      for (let i = 0; i < this.trackStates.length; i++) {
-        this.trackStates[i].mute = this.trackStates[i].solo;
+      for (let i = 0; i < this.tracksStates.length; i++) {
+        this.tracksStates[i].mute = this.tracksStates[i].solo;
       }
     }
   }
@@ -376,7 +351,7 @@ export default class Machine extends Vue {
         );
         break;
     }
-    if (this.drums.length) this.drums.splice(0, this.drums.length);
+    if (this.drumsCount) this.drums.splice(0, this.drumsCount);
     if (filenames !== undefined)
       filenames.keys().forEach((filename) => {
         filename = filename.slice(2);
@@ -445,8 +420,8 @@ export default class Machine extends Vue {
       }
     }
 
-    for (let i = 0; i < this.mutes.length; i++) {
-      this.trackStates[i].mute = false;
+    for (let i = 0; i < this.tracksStates.length; i++) {
+      this.tracksStates[i].mute = false;
     }
   }
 
@@ -474,7 +449,7 @@ export default class Machine extends Vue {
       let i = 0;
 
       for (const inst in this.pattern) {
-        if (!this.trackStates[inst].mute) {
+        if (!this.tracksStates[inst].mute) {
           for (const step in this.pattern[inst]) {
             if (this.pattern[inst][step].active) {
               const schedule = this.getSchedule(parseInt(step), this.audioTime);
@@ -486,7 +461,7 @@ export default class Machine extends Vue {
                 this.playSound(
                   this.drums[inst].fileName,
                   this.currentKit.directory,
-                  this.trackStates[i].volume,
+                  this.tracksStates[i].volume,
                   schedule
                 );
               }
