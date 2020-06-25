@@ -91,7 +91,6 @@ export default class Machine extends Vue {
   private playing = false;
   private mute = false;
   private gain = 0.5;
-  private volume = this.gain;
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
   private nextStepTime = 0;
@@ -172,6 +171,16 @@ export default class Machine extends Vue {
     return this.drums.length;
   }
 
+  get mutedTracks(): number {
+    let count = 0;
+    if (this.mutes.length > 0) {
+      this.mutes.forEach((drum) => {
+        if (drum === true) count++;
+      });
+      return count;
+    } else return -1;
+  }
+
   public getFolderNameByKitName(
     drumsKit: KitObject,
     kitName: string
@@ -181,7 +190,7 @@ export default class Machine extends Vue {
 
   public pausePlay(): void {
     this.playing = !this.playing;
-    //audioContext.createBufferSource().start(0, 0, 0.1);
+
     if (this.playing) {
       audioContext.resume();
       this.updateAudioTime();
@@ -190,8 +199,7 @@ export default class Machine extends Vue {
 
   public muteMaster(): void {
     this.mute = !this.mute;
-    if (this.mute) this.gain = 0;
-    else this.gain = this.volume;
+
     if (this.mutes.length > 0) this.mutes.splice(0, this.mutes.length);
     for (let i = 0; i < this.drumsCount; i++) {
       this.mutes.push(this.mute ? true : false);
@@ -200,17 +208,8 @@ export default class Machine extends Vue {
 
   public muteTrack(index: number): void {
     this.mutes[index] = !this.mutes[index];
-  }
-
-  public allMutes(): boolean {
-    if (this.mutes.length > 0) {
-      this.mutes.forEach((drum) => {
-        console.log(drum);
-        if (drum === false) return false;
-        else return true;
-      });
-    }
-    return false;
+    const mutedTracks = this.mutedTracks;
+    if (this.mutedTracks !== this.drums.length) this.mute = false;
   }
 
   public playSound(
