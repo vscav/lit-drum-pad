@@ -14,16 +14,14 @@ export default class Led extends Vue {
 
 <style lang="scss">
 .led {
-  display: inline-block;
-  width: 34px;
-  height: 20px;
   text-align: center;
-  margin: 2px 3px;
+  height: auto;
   transition: all 0.2s ease-in-out;
+  padding: 5px 0;
 
   &:before {
     content: "";
-    display: inline-block;
+    float: left;
     width: 10px;
     height: 10px;
     border-radius: 10px;
@@ -33,8 +31,8 @@ export default class Led extends Vue {
 
   &.lit {
     &:before {
-      background-color: #1fcb02;
-      box-shadow: 0px 0px 7px 0px #1fcb02;
+      background-color: #1adecb;
+      box-shadow: 0px 0px 7px 0px #1adecb;
     }
   }
 }

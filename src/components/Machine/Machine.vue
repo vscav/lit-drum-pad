@@ -6,7 +6,7 @@
       @clear-steps="clearSteps"
       @mute-master="muteMaster"
     />
-    <div>
+    <!-- <div>
       <machine-button
         v-for="(kit, i) in drumsKits"
         :key="i"
@@ -14,50 +14,58 @@
         @click="loadKit(kit)"
         >{{ kit }}</machine-button
       >
-    </div>
-    <led
-      v-for="(step, i) in stepCount"
-      :key="`stepCount-${i}`"
-      :active="i == currentStep"
-    ></led>
-    <div v-for="(drum, i) in drums" :key="i">
-      <step-button
-        v-for="(step, j) in stepCount"
-        :key="`drumCount-${j}`"
-        :file="drum.fileName"
-        :value="pattern[i][j].active"
-        :highlight="currentStep == j"
-        @input="(val) => (pattern[i][j].active = val)"
-        @fire="playSound"
-      ></step-button>
-      <circle-slider
-        v-model="tracksStates[i].volume"
-        :min="-80"
-        :max="0"
-        :step-size="1"
-        :side="35"
-        :circle-width-rel="30"
-        :progress-width-rel="15"
-        :knob-radius-rel="8"
-        circle-color="#cecece"
-        progress-color="#575e63"
-        knob-color="#575e63"
-      ></circle-slider>
-      <div>{{ tracksStates[i].volume }} db</div>
-      <machine-button :pressed="tracksStates[i].mute" @click="muteTrack(i)"
-        >M</machine-button
-      >
-      <machine-button :pressed="tracksStates[i].solo" @click="soloTrack(i)"
-        >S</machine-button
-      >
+    </div> -->
+    <div class="board">
+      <div class="row">
+        <led
+          v-for="(step, i) in stepCount"
+          :key="`stepCount-${i}`"
+          :active="i == currentStep"
+        ></led>
+      </div>
+      <div v-for="(drum, i) in drums" :key="i" class="row">
+        <step-button
+          v-for="(step, j) in stepCount"
+          :key="`drumCount-${j}`"
+          :file="drum.fileName"
+          :value="pattern[i][j].active"
+          :highlight="currentStep == j"
+          @click="(val) => (pattern[i][j].active = val)"
+          @mouse-enter="playSound"
+        ></step-button>
+        <!-- <div class="options">
+          <circle-slider
+            v-model="tracksStates[i].volume"
+            :min="-80"
+            :max="0"
+            :step-size="1"
+            :side="35"
+            :circle-width-rel="30"
+            :progress-width-rel="15"
+            :knob-radius-rel="8"
+            circle-color="#cecece"
+            progress-color="#575e63"
+            knob-color="#575e63"
+          ></circle-slider>
+          <div>{{ tracksStates[i].volume }} db</div>
+          <machine-button :pressed="tracksStates[i].mute" @click="muteTrack(i)"
+            >M</machine-button
+          >
+          <machine-button :pressed="tracksStates[i].solo" @click="soloTrack(i)"
+            >S</machine-button
+          >
+        </div> -->
+      </div>
     </div>
     <bottombar
       :playing="playing"
       :dbfs="dbfs"
       :tempo="tempo"
+      :options="drumsKits"
       @pause-play="pausePlay"
       @tempo-changed="updateTempo"
       @volume-changed="updateDbfs"
+      @load="loadKit"
     />
   </div>
 </template>
@@ -114,6 +122,7 @@ export default class Machine extends Vue {
   };
   private tracksStates: Array<TrackStateObject> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
+  private mouseIsPressed = false;
 
   mounted() {
     if (!window.AudioContext) this.playing = false;
@@ -508,4 +517,30 @@ export default class Machine extends Vue {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.board {
+  width: 100%;
+  margin-top: 60px;
+  margin-bottom: 90px;
+  .row {
+    padding: 0;
+    margin: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    flex-flow: row;
+    justify-content: space-around;
+    line-height: 30px;
+  }
+
+  .options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: 5px;
+  }
+}
+</style>

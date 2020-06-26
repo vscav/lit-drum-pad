@@ -32,16 +32,26 @@
         knob-color="#1adecb"
       ></circle-slider>
       <div>{{ dbfs }} db</div>
+      <dropdown
+        :placeholder="'Drums Kit'"
+        :options="options"
+        @interface="load"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+
+import Dropdown from "@/components/Machine/Dropdown/Dropdown.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
+
+import { KitObject } from "@/types";
 
 @Component({
   components: {
+    Dropdown,
     MachineButton,
   },
 })
@@ -52,6 +62,8 @@ export default class Bottombar extends Vue {
   readonly dbfs!: number;
   @Prop({ required: true, type: Number, default: 100 })
   readonly tempo!: number;
+  @Prop({ required: true, type: Object, default: {} })
+  readonly options!: KitObject;
 
   private speed: number = this.tempo;
   private volume: number = this.dbfs;
@@ -66,8 +78,12 @@ export default class Bottombar extends Vue {
     this.$emit("volume-changed", volume);
   }
 
-  pausePlay() {
+  pausePlay(): void {
     this.$emit("pause-play");
+  }
+
+  load(kit: string): void {
+    this.$emit("load", kit);
   }
 }
 </script>

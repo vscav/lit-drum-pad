@@ -2,7 +2,7 @@
   <span
     class="stepbutton"
     :class="{ active: value, highlight: highlight }"
-    @click="changeStatus"
+    @click="changeState"
     @mouseenter="playSound"
   >
   </span>
@@ -20,35 +20,38 @@ export default class StepButton extends Vue {
   @Prop({ required: true, type: String })
   readonly file!: string;
 
-  public changeStatus(): void {
-    this.$emit("input", !this.value);
+  public changeState(): void {
+    this.$emit("click", !this.value);
   }
 
   public playSound(): void {
-    this.$emit("fire", this.file);
+    this.$emit("mouse-enter", this.file);
   }
 }
 </script>
 
 <style lang="scss">
 .stepbutton {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  border-radius: 50px;
-  border: 0px solid rgba(0, 0, 0, 0.5);
-  border-width: 0px 1px 4px 1px;
-  box-shadow: 0px 5px 1px 1px rgba(0, 0, 0, 0.3),
-    inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
-  background-color: #9aa6b0;
-  cursor: pointer;
-  margin: 16px 3px;
-  transition: all 0.1s ease-in-out;
-}
-.stepbutton.active {
-  border-bottom-width: 1px;
-  box-shadow: 0px 1px 0px 1px rgba(0, 0, 0, 0.3),
-    inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
-  background-color: #575e63;
+  border: 1px solid rgba(41, 73, 255, 0.1);
+  text-align: center;
+  flex: 1 0 auto;
+  height: auto;
+
+  &:before {
+    content: "";
+    float: left;
+    padding-top: 100%;
+  }
+
+  &:nth-child(4n) {
+    border-right: 1px solid #bc84fb;
+  }
+  &:nth-child(4n + 1) {
+    border-left: 1px solid #bc84fb;
+  }
+
+  &.active {
+    background-color: #575e63;
+  }
 }
 </style>

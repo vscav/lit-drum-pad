@@ -4,8 +4,8 @@
       Lit Drum Pad.
     </div>
     <div class="controls">
-      <machine-button :pressed="mute" @click="muteMaster"
-        >Mute all</machine-button
+      <switch-button v-model="muteMaster" :checked="mute"
+        >Mute all</switch-button
       >
       <machine-button @click="randomize">Random</machine-button>
       <machine-button @click="clearSteps">Clear</machine-button>
@@ -15,19 +15,25 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue } from "vue-property-decorator";
+import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
+import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
 
 @Component({
   components: {
     MachineButton,
+    SwitchButton,
   },
 })
 export default class Topbar extends Vue {
   @Prop({ required: true, type: Boolean, default: false })
   readonly mute!: boolean;
 
-  muteMaster() {
+  private muteMaster = this.mute;
+
+  @Watch("muteMaster")
+  onMuteStateChange(muteState: string) {
     this.$emit("mute-master");
   }
 
