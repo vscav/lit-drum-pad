@@ -1,10 +1,10 @@
 <template>
   <div class="machine">
     <topbar
-      :mute="mute"
+      :options="drumsKits"
       @randomize="randomize"
       @clear-steps="clearSteps"
-      @mute-master="muteMaster"
+      @load="loadKit"
     />
     <!-- <div>
       <machine-button
@@ -61,11 +61,11 @@
       :playing="playing"
       :dbfs="dbfs"
       :tempo="tempo"
-      :options="drumsKits"
+      :mute="mute"
       @pause-play="pausePlay"
       @tempo-changed="updateTempo"
       @volume-changed="updateDbfs"
-      @load="loadKit"
+      @mute-master="muteMaster"
     />
   </div>
 </template>

@@ -32,11 +32,9 @@
         knob-color="#1adecb"
       ></circle-slider>
       <div>{{ dbfs }} db</div>
-      <dropdown
-        :placeholder="'Drums Kit'"
-        :options="options"
-        @interface="load"
-      />
+      <switch-button v-model="muteMaster" :checked="mute"
+        >Mute all</switch-button
+      >
     </div>
   </div>
 </template>
@@ -44,15 +42,13 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
-import Dropdown from "@/components/Machine/Dropdown/Dropdown.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
-
-import { KitObject } from "@/types";
+import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
 
 @Component({
   components: {
-    Dropdown,
     MachineButton,
+    SwitchButton,
   },
 })
 export default class Bottombar extends Vue {
@@ -62,11 +58,17 @@ export default class Bottombar extends Vue {
   readonly dbfs!: number;
   @Prop({ required: true, type: Number, default: 100 })
   readonly tempo!: number;
-  @Prop({ required: true, type: Object, default: {} })
-  readonly options!: KitObject;
+  @Prop({ required: true, type: Boolean, default: false })
+  readonly mute!: boolean;
 
   private speed: number = this.tempo;
   private volume: number = this.dbfs;
+  private muteMaster = this.mute;
+
+  @Watch("muteMaster")
+  onMuteStateChange(muteState: string) {
+    this.$emit("mute-master");
+  }
 
   @Watch("speed")
   onTempoChange(tempo: string) {
@@ -80,10 +82,6 @@ export default class Bottombar extends Vue {
 
   pausePlay(): void {
     this.$emit("pause-play");
-  }
-
-  load(kit: string): void {
-    this.$emit("load", kit);
   }
 }
 </script>

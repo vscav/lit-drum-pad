@@ -4,9 +4,11 @@
       Lit Drum Pad.
     </div>
     <div class="controls">
-      <switch-button v-model="muteMaster" :checked="mute"
-        >Mute all</switch-button
-      >
+      <dropdown
+        :placeholder="'Drums Kit'"
+        :options="options"
+        @interface="load"
+      />
       <machine-button @click="randomize">Random</machine-button>
       <machine-button @click="clearSteps">Clear</machine-button>
       <machine-button @click="restart">Restart</machine-button>
@@ -17,24 +19,23 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
+import Dropdown from "@/components/Machine/Dropdown/Dropdown.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
-import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
+
+import { KitObject } from "@/types";
 
 @Component({
   components: {
+    Dropdown,
     MachineButton,
-    SwitchButton,
   },
 })
 export default class Topbar extends Vue {
-  @Prop({ required: true, type: Boolean, default: false })
-  readonly mute!: boolean;
+  @Prop({ required: true, type: Object, default: {} })
+  readonly options!: KitObject;
 
-  private muteMaster = this.mute;
-
-  @Watch("muteMaster")
-  onMuteStateChange(muteState: string) {
-    this.$emit("mute-master");
+  load(kit: string): void {
+    this.$emit("load", kit);
   }
 
   randomize() {

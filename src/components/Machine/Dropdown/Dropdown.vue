@@ -82,7 +82,6 @@ export default class VDropdown extends Vue {
   width: 180px;
   background-color: #fff;
   display: inline-block;
-  margin: 10px;
   cursor: pointer;
   user-select: none;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.06);
@@ -126,14 +125,13 @@ export default class VDropdown extends Vue {
   .dropdown-options-container {
     overflow-y: scroll;
     position: absolute;
-    bottom: 100%;
     width: 100%;
     height: 150px;
     z-index: 1;
     background: inherit;
     box-shadow: 0 9px 10px 0 rgba(0, 0, 0, 0.06);
     border-radius: 4px;
-    margin-bottom: 2px;
+    margin-top: 2px;
 
     .dropdown-options--cell {
       user-select: none;
