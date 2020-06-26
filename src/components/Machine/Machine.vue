@@ -1,12 +1,12 @@
 <template>
   <div class="machine">
-    <h1>Lit Drum Machine</h1>
+    <topbar
+      :mute="mute"
+      @randomize="randomize"
+      @clear-steps="clearSteps"
+      @mute-master="muteMaster"
+    />
     <div>
-      <machine-button :pressed="playing" @click="pausePlay"
-        >Play</machine-button
-      >
-      <machine-button @click="randomize">Random</machine-button>
-      <machine-button @click="clearSteps">Clear</machine-button>
       <machine-button
         v-for="(kit, i) in drumsKits"
         :key="i"
@@ -14,37 +14,6 @@
         @click="loadKit(kit)"
         >{{ kit }}</machine-button
       >
-      <machine-button :pressed="mute" @click="muteMaster"
-        >Mute all</machine-button
-      >
-      <circle-slider
-        v-model="tempo"
-        :min="0"
-        :max="220"
-        :step-size="1"
-        :side="60"
-        :circle-width-rel="30"
-        :progress-width-rel="15"
-        :knob-radius-rel="8"
-        circle-color="#cecece"
-        progress-color="#575e63"
-        knob-color="#575e63"
-      ></circle-slider>
-      <div>{{ tempo }}</div>
-      <circle-slider
-        v-model="dbfs"
-        :min="-80"
-        :max="0"
-        :step-size="1"
-        :side="60"
-        :circle-width-rel="30"
-        :progress-width-rel="15"
-        :knob-radius-rel="8"
-        circle-color="#cecece"
-        progress-color="#575e63"
-        knob-color="#575e63"
-      ></circle-slider>
-      <div>{{ dbfs }} db</div>
     </div>
     <led
       v-for="(step, i) in stepCount"
@@ -82,17 +51,29 @@
         >S</machine-button
       >
     </div>
+    <bottombar
+      :playing="playing"
+      :dbfs="dbfs"
+      :tempo="tempo"
+      @pause-play="pausePlay"
+      @tempo-changed="updateTempo"
+      @volume-changed="updateDbfs"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import webAudioTouchUnlock from "@/webAudioTouchUnlock";
+
+import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
+
+import Bottombar from "@/components/Machine/Bottombar/Bottombar.vue";
 import Led from "@/components/Machine/Led/Led.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
+import Topbar from "@/components/Machine/Topbar/Topbar.vue";
 
-import { KitObject, TrackStateObject } from "@/interfaces";
+import { KitObject, TrackStateObject } from "@/types";
 
 const afBuffers = new Map();
 
@@ -102,9 +83,11 @@ const bufferSize = 2 * audioContext.sampleRate;
 
 @Component({
   components: {
+    Bottombar,
     Led,
     MachineButton,
     StepButton,
+    Topbar,
   },
 })
 export default class Machine extends Vue {
@@ -209,7 +192,7 @@ export default class Machine extends Vue {
   }
 
   public setDefaultPattern(state: boolean): void {
-    if (this.pattern.length > 0) this.pattern.splice(0, this.pattern.length);
+    if (this.pattern.length) this.pattern.splice(0, this.pattern.length);
     for (let i = 0; i < this.drumsCount; i++) {
       this.pattern.push([]);
       for (let j = 0; j < this.stepCount; j++) {
@@ -300,11 +283,10 @@ export default class Machine extends Vue {
     }
   }
 
-  public updateTracksStates(state: boolean, volume = -3): void {
+  public updateTracksStatesOnChange(state: boolean, volume = -3): void {
     if (this.drumsCount > this.tracksStates.length) {
       const rowToAdd = this.drumsCount - this.tracksStates.length;
       for (let i = 0; i < rowToAdd; i++) {
-        console.log("row added");
         this.tracksStates.push({
           mute: state,
           solo: state,
@@ -330,6 +312,14 @@ export default class Machine extends Vue {
         this.tracksStates[i].mute = this.tracksStates[i].solo;
       }
     }
+  }
+
+  public updateTempo(newTempo: number): void {
+    this.tempo = newTempo;
+  }
+
+  public updateDbfs(newDbfs: number): void {
+    this.dbfs = newDbfs;
   }
 
   public playSound(
@@ -426,7 +416,7 @@ export default class Machine extends Vue {
     this.readSoundsDirectory(this.currentKit.directory);
 
     this.updatePattern(false);
-    this.updateTracksStates(false);
+    this.updateTracksStatesOnChange(false);
   }
 
   public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
