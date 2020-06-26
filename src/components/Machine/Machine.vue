@@ -209,7 +209,7 @@ export default class Machine extends Vue {
   }
 
   public setDefaultPattern(state: boolean): void {
-    //if (this.pattern.length > 0) this.pattern.splice(0, this.pattern.length);
+    if (this.pattern.length > 0) this.pattern.splice(0, this.pattern.length);
     for (let i = 0; i < this.drumsCount; i++) {
       this.pattern.push([]);
       for (let j = 0; j < this.stepCount; j++) {
@@ -280,10 +280,46 @@ export default class Machine extends Vue {
     if (this.tracksStates[index].mute === true)
       this.tracksStates[index].mute = false;
 
-    this.updateTracksStates();
+    this.updateTracksStatesOnAction();
   }
 
-  public updateTracksStates(): void {
+  public updatePattern(state: boolean): void {
+    if (this.drumsCount > this.pattern.length) {
+      const rowToAdd = this.drumsCount - this.pattern.length;
+      for (let i = 0; i < rowToAdd; i++) {
+        const last = this.pattern.push([]);
+        for (let j = 0; j < this.stepCount; j++) {
+          this.pattern[last - 1].push({ active: state });
+        }
+      }
+    } else if (this.drumsCount < this.pattern.length) {
+      const rowToDelete = this.pattern.length - this.drumsCount;
+      for (let i = 0; i < rowToDelete; i++) {
+        this.pattern.pop();
+      }
+    }
+  }
+
+  public updateTracksStates(state: boolean, volume = -3): void {
+    if (this.drumsCount > this.tracksStates.length) {
+      const rowToAdd = this.drumsCount - this.tracksStates.length;
+      for (let i = 0; i < rowToAdd; i++) {
+        console.log("row added");
+        this.tracksStates.push({
+          mute: state,
+          solo: state,
+          volume: volume,
+        });
+      }
+    } else if (this.drumsCount < this.tracksStates.length) {
+      const rowToDelete = this.tracksStates.length - this.drumsCount;
+      for (let i = 0; i < rowToDelete; i++) {
+        this.tracksStates.pop();
+      }
+    }
+  }
+
+  public updateTracksStatesOnAction(): void {
     if (!this.tracksStates.every((obj, i, arr) => obj.solo === arr[0].solo)) {
       for (let i = 0; i < this.tracksStates.length; i++) {
         if (this.tracksStates[i].solo === false)
@@ -388,7 +424,9 @@ export default class Machine extends Vue {
     }
 
     this.readSoundsDirectory(this.currentKit.directory);
-    this.setDefaultPattern(false);
+
+    this.updatePattern(false);
+    this.updateTracksStates(false);
   }
 
   public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
