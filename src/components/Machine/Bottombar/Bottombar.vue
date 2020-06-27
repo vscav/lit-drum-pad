@@ -1,37 +1,47 @@
 <template>
   <div class="bottom-bar">
     <div class="controls">
-      <machine-button :pressed="playing" @click="pausePlay"
+      <!-- <machine-button :pressed="playing" @click="pausePlay"
         >Play</machine-button
-      >
-      <circle-slider
-        v-model="speed"
-        :min="0"
-        :max="220"
-        :step-size="1"
-        :side="60"
-        :circle-width-rel="30"
-        :progress-width-rel="15"
-        :knob-radius-rel="8"
-        circle-color="#383838"
-        progress-color="#1adecb"
-        knob-color="#1adecb"
-      ></circle-slider>
-      <div>{{ tempo }} bpm</div>
-      <circle-slider
-        v-model="volume"
-        :min="-80"
-        :max="0"
-        :step-size="1"
-        :side="60"
-        :circle-width-rel="30"
-        :progress-width-rel="15"
-        :knob-radius-rel="8"
-        circle-color="#383838"
-        progress-color="#1adecb"
-        knob-color="#1adecb"
-      ></circle-slider>
-      <div>{{ dbfs }} db</div>
+      > -->
+      <VButton
+        @clicked="pausePlay"
+        :icon="playing ? 'stop' : 'play'"
+        large
+        primary
+      />
+      <div class="slider">
+        <circle-slider
+          v-model="speed"
+          :min="0"
+          :max="220"
+          :step-size="1"
+          :side="60"
+          :circle-width-rel="30"
+          :progress-width-rel="15"
+          :knob-radius-rel="8"
+          circle-color="#383838"
+          progress-color="#1adecb"
+          knob-color="#1adecb"
+        ></circle-slider>
+        <div>{{ tempo }}</div>
+      </div>
+      <div class="slider">
+        <circle-slider
+          v-model="volume"
+          :min="-80"
+          :max="0"
+          :step-size="1"
+          :side="60"
+          :circle-width-rel="30"
+          :progress-width-rel="15"
+          :knob-radius-rel="8"
+          circle-color="#383838"
+          progress-color="#1adecb"
+          knob-color="#1adecb"
+        ></circle-slider>
+        <div>{{ dbfs }}</div>
+      </div>
       <switch-button v-model="muteMaster" :checked="mute"
         >Mute all</switch-button
       >
@@ -42,6 +52,7 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
+import VButton from "@/components/Machine/VButton/VButton.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
 
@@ -49,6 +60,7 @@ import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
   components: {
     MachineButton,
     SwitchButton,
+    VButton,
   },
 })
 export default class Bottombar extends Vue {
@@ -111,6 +123,21 @@ export default class Bottombar extends Vue {
 
     > :not(:first-child) {
       margin-left: 25px;
+    }
+
+    .slider {
+      position: relative;
+
+      > div:first-child {
+        display: flex;
+        align-items: center;
+      }
+      > div:last-child {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
     }
   }
 }

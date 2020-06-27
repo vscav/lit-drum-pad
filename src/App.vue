@@ -17,6 +17,13 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
+$black: #131313;
+$dark-grey: #222222;
+$grey: #2e2e2e;
+$light-grey: #383838;
+$green: #1adecb;
+$light-green: #20ffe9;
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -27,7 +34,7 @@ export default class App extends Vue {}
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #2c3e50;
+    color: #fff;
   }
 }
 </style>

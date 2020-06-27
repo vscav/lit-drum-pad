@@ -6,15 +6,6 @@
       @clear-steps="clearSteps"
       @load="loadKit"
     />
-    <!-- <div>
-      <machine-button
-        v-for="(kit, i) in drumsKits"
-        :key="i"
-        :pressed="currentKit.name === kit"
-        @click="loadKit(kit)"
-        >{{ kit }}</machine-button
-      >
-    </div> -->
     <div class="board">
       <div class="row dark-grey">
         <led

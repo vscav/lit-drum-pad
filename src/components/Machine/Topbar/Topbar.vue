@@ -9,15 +9,18 @@
         :options="options"
         @interface="load"
       />
-      <VButton @clicked="randomize" icon="play" small>
+      <VButton @clicked="randomize" icon="random" small secondary>
         Random
       </VButton>
-      <VButton @clicked="clearSteps" icon="clear" small>
+      <VButton @clicked="clearSteps" icon="clear" small secondary>
         Clear
       </VButton>
-      <VButton @clicked="restart" icon="restart" small>
+      <VButton @clicked="restart" icon="restart" small secondary>
         Restart
       </VButton>
+      <!-- <VButton @clicked="modal" icon="about" small secondary>
+        About
+      </VButton> -->
     </div>
   </div>
 </template>

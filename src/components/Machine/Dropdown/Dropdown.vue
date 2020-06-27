@@ -16,7 +16,7 @@
       <div
         class="dropdown-options-container"
         v-show="showDropdown"
-        :style="{ height: 38 * numberOfOptions + 'px' }"
+        :style="{ height: 39 * numberOfOptions + 'px' }"
       >
         <div
           class="dropdown-options"

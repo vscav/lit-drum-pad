@@ -3,7 +3,6 @@
     @click="click"
     :class="[
       {
-        active: pressed || tempPressed,
         primary: primary,
         secondary: secondary,
         'btn-small': small,
@@ -38,12 +37,6 @@ export default class VButton extends Vue {
   private tempPressed = false;
 
   public click(): void {
-    if (!this.pressed) {
-      this.tempPressed = true;
-      setTimeout(() => {
-        this.tempPressed = false;
-      }, 200);
-    }
     this.$emit("clicked");
   }
 }
@@ -61,10 +54,6 @@ export default class VButton extends Vue {
   background: transparent;
 }
 
-.btn:active {
-  outline: none;
-}
-
 .btn::before {
   top: 50%;
   transform: translate(0, -50%);
@@ -76,33 +65,58 @@ export default class VButton extends Vue {
   background-position: center;
   left: 0;
   border-radius: 50%;
-  background-color: #2e2e2e;
-  background-size: 50%;
   -webkit-transition: background-color 0.25s ease-out;
   -moz-transition: background-color 0.25s ease-out;
   -o-transition: background-color 0.25s ease-out;
   transition: background-color 0.25s ease-out;
 }
+
+.primary:before {
+  background-color: #1adecb;
+}
+.secondary::before {
+  background-color: #2e2e2e;
+}
+.primary:hover:before {
+  background-color: #20ffe9;
+}
+.secondary:hover:before {
+  background-color: #383838;
+}
+
 .btn-small {
   padding-left: 40px;
 }
 .btn-small::before {
   width: 30px;
   height: 30px;
+  background-size: 50%;
 }
 .btn-large {
   padding-left: 60px;
 }
 .btn-large::before {
-  width: 50px;
-  height: 50px;
+  width: 60px;
+  height: 60px;
+  background-size: 30%;
 }
 
 .icon-play::before {
+  background-image: url(../../../assets/icons/icon-play.svg);
+}
+.icon-stop::before {
+  background-image: url(../../../assets/icons/icon-stop.svg);
+}
+.icon-random::before {
+  background-image: url(../../../assets/icons/icon-random-small.svg);
+}
+.icon-clear::before {
+  background-image: url(../../../assets/icons/icon-clear-small.svg);
+}
+.icon-restart::before {
   background-image: url(../../../assets/icons/icon-restart-small.svg);
 }
-
-.btn:hover:before {
-  background-color: #383838;
+.icon-about::before {
+  background-image: url(../../../assets/icons/icon-about-small.svg);
 }
 </style>
