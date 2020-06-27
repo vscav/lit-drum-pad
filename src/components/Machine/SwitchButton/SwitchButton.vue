@@ -41,16 +41,18 @@ export default class SwitchButton extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_variables.scss";
+
 label.switch {
   input[type="checkbox"] {
     display: none;
     &:checked {
       + span {
         &:before {
-          background-color: rgba(#1adecb, 0.5);
+          background-color: rgba($green, 0.5);
         }
         &:after {
-          background-color: #1adecb;
+          background-color: $green;
           transform: translate(80%, -50%);
         }
       }
@@ -79,14 +81,14 @@ label.switch {
         left: 1px;
         width: 34px;
         height: 14px;
-        background-color: #383838;
+        background-color: $light-grey;
         border-radius: 8px;
       }
       &:after {
         left: 0;
         width: 20px;
         height: 20px;
-        background-color: #535353;
+        background-color: $grey;
         border-radius: 50%;
         box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14),
           0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);

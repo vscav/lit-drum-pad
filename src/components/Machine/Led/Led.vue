@@ -13,6 +13,8 @@ export default class Led extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_variables.scss";
+
 .led {
   text-align: center;
   height: auto;
@@ -25,14 +27,14 @@ export default class Led extends Vue {
     width: 10px;
     height: 10px;
     border-radius: 10px;
-    background-color: #bbb;
+    background-color: $light-grey;
     box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.1);
   }
 
   &.lit {
     &:before {
-      background-color: #1adecb;
-      box-shadow: 0px 0px 7px 0px #1adecb;
+      background-color: $green;
+      box-shadow: 0px 0px 7px 0px $green;
     }
   }
 }

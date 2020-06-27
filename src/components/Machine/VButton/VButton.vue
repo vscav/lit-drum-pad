@@ -42,7 +42,9 @@ export default class VButton extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import "@/scss/_variables.scss";
+
 .btn {
   letter-spacing: 0.1ex;
   color: #fff;
@@ -72,16 +74,16 @@ export default class VButton extends Vue {
 }
 
 .primary:before {
-  background-color: #1adecb;
+  background-color: $green;
 }
 .secondary::before {
-  background-color: #2e2e2e;
+  background-color: $grey;
 }
 .primary:hover:before {
-  background-color: #20ffe9;
+  background-color: $light-green;
 }
 .secondary:hover:before {
-  background-color: #383838;
+  background-color: $light-grey;
 }
 
 .btn-small {

@@ -46,7 +46,6 @@ export default class MachineButton extends Vue {
   font-size: 13px;
   line-height: 32px;
   padding: 0px 10px;
-  color: #666;
 
   &.active {
     border-bottom-width: 1px;

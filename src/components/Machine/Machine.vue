@@ -194,6 +194,7 @@ export default class Machine extends Vue {
   }
 
   public restart(): void {
+    if (audioContext.state === "running") audioContext.suspend();
     this.$emit("restart");
   }
 
@@ -515,6 +516,8 @@ export default class Machine extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_variables.scss";
+
 .board {
   width: 100%;
   margin-top: 60px;
@@ -532,11 +535,11 @@ export default class Machine extends Vue {
     line-height: 30px;
 
     &.dark-grey {
-      background: #222222;
+      background: $dark-grey;
     }
 
     &.grey {
-      background: #2e2e2e;
+      background: $grey;
     }
   }
 

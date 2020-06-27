@@ -98,7 +98,9 @@ export default class Bottombar extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import "@/scss/_variables.scss";
+
 .bottom-bar {
   position: fixed;
   bottom: 0;
@@ -112,7 +114,7 @@ export default class Bottombar extends Vue {
   height: 90px;
   padding: 10px 5%;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
-  background: #131313;
+  background: $black;
   color: #fff;
 
   .controls {

@@ -76,11 +76,13 @@ export default class VDropdown extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import "@/scss/_variables.scss";
+
 .vue-select {
   position: relative;
   width: 180px;
-  background-color: #2e2e2e;
+  background-color: $grey;
   display: inline-block;
   cursor: pointer;
   user-select: none;
@@ -102,7 +104,7 @@ export default class VDropdown extends Vue {
     border-radius: 4px;
 
     &:hover {
-      background-color: #383838;
+      background-color: $light-grey;
     }
 
     svg {
@@ -145,7 +147,7 @@ export default class VDropdown extends Vue {
 
     .dropdown-options {
       &.selected .dropdown-options--cell {
-        background-color: #383838;
+        background-color: $light-grey;
         border: none;
       }
     }

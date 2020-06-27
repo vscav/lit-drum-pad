@@ -63,7 +63,9 @@ export default class Topbar extends Vue {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import "@/scss/_variables.scss";
+
 .top-bar {
   position: fixed;
   top: 0;
@@ -77,7 +79,7 @@ export default class Topbar extends Vue {
   height: 60px;
   padding: 10px 5%;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
-  background: #131313;
+  background: $black;
 
   .title {
     margin-right: auto;
