@@ -80,13 +80,13 @@ export default class VDropdown extends Vue {
 .vue-select {
   position: relative;
   width: 180px;
-  background-color: #fff;
+  background-color: #2e2e2e;
   display: inline-block;
   cursor: pointer;
   user-select: none;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.06);
   border-radius: 4px;
-  color: rgba(41, 73, 255, 0.75);
+  color: #fff;
   font-size: 14px;
   transition: all 200ms linear;
 
@@ -99,17 +99,14 @@ export default class VDropdown extends Vue {
     box-sizing: border-box;
     transition: all 200ms linear;
     padding: 10px;
+    border-radius: 4px;
 
     &:hover {
-      color: rgba(41, 73, 255, 0.4);
-    }
-
-    &:hover svg {
-      fill: rgba(41, 73, 255, 0.4);
+      background-color: #383838;
     }
 
     svg {
-      fill: rgba(41, 73, 255, 0.75);
+      fill: #fff;
       position: absolute;
       right: 8px;
       top: 50%;
@@ -141,14 +138,14 @@ export default class VDropdown extends Vue {
       padding: 10px;
 
       &:hover {
-        background-color: rgba(41, 73, 255, 0.04);
+        background-color: #383838;
         border: none;
       }
     }
 
     .dropdown-options {
       &.selected .dropdown-options--cell {
-        background-color: rgba(41, 73, 255, 0.04);
+        background-color: #383838;
         border: none;
       }
     }

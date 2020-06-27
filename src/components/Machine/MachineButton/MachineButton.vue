@@ -2,7 +2,7 @@
   <span
     class="button"
     :class="{ active: pressed || tempPressed }"
-    @click="clickAction"
+    @click="click"
   >
     <slot></slot>
   </span>
@@ -18,7 +18,7 @@ export default class MachineButton extends Vue {
 
   private tempPressed = false;
 
-  public clickAction(): void {
+  public click(): void {
     if (!this.pressed) {
       this.tempPressed = true;
       setTimeout(() => {

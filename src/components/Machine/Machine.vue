@@ -16,14 +16,14 @@
       >
     </div> -->
     <div class="board">
-      <div class="row">
+      <div class="row dark-grey">
         <led
           v-for="(step, i) in stepCount"
           :key="`stepCount-${i}`"
           :active="i == currentStep"
         ></led>
       </div>
-      <div v-for="(drum, i) in drums" :key="i" class="row">
+      <div v-for="(drum, i) in drums" :key="i" class="row grey">
         <step-button
           v-for="(step, j) in stepCount"
           :key="`drumCount-${j}`"
@@ -533,6 +533,14 @@ export default class Machine extends Vue {
     flex-flow: row;
     justify-content: space-around;
     line-height: 30px;
+
+    &.dark-grey {
+      background: #222222;
+    }
+
+    &.grey {
+      background: #2e2e2e;
+    }
   }
 
   .options {

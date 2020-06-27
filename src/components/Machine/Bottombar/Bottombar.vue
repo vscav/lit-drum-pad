@@ -13,11 +13,11 @@
         :circle-width-rel="30"
         :progress-width-rel="15"
         :knob-radius-rel="8"
-        circle-color="#666"
+        circle-color="#383838"
         progress-color="#1adecb"
         knob-color="#1adecb"
       ></circle-slider>
-      <div>{{ tempo }}</div>
+      <div>{{ tempo }} bpm</div>
       <circle-slider
         v-model="volume"
         :min="-80"
@@ -27,7 +27,7 @@
         :circle-width-rel="30"
         :progress-width-rel="15"
         :knob-radius-rel="8"
-        circle-color="#666"
+        circle-color="#383838"
         progress-color="#1adecb"
         knob-color="#1adecb"
       ></circle-slider>

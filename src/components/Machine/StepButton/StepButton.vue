@@ -32,7 +32,7 @@ export default class StepButton extends Vue {
 
 <style lang="scss">
 .stepbutton {
-  border: 1px solid rgba(41, 73, 255, 0.1);
+  border: 1px solid rgba(#e6e6e6, 0.1);
   text-align: center;
   flex: 1 0 auto;
   height: auto;
@@ -44,14 +44,14 @@ export default class StepButton extends Vue {
   }
 
   &:nth-child(4n) {
-    border-right: 1px solid #bc84fb;
+    border-right: 1px solid #e6e6e6;
   }
   &:nth-child(4n + 1) {
-    border-left: 1px solid #bc84fb;
+    border-left: 1px solid #e6e6e6;
   }
 
   &.active {
-    background-color: #575e63;
+    background-color: #bc85fb;
   }
 }
 </style>

@@ -3,7 +3,6 @@
     <input
       type="checkbox"
       :checked="checked"
-      :name="name"
       :disabled="disabled"
       v-model="value"
     />
@@ -11,33 +10,34 @@
   </label>
 </template>
 
-<script>
-export default {
-  props: {
-    disabled: Boolean,
-    checked: Boolean,
-    name: String,
-  },
-  data() {
-    return {
-      value: null,
-    };
-  },
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+@Component
+export default class SwitchButton extends Vue {
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly disabled!: boolean;
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly checked!: boolean;
+
+  private value: boolean = this.checked;
+
   beforeMount() {
     this.value = this.checked;
-  },
+  }
   mounted() {
     this.$emit("input", this.value);
-  },
-  watch: {
-    value(val) {
-      this.$emit("input", val);
-    },
-    checked(val) {
-      this.value = val;
-    },
-  },
-};
+  }
+
+  @Watch("value")
+  valueChanged(newVal) {
+    this.$emit("input", newVal);
+  }
+  @Watch("checked")
+  checkStateChanged(newVal) {
+    this.value = newVal;
+  }
+}
 </script>
 
 <style lang="scss">
