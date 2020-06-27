@@ -1,10 +1,7 @@
 <template>
   <div class="bottom-bar">
     <div class="controls">
-      <!-- <machine-button :pressed="playing" @click="pausePlay"
-        >Play</machine-button
-      > -->
-      <VButton
+      <machine-button
         @clicked="pausePlay"
         :icon="playing ? 'stop' : 'play'"
         large
@@ -52,7 +49,6 @@
 <script lang="ts">
 import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
-import VButton from "@/components/Machine/VButton/VButton.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
 
@@ -60,7 +56,6 @@ import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
   components: {
     MachineButton,
     SwitchButton,
-    VButton,
   },
 })
 export default class Bottombar extends Vue {

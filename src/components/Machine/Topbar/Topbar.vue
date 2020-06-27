@@ -9,18 +9,18 @@
         :options="options"
         @interface="load"
       />
-      <VButton @clicked="randomize" icon="random" small secondary>
+      <machine-button @clicked="randomize" icon="random" small secondary>
         Random
-      </VButton>
-      <VButton @clicked="clearSteps" icon="clear" small secondary>
+      </machine-button>
+      <machine-button @clicked="clearSteps" icon="clear" small secondary>
         Clear
-      </VButton>
-      <VButton @clicked="restart" icon="restart" small secondary>
+      </machine-button>
+      <machine-button @clicked="restart" icon="restart" small secondary>
         Restart
-      </VButton>
-      <!-- <VButton @clicked="modal" icon="about" small secondary>
+      </machine-button>
+      <!-- <machine-button @clicked="modal" icon="about" small secondary>
         About
-      </VButton> -->
+      </machine-button> -->
     </div>
   </div>
 </template>
@@ -30,7 +30,6 @@ import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
 import Dropdown from "@/components/Machine/Dropdown/Dropdown.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
-import VButton from "@/components/Machine/VButton/VButton.vue";
 
 import { KitObject } from "@/types";
 
@@ -38,7 +37,6 @@ import { KitObject } from "@/types";
   components: {
     Dropdown,
     MachineButton,
-    VButton,
   },
 })
 export default class Topbar extends Vue {

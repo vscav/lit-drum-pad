@@ -1,56 +1,124 @@
 <template>
-  <span
-    class="button"
-    :class="{ active: pressed || tempPressed }"
+  <button
     @click="click"
+    :class="[
+      {
+        primary: primary,
+        secondary: secondary,
+        'btn-small': small,
+        'btn-large': large,
+      },
+      icon ? 'icon-' + icon : '',
+    ]"
+    class="btn"
   >
-    <slot></slot>
-  </span>
+    <slot />
+  </button>
 </template>
 
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
-export default class MachineButton extends Vue {
+export default class VButton extends Vue {
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly primary!: boolean;
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly secondary!: boolean;
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly small!: boolean;
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly large!: boolean;
   @Prop({ required: false, type: Boolean, default: false })
   readonly pressed!: boolean;
+  @Prop({ required: false, type: String, default: false })
+  readonly icon!: string;
 
   private tempPressed = false;
 
   public click(): void {
-    if (!this.pressed) {
-      this.tempPressed = true;
-      setTimeout(() => {
-        this.tempPressed = false;
-      }, 200);
-    }
-    this.$emit("click");
+    this.$emit("clicked");
   }
 }
 </script>
 
 <style lang="scss">
-.button {
-  display: inline-block;
-  height: 32px;
-  border-radius: 7px;
-  border: 0px solid rgba(0, 0, 0, 0.5);
-  border-width: 0px 1px 4px 1px;
-  box-shadow: 0px 5px 1px 1px rgba(0, 0, 0, 0.3),
-    inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
-  background: #fff;
-  cursor: pointer;
-  margin: 5px;
-  transition: all 0.1s ease-in-out;
-  font-size: 13px;
-  line-height: 32px;
-  padding: 0px 10px;
+@import "@/scss/_variables.scss";
 
-  &.active {
-    border-bottom-width: 1px;
-    box-shadow: 0px 1px 0px 1px rgba(0, 0, 0, 0.3),
-      inset 0px 0px 0px 3px rgba(0, 0, 0, 0.1);
-  }
+.btn {
+  letter-spacing: 0.1ex;
+  color: #fff;
+  border: none;
+  outline: none;
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  background: transparent;
+}
+
+.btn::before {
+  top: 50%;
+  transform: translate(0, -50%);
+  position: absolute;
+  display: block;
+  content: "\a";
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  left: 0;
+  border-radius: 50%;
+  -webkit-transition: background-color 0.25s ease-out;
+  -moz-transition: background-color 0.25s ease-out;
+  -o-transition: background-color 0.25s ease-out;
+  transition: background-color 0.25s ease-out;
+}
+
+.primary:before {
+  background-color: $green;
+}
+.secondary::before {
+  background-color: $grey;
+}
+.primary:hover:before {
+  background-color: $light-green;
+}
+.secondary:hover:before {
+  background-color: $light-grey;
+}
+
+.btn-small {
+  padding-left: 40px;
+}
+.btn-small::before {
+  width: 30px;
+  height: 30px;
+  background-size: 50%;
+}
+.btn-large {
+  padding-left: 60px;
+}
+.btn-large::before {
+  width: 60px;
+  height: 60px;
+  background-size: 30%;
+}
+
+.icon-play::before {
+  background-image: url(../../../assets/icons/icon-play.svg);
+}
+.icon-stop::before {
+  background-image: url(../../../assets/icons/icon-stop.svg);
+}
+.icon-random::before {
+  background-image: url(../../../assets/icons/icon-random-small.svg);
+}
+.icon-clear::before {
+  background-image: url(../../../assets/icons/icon-clear-small.svg);
+}
+.icon-restart::before {
+  background-image: url(../../../assets/icons/icon-restart-small.svg);
+}
+.icon-about::before {
+  background-image: url(../../../assets/icons/icon-about-small.svg);
 }
 </style>
