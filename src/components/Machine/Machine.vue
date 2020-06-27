@@ -5,6 +5,7 @@
       @randomize="randomize"
       @clear-steps="clearSteps"
       @load="loadKit"
+      @restart="restart"
     />
     <div class="board">
       <div class="row dark-grey">
@@ -90,6 +91,7 @@ const bufferSize = 2 * audioContext.sampleRate;
   },
 })
 export default class Machine extends Vue {
+  private componentKey = 0;
   private playing = false;
   private tempo = 105;
   private dbfs = -3;
@@ -189,6 +191,10 @@ export default class Machine extends Vue {
       });
       return count;
     } else return -1;
+  }
+
+  public restart(): void {
+    this.$emit("restart");
   }
 
   public setDefaultPattern(state: boolean): void {

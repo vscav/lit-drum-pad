@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Machine />
+    <Machine :key="containerKey" @restart="rerender" />
   </div>
 </template>
 
@@ -13,7 +13,13 @@ import Machine from "@/components/Machine/Machine.vue";
     Machine,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  private containerKey = 0;
+
+  public rerender() {
+    this.containerKey++;
+  }
+}
 </script>
 
 <style lang="scss">
