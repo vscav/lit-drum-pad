@@ -22,6 +22,7 @@
           :file="drum.fileName"
           :value="pattern[i][j].active"
           :highlight="currentStep == j"
+          :row="i"
           @click="(val) => (pattern[i][j].active = val)"
           @mouse-enter="playSound"
         ></step-button>
@@ -539,7 +540,7 @@ export default class Machine extends Vue {
     }
 
     &.grey {
-      background: $grey;
+      background: $light-grey;
     }
   }
 

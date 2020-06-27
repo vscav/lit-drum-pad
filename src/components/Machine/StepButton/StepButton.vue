@@ -1,7 +1,10 @@
 <template>
   <span
     class="stepbutton"
-    :class="{ active: value, highlight: highlight }"
+    :class="[
+      { highlight: highlight },
+      value ? 'active' + ((this.row % 9) + 1) : '',
+    ]"
     @click="changeState"
     @mouseenter="playSound"
   >
@@ -19,6 +22,12 @@ export default class StepButton extends Vue {
   readonly highlight!: boolean;
   @Prop({ required: true, type: String })
   readonly file!: string;
+  @Prop({ required: true, type: Number })
+  readonly row!: number;
+
+  created() {
+    if (this.row === 9) console.log((this.row % 8) + 1);
+  }
 
   public changeState(): void {
     this.$emit("click", !this.value);
@@ -34,7 +43,7 @@ export default class StepButton extends Vue {
 @import "@/scss/_variables.scss";
 
 .stepbutton {
-  border: 1px solid rgba(#e6e6e6, 0.1);
+  border: 1px solid rgba($lighter-grey, 0.1);
   text-align: center;
   flex: 1 0 auto;
   height: auto;
@@ -46,14 +55,70 @@ export default class StepButton extends Vue {
   }
 
   &:nth-child(4n) {
-    border-right: 1px solid #e6e6e6;
+    border-right: 1px solid $lighter-grey;
   }
   &:nth-child(4n + 1) {
-    border-left: 1px solid #e6e6e6;
+    border-left: 1px solid $lighter-grey;
   }
 
-  &.active {
-    background-color: #bc85fb;
+  &.highlight {
+    background-color: $grey;
+
+    &.active1 {
+      background-color: $green;
+    }
+    &.active2 {
+      background-color: $darker-orange;
+    }
+    &.active3 {
+      background-color: $orange;
+    }
+    &.active4 {
+      background-color: $yellow;
+    }
+    &.active5 {
+      background-color: $blue;
+    }
+    &.active6 {
+      background-color: $coral;
+    }
+    &.active7 {
+      background-color: $red;
+    }
+    &.active8 {
+      background-color: $purple;
+    }
+    &.active9 {
+      background-color: $pink;
+    }
+  }
+
+  &.active1 {
+    background-color: $light-green;
+  }
+  &.active2 {
+    background-color: $dark-orange;
+  }
+  &.active3 {
+    background-color: $light-orange;
+  }
+  &.active4 {
+    background-color: $light-yellow;
+  }
+  &.active5 {
+    background-color: $light-blue;
+  }
+  &.active6 {
+    background-color: $light-coral;
+  }
+  &.active7 {
+    background-color: $light-red;
+  }
+  &.active8 {
+    background-color: $light-purple;
+  }
+  &.active9 {
+    background-color: $light-pink;
   }
 }
 </style>
