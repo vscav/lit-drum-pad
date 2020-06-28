@@ -15,9 +15,9 @@
       <machine-button @clicked="clearSteps" icon="clear" small secondary>
         Clear
       </machine-button>
-      <machine-button @clicked="restart" icon="restart" small secondary>
+      <!-- <machine-button @clicked="restart" icon="restart" small secondary>
         Restart
-      </machine-button>
+      </machine-button> -->
       <!-- <machine-button @clicked="modal" icon="about" small secondary>
         About
       </machine-button> -->

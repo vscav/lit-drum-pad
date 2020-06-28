@@ -43,10 +43,7 @@
           progress-color="#3fc1d3"
           knob-color="#3fc1d3"
         ></circle-slider>
-        <!-- <div>{{ tracksStates[i].volume }} db</div> -->
         <div class="track-states">
-          <!-- <machine-button @click="muteTrack(i)">M</machine-button>
-          <machine-button @click="soloTrack(i)">S</machine-button> -->
           <switch-button
             v-model="tracksStates[i].mute"
             :checked="tracksStates[i].mute"
@@ -55,7 +52,6 @@
           <switch-button
             v-model="tracksStates[i].solo"
             :checked="tracksStates[i].solo"
-            @clicked="soloTrack(i)"
             >S</switch-button
           >
         </div>
@@ -75,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 
 import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
 
@@ -128,6 +124,7 @@ export default class Machine extends Vue {
     directory: "metro-boomin",
   };
   private tracksStates: Array<TrackStateObject> = [];
+  private previousTracksStates: Array<TrackStateObject> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
   private mouseIsPressed = false;
 
@@ -139,6 +136,8 @@ export default class Machine extends Vue {
     this.readSoundsDirectory(this.currentKit.directory);
     this.setDefaultTracksStates(false, false, this.dbfs);
     this.setDefaultPattern(false);
+
+    this.previousTracksStates = JSON.parse(JSON.stringify(this.tracksStates));
 
     // TEST (metro-boomin kit)
     this.pattern[0][0].active = true;
@@ -191,6 +190,21 @@ export default class Machine extends Vue {
         console.error(reason);
       }
     );
+  }
+
+  @Watch("tracksStates", { deep: true })
+  public tracksStatesChanged(after) {
+    after.filter((p, index) => {
+      Object.keys(p).some((prop) => {
+        if (
+          prop === "solo" &&
+          p[prop] !== this.previousTracksStates[index][prop]
+        ) {
+          this.soloTrack(index);
+        }
+      });
+    });
+    this.previousTracksStates = JSON.parse(JSON.stringify(after));
   }
 
   get drumsCount(): number {
@@ -284,18 +298,10 @@ export default class Machine extends Vue {
     }
   }
 
-  public muteTrack(index: number): void {
-    this.tracksStates[index].mute = !this.tracksStates[index].mute;
-
-    const mutedTracks = this.mutedTracks;
-    if (this.mutedTracks !== this.drumsCount) this.mute = false;
-  }
-
   public soloTrack(index: number): void {
-    this.tracksStates[index].solo = !this.tracksStates[index].solo;
-
-    if (this.tracksStates[index].mute === true)
+    if (this.tracksStates[index].mute === true) {
       this.tracksStates[index].mute = false;
+    }
 
     this.updateTracksStatesOnAction();
   }
@@ -353,6 +359,7 @@ export default class Machine extends Vue {
         this.tracksStates.pop();
       }
     }
+    this.previousTracksStates = JSON.parse(JSON.stringify(this.tracksStates));
   }
 
   public updateTracksStatesOnAction(): void {
@@ -549,7 +556,6 @@ export default class Machine extends Vue {
     height: 0px;
   }
   &::-webkit-scrollbar-track {
-    //background: $dark-grey;
     background: transparent;
   }
   &::-webkit-scrollbar-thumb {
@@ -585,6 +591,7 @@ export default class Machine extends Vue {
     }
   }
 }
+
 .board {
   height: calc(100vh - (90px + 60px));
   margin-top: 60px;
@@ -622,14 +629,6 @@ export default class Machine extends Vue {
     &.grey {
       background: $light-grey;
     }
-  }
-
-  .options {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin: 5px;
   }
 }
 </style>
