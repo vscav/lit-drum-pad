@@ -1,11 +1,9 @@
 # TODO
 
-- [x] Circle slider component
-- [x] Select component
-- [x] Global gain (all tracks)
-- [x] Gain by track
+- [ ] Use Vue Literal Compiler
 - [ ] Sort drums (one or two by type)
 - [ ] Presets by artist/kit [optional]
 - [ ] Style (UI/UX)
   - [x] Scrollable board
-- [ ] Refactor code
+  - [ ] Semi-responsive (Top-bar)
+- [ ] Refactor code (Priority : Machine container)
