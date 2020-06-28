@@ -69,6 +69,7 @@ export default class VDropdown extends Vue {
 
   @Emit("interface")
   public selectOption(option: string): void {
+    this.active = !this.active;
     this.selected = option;
     this.currentPlaceholder = option;
     this.$emit("interface", this.selected);
