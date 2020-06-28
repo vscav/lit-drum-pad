@@ -26,28 +26,39 @@
           @click="(val) => (pattern[i][j].active = val)"
           @mouse-enter="playSound"
         ></step-button>
-        <!-- <div class="options">
-          <circle-slider
-            v-model="tracksStates[i].volume"
-            :min="-80"
-            :max="0"
-            :step-size="1"
-            :side="35"
-            :circle-width-rel="30"
-            :progress-width-rel="15"
-            :knob-radius-rel="8"
-            circle-color="#cecece"
-            progress-color="#575e63"
-            knob-color="#575e63"
-          ></circle-slider>
-          <div>{{ tracksStates[i].volume }} db</div>
-          <machine-button :pressed="tracksStates[i].mute" @click="muteTrack(i)"
-            >M</machine-button
+      </div>
+    </div>
+    <div class="mix-table">
+      <div class="track" v-for="(drum, i) in drums" :key="i">
+        <circle-slider
+          v-model="tracksStates[i].volume"
+          :min="-80"
+          :max="0"
+          :step-size="1"
+          :side="35"
+          :circle-width-rel="30"
+          :progress-width-rel="15"
+          :knob-radius-rel="8"
+          circle-color="#383838"
+          progress-color="#3fc1d3"
+          knob-color="#3fc1d3"
+        ></circle-slider>
+        <!-- <div>{{ tracksStates[i].volume }} db</div> -->
+        <div class="track-states">
+          <!-- <machine-button @click="muteTrack(i)">M</machine-button>
+          <machine-button @click="soloTrack(i)">S</machine-button> -->
+          <switch-button
+            v-model="tracksStates[i].mute"
+            :checked="tracksStates[i].mute"
+            >M</switch-button
           >
-          <machine-button :pressed="tracksStates[i].solo" @click="soloTrack(i)"
-            >S</machine-button
+          <switch-button
+            v-model="tracksStates[i].solo"
+            :checked="tracksStates[i].solo"
+            @clicked="soloTrack(i)"
+            >S</switch-button
           >
-        </div> -->
+        </div>
       </div>
     </div>
     <bottombar
@@ -72,6 +83,7 @@ import Bottombar from "@/components/Machine/Bottombar/Bottombar.vue";
 import Led from "@/components/Machine/Led/Led.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
+import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
 import Topbar from "@/components/Machine/Topbar/Topbar.vue";
 
 import { KitObject, TrackStateObject } from "@/types";
@@ -88,6 +100,7 @@ const bufferSize = 2 * audioContext.sampleRate;
     Led,
     MachineButton,
     StepButton,
+    SwitchButton,
     Topbar,
   },
 })
@@ -519,12 +532,65 @@ export default class Machine extends Vue {
 
 <style lang="scss">
 @import "@/scss/_colors.scss";
+.mix-table {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  height: calc(100vh - (90px + 60px));
+  width: 200px;
+  position: fixed;
+  background: $dark-grey;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
 
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+  }
+  &::-webkit-scrollbar-track {
+    //background: $dark-grey;
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $green;
+    border-radius: 25px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+  }
+
+  .track {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    padding: 10px;
+
+    &:first-child {
+      margin-top: 22px;
+    }
+
+    > :first-child {
+      height: 50px;
+    }
+
+    > div {
+      display: flex;
+      align-items: center;
+    }
+
+    .track-states {
+      > :not(:first-child) {
+        margin-left: 10px;
+      }
+    }
+  }
+}
 .board {
   height: calc(100vh - (90px + 60px));
   margin-top: 60px;
   margin-bottom: 90px;
-  overflow-y: scroll;
+  margin-right: 200px;
+  overflow: scroll;
 
   &::-webkit-scrollbar {
     width: 5px;
