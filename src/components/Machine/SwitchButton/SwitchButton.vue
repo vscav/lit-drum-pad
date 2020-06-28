@@ -70,7 +70,6 @@ label.switch {
       text-align: left;
       margin: 0px;
       padding: 0 0 0 44px;
-      color: #fff;
       &:before,
       &:after {
         content: "";
@@ -88,6 +87,9 @@ label.switch {
         height: 14px;
         background-color: $light-grey;
         border-radius: 8px;
+        box-shadow: inset 0 3px 1px -2px rgba(0, 0, 0, 0.15),
+          inset 0 2px 2px 0 rgba(0, 0, 0, 0.2),
+          inset 0 1px 5px 0 rgba(0, 0, 0, 0.085);
       }
       &:after {
         left: 0;
@@ -95,8 +97,8 @@ label.switch {
         height: 20px;
         background-color: $grey;
         border-radius: 50%;
-        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.14),
-          0 2px 2px 0 rgba(0, 0, 0, 0.098), 0 1px 5px 0 rgba(0, 0, 0, 0.084);
+        box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.15),
+          0 2px 2px 0 rgba(0, 0, 0, 0.01), 0 1px 5px 0 rgba(0, 0, 0, 0.085);
       }
     }
     &:checked + span &:after {

@@ -17,7 +17,7 @@
           :circle-width-rel="30"
           :progress-width-rel="15"
           :knob-radius-rel="8"
-          circle-color="#383838"
+          circle-color="#213354"
           progress-color="#3fc1d3"
           knob-color="#3fc1d3"
         ></circle-slider>
@@ -33,7 +33,7 @@
           :circle-width-rel="30"
           :progress-width-rel="15"
           :knob-radius-rel="8"
-          circle-color="#383838"
+          circle-color="#213354"
           progress-color="#3fc1d3"
           knob-color="#3fc1d3"
         ></circle-slider>
@@ -110,7 +110,6 @@ export default class Bottombar extends Vue {
   padding: 10px 5%;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
   background: $black;
-  color: #fff;
 
   .controls {
     display: flex;

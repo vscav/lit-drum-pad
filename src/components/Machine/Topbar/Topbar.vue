@@ -76,7 +76,7 @@ export default class Topbar extends Vue {
   width: 100%;
   height: 60px;
   padding: 10px 5%;
-  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
   background: $black;
 
   .title {
@@ -86,7 +86,6 @@ export default class Topbar extends Vue {
     font-weight: 700;
     font-size: 20px;
     letter-spacing: 2px;
-    color: #fff;
   }
 
   .controls {

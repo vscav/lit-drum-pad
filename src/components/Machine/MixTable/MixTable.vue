@@ -10,7 +10,7 @@
         :circle-width-rel="30"
         :progress-width-rel="15"
         :knob-radius-rel="8"
-        circle-color="#383838"
+        circle-color="#213354"
         progress-color="#3fc1d3"
         knob-color="#3fc1d3"
       ></circle-slider>
@@ -75,7 +75,8 @@ export default class MixTable extends Vue {
   &::-webkit-scrollbar-thumb {
     background: $green;
     border-radius: 25px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.15),
+      0 2px 2px 0 rgba(0, 0, 0, 0.01), 0 1px 5px 0 rgba(0, 0, 0, 0.085);
   }
 
   .track {

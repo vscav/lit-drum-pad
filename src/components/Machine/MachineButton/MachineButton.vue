@@ -47,13 +47,13 @@ export default class VButton extends Vue {
 
 .btn {
   letter-spacing: 0.1ex;
-  color: #fff;
   border: none;
   outline: none;
   position: relative;
   display: inline-block;
   cursor: pointer;
   background: transparent;
+  color: $white;
 
   &::before {
     top: 50%;
@@ -70,6 +70,8 @@ export default class VButton extends Vue {
     -moz-transition: background-color 0.25s ease-out;
     -o-transition: background-color 0.25s ease-out;
     transition: background-color 0.25s ease-out;
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.15),
+      0 2px 2px 0 rgba(0, 0, 0, 0.01), 0 1px 5px 0 rgba(0, 0, 0, 0.085);
   }
 
   &.primary {

@@ -86,10 +86,9 @@ export default class VDropdown extends Vue {
   display: inline-block;
   cursor: pointer;
   user-select: none;
-  box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.06);
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.15),
+    0 2px 2px 0 rgba(0, 0, 0, 0.01), 0 1px 5px 0 rgba(0, 0, 0, 0.085);
   border-radius: 4px;
-  color: #fff;
-  font-size: 14px;
   transition: all 200ms linear;
 
   .selected-option {
@@ -128,7 +127,8 @@ export default class VDropdown extends Vue {
     height: 150px;
     z-index: 1;
     background: inherit;
-    box-shadow: 0 9px 10px 0 rgba(0, 0, 0, 0.06);
+    box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.15),
+      0 2px 2px 0 rgba(0, 0, 0, 0.01), 0 1px 5px 0 rgba(0, 0, 0, 0.085);
     border-radius: 4px;
     margin-top: 2px;
 

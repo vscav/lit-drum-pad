@@ -23,6 +23,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_colors.scss";
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&display=swap");
 
 * {
@@ -32,12 +33,21 @@ export default class App extends Vue {
 
   #app {
     font-family: "Archivo", sans-serif;
-    letter-spacing: 1px;
+    font-size: 14px;
+    letter-spacing: 0.1ex;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
-    color: #fff;
+    color: $white;
+
+    ::-moz-selection {
+      background: $green;
+    }
+
+    ::selection {
+      background: $green;
+    }
   }
 }
 </style>

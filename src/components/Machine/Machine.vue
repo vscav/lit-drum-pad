@@ -7,27 +7,13 @@
       @clear-steps="clearSteps"
       @restart="restart"
     />
-    <div class="board">
-      <div class="row dark-grey">
-        <led
-          v-for="(step, i) in stepCount"
-          :key="`stepCount-${i}`"
-          :active="i == currentStep"
-        ></led>
-      </div>
-      <div v-for="(drum, i) in drums" :key="i" class="row grey">
-        <step-button
-          v-for="(step, j) in stepCount"
-          :key="`drumCount-${j}`"
-          :file="drum.fileName"
-          :value="pattern[i][j].active"
-          :highlight="currentStep == j"
-          :row="i"
-          @click="(val) => (pattern[i][j].active = val)"
-          @mouse-enter="playSound"
-        ></step-button>
-      </div>
-    </div>
+    <sequencer
+      :stepCount="stepCount"
+      :currentStep="currentStep"
+      :drums="drums"
+      :pattern="pattern"
+      @mouse-enter="playSound"
+    />
     <mix-table :drums="drums" :tracksStates="tracksStates" />
     <bottombar
       :playing="playing"
@@ -48,9 +34,8 @@ import { Component, Vue, Watch } from "vue-property-decorator";
 import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
 
 import Bottombar from "@/components/Machine/Bottombar/Bottombar.vue";
-import Led from "@/components/Machine/Led/Led.vue";
 import MixTable from "@/components/Machine/MixTable/MixTable.vue";
-import StepButton from "@/components/Machine/StepButton/StepButton.vue";
+import Sequencer from "@/components/Machine/Sequencer/Sequencer.vue";
 import Topbar from "@/components/Machine/Topbar/Topbar.vue";
 
 import { KitObject, TrackStateObject } from "@/types";
@@ -64,9 +49,8 @@ const bufferSize = 2 * audioContext.sampleRate;
 @Component({
   components: {
     Bottombar,
-    Led,
     MixTable,
-    StepButton,
+    Sequencer,
     Topbar,
   },
 })
@@ -506,47 +490,3 @@ export default class Machine extends Vue {
   }
 }
 </script>
-
-<style lang="scss">
-@import "@/scss/_colors.scss";
-
-.board {
-  height: calc(100vh - (90px + 60px));
-  margin-top: 60px;
-  margin-bottom: 90px;
-  margin-right: 200px;
-  overflow: scroll;
-
-  &::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  &::-webkit-scrollbar-track {
-    background: $dark-grey;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: $green;
-    border-radius: 25px;
-    box-shadow: 0 0 6px rgba(0, 0, 0, 0.5);
-  }
-
-  .row {
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: center;
-    flex-wrap: nowrap;
-    width: min-content;
-
-    &.dark-grey {
-      background: $dark-grey;
-    }
-
-    &.grey {
-      background: $light-grey;
-    }
-  }
-}
-</style>
