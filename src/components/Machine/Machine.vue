@@ -2,9 +2,9 @@
   <div class="machine">
     <topbar
       :options="drumsKits"
+      @load="loadKit"
       @randomize="randomize"
       @clear-steps="clearSteps"
-      @load="loadKit"
       @restart="restart"
     />
     <div class="board">
@@ -55,10 +55,10 @@
       :dbfs="dbfs"
       :tempo="tempo"
       :mute="mute"
-      @pause-play="pausePlay"
+      @mute-master="muteMaster"
       @tempo-changed="updateTempo"
       @volume-changed="updateDbfs"
-      @mute-master="muteMaster"
+      @pause-play="pausePlay"
     />
   </div>
 </template>
@@ -92,7 +92,7 @@ const bufferSize = 2 * audioContext.sampleRate;
   },
 })
 export default class Machine extends Vue {
-  private componentKey = 0;
+  // private componentKey = 0;
   private playing = false;
   private tempo = 105;
   private dbfs = -3;
@@ -194,9 +194,23 @@ export default class Machine extends Vue {
     } else return -1;
   }
 
-  public restart(): void {
-    if (audioContext.state === "running") audioContext.suspend();
-    this.$emit("restart");
+  public getFolderNameByKitName(
+    drumsKit: KitObject,
+    kitName: string
+  ): string | undefined {
+    return Object.keys(drumsKit).find((key) => drumsKit[key] === kitName);
+  }
+
+  public getSchedule(step: number, currentTime: number): number {
+    let stepTime =
+      step * this.secondsPerStep +
+      (currentTime - (currentTime % (this.secondsPerStep * this.stepCount)));
+
+    if (stepTime < currentTime) {
+      stepTime += this.secondsPerStep * this.stepCount;
+    }
+
+    return stepTime;
   }
 
   public setDefaultPattern(state: boolean): void {
@@ -227,13 +241,6 @@ export default class Machine extends Vue {
     return Math.pow(10, dbfs / 20);
   }
 
-  public getFolderNameByKitName(
-    drumsKit: KitObject,
-    kitName: string
-  ): string | undefined {
-    return Object.keys(drumsKit).find((key) => drumsKit[key] === kitName);
-  }
-
   public pausePlay(): void {
     this.playing = !this.playing;
 
@@ -241,6 +248,12 @@ export default class Machine extends Vue {
       audioContext.resume();
       this.updateAudioTime();
     } else audioContext.suspend();
+  }
+
+  public restart(): void {
+    console.log("restart not available");
+    // if (audioContext.state === "running") audioContext.suspend();
+    // this.$emit("restart");
   }
 
   public muteMaster(): void {
@@ -272,6 +285,26 @@ export default class Machine extends Vue {
       this.tracksStates[index].mute = false;
 
     this.updateTracksStatesOnAction();
+  }
+
+  public randomize() {
+    for (let i = 0; i < this.pattern.length; i++) {
+      for (let j = 0; j < this.pattern[i].length; j++) {
+        this.pattern[i][j].active = Math.random() > 0.75;
+      }
+    }
+  }
+
+  public clearSteps(): void {
+    for (let i = 0; i < this.pattern.length; i++) {
+      for (let j = 0; j < this.pattern[i].length; j++) {
+        this.pattern[i][j].active = false;
+      }
+    }
+
+    for (let i = 0; i < this.tracksStates.length; i++) {
+      this.tracksStates[i].mute = false;
+    }
   }
 
   public updatePattern(state: boolean): void {
@@ -330,6 +363,47 @@ export default class Machine extends Vue {
     this.dbfs = newDbfs;
   }
 
+  public updateAudioTime(): void {
+    if (this.playing) {
+      const INCREMENT = 0.1;
+      this.secondsPerStep = 60 / this.tempo / 4;
+      this.audioTime = audioContext.currentTime;
+      this.currentStep = Math.floor(
+        (this.audioTime / this.secondsPerStep) % this.stepCount
+      );
+
+      let i = 0;
+
+      for (const inst in this.pattern) {
+        if (!this.tracksStates[inst].mute) {
+          for (const step in this.pattern[inst]) {
+            if (this.pattern[inst][step].active) {
+              const schedule = this.getSchedule(parseInt(step), this.audioTime);
+              if (
+                schedule > 0 &&
+                schedule - this.audioTime < INCREMENT &&
+                schedule > this.lastScheduledTime
+              ) {
+                this.playSound(
+                  this.drums[inst].fileName,
+                  this.currentKit.directory,
+                  this.tracksStates[i].volume,
+                  schedule
+                );
+              }
+            }
+          }
+        }
+
+        i++;
+      }
+
+      this.lastScheduledTime = this.audioTime + INCREMENT;
+    }
+
+    requestAnimationFrame(this.updateAudioTime);
+  }
+
   public playSound(
     file: string,
     directory: string = this.currentKit.directory,
@@ -351,6 +425,40 @@ export default class Machine extends Vue {
 
       return sourceNode;
     });
+  }
+
+  public async load(file: RequestInfo): Promise<AudioBuffer | null> {
+    if (afBuffers.has(file)) {
+      return afBuffers.get(file);
+    }
+
+    const _file = await fetch(file);
+    const arrayBuffer = await _file.arrayBuffer();
+    let audioBuffer;
+
+    try {
+      audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+    } catch (e) {
+      audioBuffer = await this.decodeShim(arrayBuffer);
+    }
+
+    afBuffers.set(file, audioBuffer);
+
+    return audioBuffer;
+  }
+
+  public loadKit(kit: string): void {
+    const key = this.getFolderNameByKitName(this.drumsKits, kit);
+
+    if (kit && key) {
+      this.currentKit.name = kit;
+      this.currentKit.directory = key;
+    }
+
+    this.readSoundsDirectory(this.currentKit.directory);
+
+    this.updatePattern(false);
+    this.updateTracksStatesOnChange(false);
   }
 
   public readSoundsDirectory(directoryName: string): void {
@@ -393,40 +501,6 @@ export default class Machine extends Vue {
       });
   }
 
-  public async load(file: RequestInfo): Promise<AudioBuffer | null> {
-    if (afBuffers.has(file)) {
-      return afBuffers.get(file);
-    }
-
-    const _file = await fetch(file);
-    const arrayBuffer = await _file.arrayBuffer();
-    let audioBuffer;
-
-    try {
-      audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-    } catch (e) {
-      audioBuffer = await this.decodeShim(arrayBuffer);
-    }
-
-    afBuffers.set(file, audioBuffer);
-
-    return audioBuffer;
-  }
-
-  public loadKit(kit: string): void {
-    const key = this.getFolderNameByKitName(this.drumsKits, kit);
-
-    if (kit && key) {
-      this.currentKit.name = kit;
-      this.currentKit.directory = key;
-    }
-
-    this.readSoundsDirectory(this.currentKit.directory);
-
-    this.updatePattern(false);
-    this.updateTracksStatesOnChange(false);
-  }
-
   public decodeShim(arrayBuffer: ArrayBuffer): Promise<AudioBuffer | null> {
     return new Promise((resolve, reject) => {
       audioContext.decodeAudioData(
@@ -440,79 +514,6 @@ export default class Machine extends Vue {
       );
     });
   }
-
-  public randomize() {
-    for (let i = 0; i < this.pattern.length; i++) {
-      for (let j = 0; j < this.pattern[i].length; j++) {
-        this.pattern[i][j].active = Math.random() > 0.5;
-      }
-    }
-  }
-
-  public clearSteps(): void {
-    for (let i = 0; i < this.pattern.length; i++) {
-      for (let j = 0; j < this.pattern[i].length; j++) {
-        this.pattern[i][j].active = false;
-      }
-    }
-
-    for (let i = 0; i < this.tracksStates.length; i++) {
-      this.tracksStates[i].mute = false;
-    }
-  }
-
-  public getSchedule(step: number, currentTime: number): number {
-    let stepTime =
-      step * this.secondsPerStep +
-      (currentTime - (currentTime % (this.secondsPerStep * this.stepCount)));
-
-    if (stepTime < currentTime) {
-      stepTime += this.secondsPerStep * this.stepCount;
-    }
-
-    return stepTime;
-  }
-
-  public updateAudioTime(): void {
-    if (this.playing) {
-      const INCREMENT = 0.1;
-      this.secondsPerStep = 60 / this.tempo / 4;
-      this.audioTime = audioContext.currentTime;
-      this.currentStep = Math.floor(
-        (this.audioTime / this.secondsPerStep) % this.stepCount
-      );
-
-      let i = 0;
-
-      for (const inst in this.pattern) {
-        if (!this.tracksStates[inst].mute) {
-          for (const step in this.pattern[inst]) {
-            if (this.pattern[inst][step].active) {
-              const schedule = this.getSchedule(parseInt(step), this.audioTime);
-              if (
-                schedule > 0 &&
-                schedule - this.audioTime < INCREMENT &&
-                schedule > this.lastScheduledTime
-              ) {
-                this.playSound(
-                  this.drums[inst].fileName,
-                  this.currentKit.directory,
-                  this.tracksStates[i].volume,
-                  schedule
-                );
-              }
-            }
-          }
-        }
-
-        i++;
-      }
-
-      this.lastScheduledTime = this.audioTime + INCREMENT;
-    }
-
-    requestAnimationFrame(this.updateAudioTime);
-  }
 }
 </script>
 
@@ -520,9 +521,12 @@ export default class Machine extends Vue {
 @import "@/scss/_variables.scss";
 
 .board {
-  width: 100%;
+  width: 100vw;
+  height: calc(100vh - (90px + 60px));
   margin-top: 60px;
   margin-bottom: 90px;
+  overflow: scroll;
+
   .row {
     padding: 0;
     margin: 0;

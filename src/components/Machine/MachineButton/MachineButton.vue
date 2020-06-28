@@ -54,71 +54,87 @@ export default class VButton extends Vue {
   display: inline-block;
   cursor: pointer;
   background: transparent;
-}
 
-.btn::before {
-  top: 50%;
-  transform: translate(0, -50%);
-  position: absolute;
-  display: block;
-  content: "\a";
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  left: 0;
-  border-radius: 50%;
-  -webkit-transition: background-color 0.25s ease-out;
-  -moz-transition: background-color 0.25s ease-out;
-  -o-transition: background-color 0.25s ease-out;
-  transition: background-color 0.25s ease-out;
-}
+  &::before {
+    top: 50%;
+    transform: translate(0, -50%);
+    position: absolute;
+    display: block;
+    content: "\a";
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    left: 0;
+    border-radius: 50%;
+    -webkit-transition: background-color 0.25s ease-out;
+    -moz-transition: background-color 0.25s ease-out;
+    -o-transition: background-color 0.25s ease-out;
+    transition: background-color 0.25s ease-out;
+  }
 
-.primary:before {
-  background-color: $green;
-}
-.secondary::before {
-  background-color: $grey;
-}
-.primary:hover:before {
-  background-color: $light-green;
-}
-.secondary:hover:before {
-  background-color: $light-grey;
-}
+  &.primary {
+    &::before {
+      background-color: $green;
+    }
+  }
+  &.secondary {
+    &::before {
+      background-color: $grey;
+    }
+  }
+  &.primary:hover:before {
+    background-color: $light-green;
+  }
+  &.secondary:hover:before {
+    background-color: $light-grey;
+  }
 
-.btn-small {
-  padding-left: 40px;
-}
-.btn-small::before {
-  width: 30px;
-  height: 30px;
-  background-size: 50%;
-}
-.btn-large {
-  padding-left: 60px;
-}
-.btn-large::before {
-  width: 60px;
-  height: 60px;
-  background-size: 30%;
-}
+  &.btn-small {
+    padding-left: 40px;
+    &::before {
+      width: 30px;
+      height: 30px;
+      background-size: 50%;
+    }
+  }
+  &.btn-large {
+    padding-left: 60px;
+    &::before {
+      width: 60px;
+      height: 60px;
+      background-size: 30%;
+    }
+  }
 
-.icon-play::before {
-  background-image: url(../../../assets/icons/icon-play.svg);
-}
-.icon-stop::before {
-  background-image: url(../../../assets/icons/icon-stop.svg);
-}
-.icon-random::before {
-  background-image: url(../../../assets/icons/icon-random-small.svg);
-}
-.icon-clear::before {
-  background-image: url(../../../assets/icons/icon-clear-small.svg);
-}
-.icon-restart::before {
-  background-image: url(../../../assets/icons/icon-restart-small.svg);
-}
-.icon-about::before {
-  background-image: url(../../../assets/icons/icon-about-small.svg);
+  &.icon-play {
+    &::before {
+      background-image: url(../../../assets/icons/icon-play.svg);
+    }
+  }
+  &.icon-stop {
+    &::before {
+      background-image: url(../../../assets/icons/icon-stop.svg);
+    }
+  }
+  &.icon-random {
+    &::before {
+      background-image: url(../../../assets/icons/icon-random-small.svg);
+    }
+  }
+  &.icon-clear {
+    &::before {
+      background-image: url(../../../assets/icons/icon-clear-small.svg);
+    }
+  }
+  &.icon-restart {
+    &::before {
+      background-image: url(../../../assets/icons/icon-restart-small.svg);
+    }
+  }
+  &.icon-about {
+    &::before {
+      background-image: url(../../../assets/icons/icon-about-small.svg);
+    }
+  }
 }
 </style>

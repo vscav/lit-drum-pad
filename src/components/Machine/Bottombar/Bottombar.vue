@@ -18,8 +18,8 @@
           :progress-width-rel="15"
           :knob-radius-rel="8"
           circle-color="#383838"
-          progress-color="#1adecb"
-          knob-color="#1adecb"
+          progress-color="#3fc1d3"
+          knob-color="#3fc1d3"
         ></circle-slider>
         <div>{{ tempo }}</div>
       </div>
@@ -34,8 +34,8 @@
           :progress-width-rel="15"
           :knob-radius-rel="8"
           circle-color="#383838"
-          progress-color="#1adecb"
-          knob-color="#1adecb"
+          progress-color="#3fc1d3"
+          knob-color="#3fc1d3"
         ></circle-slider>
         <div>{{ dbfs }}</div>
       </div>
@@ -134,6 +134,7 @@ export default class Bottombar extends Vue {
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        //line-height: 15px;
       }
     }
   }

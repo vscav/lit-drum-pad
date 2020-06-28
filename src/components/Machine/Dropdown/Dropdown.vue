@@ -140,7 +140,7 @@ export default class VDropdown extends Vue {
       padding: 10px;
 
       &:hover {
-        background-color: #383838;
+        background-color: $light-grey;
         border: none;
       }
     }
