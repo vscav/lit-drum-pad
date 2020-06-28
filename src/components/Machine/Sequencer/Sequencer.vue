@@ -49,10 +49,6 @@ export default class Sequencer extends Vue {
   public handleMouseEnter(file: string): void {
     this.$emit("mouse-enter", file);
   }
-
-  public handleClick(val: boolean): void {
-    this.$emit("click", val);
-  }
 }
 </script>
 

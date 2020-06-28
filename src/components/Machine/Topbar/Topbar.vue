@@ -15,9 +15,6 @@
       <machine-button @clicked="clearSteps" icon="clear" small secondary>
         Clear
       </machine-button>
-      <!-- <machine-button @clicked="restart" icon="restart" small secondary>
-        Restart
-      </machine-button> -->
       <!-- <machine-button @clicked="modal" icon="about" small secondary>
         About
       </machine-button> -->
@@ -53,10 +50,6 @@ export default class Topbar extends Vue {
 
   clearSteps() {
     this.$emit("clear-steps");
-  }
-
-  restart() {
-    this.$emit("restart");
   }
 }
 </script>

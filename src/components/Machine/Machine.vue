@@ -5,7 +5,6 @@
       @load="loadKit"
       @randomize="randomize"
       @clear-steps="clearSteps"
-      @restart="restart"
     />
     <sequencer
       :stepCount="stepCount"
@@ -55,7 +54,6 @@ const bufferSize = 2 * audioContext.sampleRate;
   },
 })
 export default class Machine extends Vue {
-  // private componentKey = 0;
   private playing = false;
   private tempo = 105;
   private dbfs = -3;
@@ -229,12 +227,6 @@ export default class Machine extends Vue {
       audioContext.resume();
       this.updateAudioTime();
     } else audioContext.suspend();
-  }
-
-  public restart(): void {
-    console.log("restart not available");
-    // if (audioContext.state === "running") audioContext.suspend();
-    // this.$emit("restart");
   }
 
   public muteMaster(): void {
