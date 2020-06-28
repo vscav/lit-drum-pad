@@ -13,19 +13,20 @@ export default class Led extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
+@import "@/scss/_colors.scss";
 
 .led {
   text-align: center;
   height: auto;
   transition: all 0.2s ease-in-out;
-  padding: 5px 0;
+  padding: 0;
+  width: 70px;
 
   &:before {
     content: "";
-    float: left;
-    width: 10px;
-    height: 10px;
+    display: inline-block;
+    width: 8px;
+    height: 8px;
     border-radius: 10px;
     background-color: $light-grey;
     box-shadow: inset 0px 0px 1px 2px rgba(0, 0, 0, 0.1);

@@ -77,7 +77,7 @@ export default class VDropdown extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
+@import "@/scss/_colors.scss";
 
 .vue-select {
   position: relative;

@@ -41,7 +41,7 @@ export default class SwitchButton extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
+@import "@/scss/_colors.scss";
 
 label.switch {
   input[type="checkbox"] {

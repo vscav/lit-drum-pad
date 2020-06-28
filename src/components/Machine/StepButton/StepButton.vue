@@ -36,13 +36,14 @@ export default class StepButton extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_variables.scss";
+@import "@/scss/_colors.scss";
 
 .stepbutton {
   border: 1px solid rgba($lighter-grey, 0.1);
   text-align: center;
   flex: 1 0 auto;
-  height: auto;
+  width: 70px;
+  height: 70px;
 
   &:before {
     content: "";
