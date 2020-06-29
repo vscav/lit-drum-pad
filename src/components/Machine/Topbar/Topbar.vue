@@ -21,6 +21,7 @@
         <machine-button @clicked="showModal" icon="about" small secondary>
           About
         </machine-button>
+        <machine-button @clicked="showMixTable" icon="menu" small secondary />
       </div>
     </div>
   </div>
@@ -62,6 +63,10 @@ export default class Topbar extends Vue {
   public showModal(): void {
     this.$emit("show-modal");
   }
+
+  public showMixTable(): void {
+    this.$emit("show-mix-table");
+  }
 }
 </script>
 
@@ -84,7 +89,7 @@ export default class Topbar extends Vue {
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
   background: $black;
 
-  @include rwd(785) {
+  @include rwd(875) {
     height: auto;
     flex-direction: column;
   }
@@ -95,9 +100,9 @@ export default class Topbar extends Vue {
     text-transform: uppercase;
     font-weight: 700;
     font-size: 20px;
-    letter-spacing: 2px;
+    letter-spacing: 4px;
 
-    @include rwd(785) {
+    @include rwd(875) {
       margin-right: 0;
       margin-top: 10px;
     }
@@ -109,16 +114,16 @@ export default class Topbar extends Vue {
     align-items: center;
     justify-content: space-between;
 
-    @include rwd(555) {
+    @include rwd(620) {
       flex-direction: column;
     }
 
     > div {
-      @include rwd(555) {
+      @include rwd(620) {
         margin-top: 15px;
       }
 
-      @include rwd(785) {
+      @include rwd(875) {
         margin: 15px 0;
       }
 
@@ -129,7 +134,7 @@ export default class Topbar extends Vue {
         justify-content: space-between;
         margin-left: 25px;
 
-        @include rwd(555) {
+        @include rwd(620) {
           margin-left: 0;
         }
 

@@ -139,6 +139,11 @@ export default class VButton extends Vue {
       background-image: url(../../../assets/icons/icon-clear-small.svg);
     }
   }
+  &.icon-menu {
+    &::before {
+      background-image: url(../../../assets/icons/icon-menu-small.svg);
+    }
+  }
   &.icon-check {
     &::before {
       background-image: url(../../../assets/icons/icon-check-medium.svg);

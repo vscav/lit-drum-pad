@@ -28,6 +28,7 @@
       @randomize="randomize"
       @clear-steps="clearSteps"
       @show-modal="showModal"
+      @show-mix-table="showMixTable"
     />
     <sequencer
       :stepCount="stepCount"
@@ -35,6 +36,7 @@
       :drums="drums"
       :pattern="pattern"
       :hoveredIndex="hoveredIndex"
+      :alone="!isMixTableVisible"
       @mouse-enter-on-step="playSound"
       @mouse-enter-on-track="associateTrack"
       @mouse-leave-track="deassociateTrack"
@@ -43,6 +45,7 @@
       :drums="drums"
       :tracksStates="tracksStates"
       :hoveredIndex="hoveredIndex"
+      :show="isMixTableVisible"
       @mouse-enter="associateTrack"
       @mouse-leave="deassociateTrack"
     />
@@ -116,6 +119,7 @@ export default class Machine extends Vue {
   private pattern: Array<Array<{ active: boolean }>> = [];
   private presets: Array<PresetObject> = [];
   private isModalVisible = true;
+  private isMixTableVisible = true;
   private trackIsHovered = false;
   private hoveredIndex = -1;
 
@@ -235,6 +239,11 @@ export default class Machine extends Vue {
 
   public closeModal(): void {
     this.isModalVisible = false;
+  }
+
+  public showMixTable(): void {
+    this.isMixTableVisible = !this.isMixTableVisible;
+    console.log(this.isMixTableVisible);
   }
 
   public DBFSToGain(dbfs: number): number {

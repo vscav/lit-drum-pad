@@ -1,5 +1,5 @@
 <template>
-  <div class="mix-table">
+  <div class="mix-table" :class="{ visible: show }">
     <div
       class="track"
       :class="{ highlight: hoveredIndex == i }"
@@ -56,6 +56,8 @@ export default class MixTable extends Vue {
   readonly tracksStates!: Array<TrackStateObject>;
   @Prop({ required: false, type: Number, default: false })
   readonly hoveredIndex!: number;
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly show!: boolean;
 
   public handleMouseEnter(index: number): void {
     this.$emit("mouse-enter", index);
@@ -74,22 +76,27 @@ export default class MixTable extends Vue {
 .mix-table {
   position: fixed;
   top: 60px;
-  right: 0;
+  right: -200px;
   height: calc(100vh - (90px + 60px));
   width: 200px;
   background: $dark-grey;
   display: flex;
   flex-direction: column;
   overflow: scroll;
+  transition: right 0.15s ease-in-out;
 
-  @include rwd(785) {
+  @include rwd(875) {
     top: 118px;
     height: calc(100vh - (90px + 118px));
   }
 
-  @include rwd(555) {
+  @include rwd(620) {
     top: 163px;
     height: calc(100vh - (90px + 163px));
+  }
+
+  &.visible {
+    right: 0;
   }
 
   &::-webkit-scrollbar {

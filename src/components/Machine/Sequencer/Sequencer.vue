@@ -1,5 +1,5 @@
 <template>
-  <div class="sequencer">
+  <div class="sequencer" :class="{ wide: alone }">
     <div class="track dark-grey">
       <led
         v-for="(step, i) in stepCount"
@@ -53,6 +53,8 @@ export default class Sequencer extends Vue {
   readonly pattern!: Array<Array<{ active: boolean }>>;
   @Prop({ required: false, type: Number, default: false })
   readonly hoveredIndex!: number;
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly alone!: boolean;
 
   public handleMouseEnterOnStep(file: string): void {
     this.$emit("mouse-enter-on-step", file);
@@ -78,15 +80,20 @@ export default class Sequencer extends Vue {
   margin-bottom: 90px;
   margin-right: 200px;
   overflow: scroll;
+  transition: margin-right 0.15s ease-in-out;
 
-  @include rwd(785) {
+  @include rwd(875) {
     margin-top: 118px;
     height: calc(100vh - (90px + 118px));
   }
 
-  @include rwd(555) {
+  @include rwd(620) {
     margin-top: 163px;
     height: calc(100vh - (90px + 163px));
+  }
+
+  &.wide {
+    margin-right: 0;
   }
 
   &::-webkit-scrollbar {
@@ -126,18 +133,4 @@ export default class Sequencer extends Vue {
     }
   }
 }
-
-// @media only screen and (max-width: 785px) {
-//   .sequencer {
-//     margin-top: 118px;
-//     height: calc(100vh - (90px + 118px));
-//   }
-// }
-
-// @media only screen and (max-width: 555px) {
-//   .sequencer {
-//     margin-top: 163px;
-//     height: calc(100vh - (90px + 163px));
-//   }
-// }
 </style>

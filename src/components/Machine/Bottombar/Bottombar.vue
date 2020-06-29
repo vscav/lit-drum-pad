@@ -112,7 +112,7 @@ export default class Bottombar extends Vue {
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
   background: $black;
 
-  @include rwd(555) {
+  @include rwd(620) {
     justify-content: space-around;
   }
 
