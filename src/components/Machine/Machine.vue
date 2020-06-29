@@ -1,10 +1,20 @@
 <template>
   <div class="machine">
+    <modal v-show="isModalVisible" @close-modal="closeModal">
+      <template v-slot:header>
+        <h1>About.</h1>
+      </template>
+
+      <template v-slot:body>
+        <div>Details about Lit Drum Pad.</div>
+      </template>
+    </modal>
     <topbar
       :options="drumsKits"
       @load="loadKit"
       @randomize="randomize"
       @clear-steps="clearSteps"
+      @show-modal="showModal"
     />
     <sequencer
       :stepCount="stepCount"
@@ -34,6 +44,7 @@ import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
 
 import Bottombar from "@/components/Machine/Bottombar/Bottombar.vue";
 import MixTable from "@/components/Machine/MixTable/MixTable.vue";
+import Modal from "@/components/Machine/Modal/Modal.vue";
 import Sequencer from "@/components/Machine/Sequencer/Sequencer.vue";
 import Topbar from "@/components/Machine/Topbar/Topbar.vue";
 
@@ -49,6 +60,7 @@ const bufferSize = 2 * audioContext.sampleRate;
   components: {
     Bottombar,
     MixTable,
+    Modal,
     Sequencer,
     Topbar,
   },
@@ -78,7 +90,7 @@ export default class Machine extends Vue {
   private tracksStates: Array<TrackStateObject> = [];
   private previousTracksStates: Array<TrackStateObject> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
-  private mouseIsPressed = false;
+  private isModalVisible = false;
 
   mounted() {
     if (!window.AudioContext) this.playing = false;
@@ -214,6 +226,14 @@ export default class Machine extends Vue {
         volume: volume,
       });
     }
+  }
+
+  public showModal(): void {
+    this.isModalVisible = true;
+  }
+
+  public closeModal(): void {
+    this.isModalVisible = false;
   }
 
   public DBFSToGain(dbfs: number): number {

@@ -15,9 +15,9 @@
       <machine-button @clicked="clearSteps" icon="clear" small secondary>
         Clear
       </machine-button>
-      <!-- <machine-button @clicked="modal" icon="about" small secondary>
+      <machine-button @clicked="showModal" icon="about" small secondary>
         About
-      </machine-button> -->
+      </machine-button>
     </div>
   </div>
 </template>
@@ -27,6 +27,7 @@ import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
 
 import Dropdown from "@/components/Machine/Dropdown/Dropdown.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
+import Modal from "@/components/Machine/Modal/Modal.vue";
 
 import { KitObject } from "@/types";
 
@@ -34,6 +35,7 @@ import { KitObject } from "@/types";
   components: {
     Dropdown,
     MachineButton,
+    Modal,
   },
 })
 export default class Topbar extends Vue {
@@ -44,12 +46,17 @@ export default class Topbar extends Vue {
     this.$emit("load", kit);
   }
 
-  randomize() {
+  public randomize(): void {
     this.$emit("randomize");
   }
 
-  clearSteps() {
+  public clearSteps(): void {
+    console.log(this);
     this.$emit("clear-steps");
+  }
+
+  public showModal(): void {
+    this.$emit("show-modal");
   }
 }
 </script>
