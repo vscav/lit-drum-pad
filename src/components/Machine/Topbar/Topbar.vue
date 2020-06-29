@@ -4,11 +4,7 @@
       Lit Drum Pad.
     </div>
     <div class="controls">
-      <dropdown
-        :placeholder="'Drums Kit'"
-        :options="options"
-        @interface="load"
-      />
+      <dropdown :placeholder="'Drums Kit'" :options="kits" @interface="load" />
       <machine-button @clicked="randomize" icon="random" small secondary>
         Random
       </machine-button>
@@ -40,7 +36,7 @@ import { KitObject } from "@/types";
 })
 export default class Topbar extends Vue {
   @Prop({ required: true, type: Object, default: {} })
-  readonly options!: KitObject;
+  readonly kits!: KitObject;
 
   public load(kit: string): void {
     this.$emit("load", kit);

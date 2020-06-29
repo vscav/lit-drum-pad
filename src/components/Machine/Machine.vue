@@ -10,7 +10,7 @@
       </template>
     </modal>
     <topbar
-      :options="drumsKits"
+      :kits="drumsKits"
       @load="loadKit"
       @randomize="randomize"
       @clear-steps="clearSteps"
@@ -48,7 +48,7 @@ import Modal from "@/components/Machine/Modal/Modal.vue";
 import Sequencer from "@/components/Machine/Sequencer/Sequencer.vue";
 import Topbar from "@/components/Machine/Topbar/Topbar.vue";
 
-import { KitObject, TrackStateObject } from "@/types";
+import { KitObject, PresetObject, TrackStateObject } from "@/types";
 
 import presets from "@/presets";
 
@@ -92,6 +92,7 @@ export default class Machine extends Vue {
   private tracksStates: Array<TrackStateObject> = [];
   private previousTracksStates: Array<TrackStateObject> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
+  private presets: Array<PresetObject> = [];
   private isModalVisible = false;
 
   mounted() {
@@ -101,9 +102,11 @@ export default class Machine extends Vue {
   created() {
     this.readSoundsDirectory(this.currentKit.directory);
 
-    if (this.currentKit.directory === presets[0].producer) {
-      this.pattern = [...presets[0].pattern];
-      this.tracksStates = [...presets[0].tracksStates];
+    this.presets = [...presets];
+
+    if (this.currentKit.directory === this.presets[0].producer) {
+      this.pattern = [...this.presets[0].pattern];
+      this.tracksStates = [...this.presets[0].tracksStates];
     } else {
       this.setDefaultPattern(false);
       this.setDefaultTracksStates(false, false, -3);
