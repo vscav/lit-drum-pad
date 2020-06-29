@@ -6,6 +6,7 @@
         primary: primary,
         secondary: secondary,
         'btn-small': small,
+        'btn-medium': medium,
         'btn-large': large,
       },
       icon ? 'icon-' + icon : '',
@@ -27,6 +28,8 @@ export default class VButton extends Vue {
   readonly secondary!: boolean;
   @Prop({ required: false, type: Boolean, default: false })
   readonly small!: boolean;
+  @Prop({ required: false, type: Boolean, default: false })
+  readonly medium!: boolean;
   @Prop({ required: false, type: Boolean, default: false })
   readonly large!: boolean;
   @Prop({ required: false, type: Boolean, default: false })
@@ -99,6 +102,14 @@ export default class VButton extends Vue {
       background-size: 50%;
     }
   }
+  &.btn-medium {
+    padding-left: 50px;
+    &::before {
+      width: 45px;
+      height: 45px;
+      background-size: 40%;
+    }
+  }
   &.btn-large {
     padding-left: 60px;
     &::before {
@@ -126,6 +137,11 @@ export default class VButton extends Vue {
   &.icon-clear {
     &::before {
       background-image: url(../../../assets/icons/icon-clear-small.svg);
+    }
+  }
+  &.icon-check {
+    &::before {
+      background-image: url(../../../assets/icons/icon-check-medium.svg);
     }
   }
   &.icon-restart {

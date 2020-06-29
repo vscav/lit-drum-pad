@@ -12,6 +12,9 @@
             Default body
           </slot>
         </div>
+        <div class="modal-control">
+          <machine-button @clicked="close" icon="check" medium primary />
+        </div>
       </div>
     </div>
   </transition>
@@ -20,7 +23,13 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-@Component
+import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
+
+@Component({
+  components: {
+    MachineButton,
+  },
+})
 export default class Modal extends Vue {
   public close(): void {
     this.$emit("close-modal");
@@ -57,10 +66,50 @@ export default class Modal extends Vue {
     overflow-x: auto;
     display: flex;
     flex-direction: column;
-    height: 40%;
+    height: auto;
     width: 30%;
     border-radius: 4px;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
+    padding: 50px 10px 25px 10px;
+    text-align: left;
+
+    .modal-header {
+      padding-left: 30px;
+    }
+
+    .modal-body {
+      margin-top: 30px;
+      padding-left: 30px;
+      line-height: 25px;
+
+      p {
+        &:not(:first-child) {
+          margin-top: 20px;
+        }
+      }
+    }
+
+    .modal-control {
+      text-align: center;
+      margin: 30px 0;
+      padding-left: 30px;
+    }
+  }
+
+  @media screen and (max-width: 1140px) {
+    .modal {
+      width: 45%;
+    }
+  }
+  @media screen and (max-width: 960px) {
+    .modal {
+      width: 60%;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    .modal {
+      width: 75%;
+    }
   }
 }
 </style>
