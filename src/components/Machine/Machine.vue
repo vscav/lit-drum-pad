@@ -34,9 +34,18 @@
       :currentStep="currentStep"
       :drums="drums"
       :pattern="pattern"
-      @mouse-enter="playSound"
+      :hoveredIndex="hoveredIndex"
+      @mouse-enter-on-step="playSound"
+      @mouse-enter-on-track="associateTrack"
+      @mouse-leave-track="deassociateTrack"
     />
-    <mix-table :drums="drums" :tracksStates="tracksStates" />
+    <mix-table
+      :drums="drums"
+      :tracksStates="tracksStates"
+      :hoveredIndex="hoveredIndex"
+      @mouse-enter="associateTrack"
+      @mouse-leave="deassociateTrack"
+    />
     <bottombar
       :playing="playing"
       :dbfs="dbfs"
@@ -107,6 +116,8 @@ export default class Machine extends Vue {
   private pattern: Array<Array<{ active: boolean }>> = [];
   private presets: Array<PresetObject> = [];
   private isModalVisible = false;
+  private trackIsHovered = false;
+  private hoveredIndex = -1;
 
   mounted() {
     if (!window.AudioContext) this.playing = false;
@@ -228,6 +239,16 @@ export default class Machine extends Vue {
 
   public DBFSToGain(dbfs: number): number {
     return Math.pow(10, dbfs / 20);
+  }
+
+  public associateTrack(index: number): void {
+    this.trackIsHovered = true;
+    this.hoveredIndex = index;
+  }
+
+  public deassociateTrack(): void {
+    this.trackIsHovered = false;
+    this.hoveredIndex = -1;
   }
 
   public pausePlay(): void {

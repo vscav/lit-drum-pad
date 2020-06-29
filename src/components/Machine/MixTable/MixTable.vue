@@ -1,6 +1,13 @@
 <template>
   <div class="mix-table">
-    <div class="track" v-for="(drum, i) in drums" :key="i">
+    <div
+      class="track"
+      :class="{ highlight: hoveredIndex == i }"
+      v-for="(drum, i) in drums"
+      :key="i"
+      @mouseenter="handleMouseEnter(i)"
+      @mouseleave="handleMouseLeave"
+    >
       <circle-slider
         v-model="tracksStates[i].volume"
         :min="-80"
@@ -47,6 +54,16 @@ export default class MixTable extends Vue {
   readonly drums!: Array<{ fileName: string }>;
   @Prop({ required: false, type: Array, default: false })
   readonly tracksStates!: Array<TrackStateObject>;
+  @Prop({ required: false, type: Number, default: false })
+  readonly hoveredIndex!: number;
+
+  public handleMouseEnter(index: number): void {
+    this.$emit("mouse-enter", index);
+  }
+
+  public handleMouseLeave(): void {
+    this.$emit("mouse-leave");
+  }
 }
 </script>
 
@@ -85,8 +102,16 @@ export default class MixTable extends Vue {
     width: 100%;
     padding: 10px;
 
+    &:hover {
+      background: $black;
+    }
+
+    &.highlight {
+      background: $black;
+    }
+
     &:first-child {
-      margin-top: 22px;
+      margin-top: 15px;
     }
 
     > :first-child {

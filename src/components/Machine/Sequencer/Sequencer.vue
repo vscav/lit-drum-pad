@@ -7,16 +7,22 @@
         :active="i == currentStep"
       ></led>
     </div>
-    <div v-for="(drum, i) in drums" :key="i" class="track grey">
+    <div
+      v-for="(drum, i) in drums"
+      :key="i"
+      class="track grey"
+      @mouseenter="handleMouseEnterOnTrack(i)"
+      @mouseleave="handleMouseLeaveTrack"
+    >
       <step-button
         v-for="(step, j) in stepCount"
         :key="`drumCount-${j}`"
         :file="drum.fileName"
         :value="pattern[i][j].active"
-        :highlight="currentStep == j"
+        :highlight="currentStep == j || hoveredIndex == i"
         :row="i"
         @click="(val) => (pattern[i][j].active = val)"
-        @mouse-enter="handleMouseEnter"
+        @mouse-enter="handleMouseEnterOnStep"
       ></step-button>
     </div>
   </div>
@@ -45,9 +51,19 @@ export default class Sequencer extends Vue {
   readonly drums!: Array<{ fileName: string }>;
   @Prop({ required: false, type: Array, default: false })
   readonly pattern!: Array<Array<{ active: boolean }>>;
+  @Prop({ required: false, type: Number, default: false })
+  readonly hoveredIndex!: number;
 
-  public handleMouseEnter(file: string): void {
-    this.$emit("mouse-enter", file);
+  public handleMouseEnterOnStep(file: string): void {
+    this.$emit("mouse-enter-on-step", file);
+  }
+
+  public handleMouseEnterOnTrack(index: number): void {
+    this.$emit("mouse-enter-on-track", index);
+  }
+
+  public handleMouseLeaveTrack(): void {
+    this.$emit("mouse-leave-track");
   }
 }
 </script>
@@ -92,6 +108,10 @@ export default class Sequencer extends Vue {
 
     &.grey {
       background: $light-grey;
+
+      &:hover {
+        background: $grey;
+      }
     }
   }
 }
