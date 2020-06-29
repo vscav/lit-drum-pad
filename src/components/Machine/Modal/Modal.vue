@@ -38,7 +38,9 @@ export default class Modal extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
+
 .modal-fade-enter,
 .modal-fade-leave-active {
   opacity: 0;
@@ -73,6 +75,26 @@ export default class Modal extends Vue {
     padding: 50px 10px 25px 10px;
     text-align: left;
 
+    @include xs {
+      width: 75%;
+    }
+
+    @include sm {
+      width: 75%;
+    }
+
+    @include md {
+      width: 60%;
+    }
+
+    @include lg {
+      width: 45%;
+    }
+
+    @include xl {
+      width: 30%;
+    }
+
     .modal-header {
       padding-left: 30px;
     }
@@ -92,22 +114,6 @@ export default class Modal extends Vue {
     .modal-control {
       text-align: center;
       margin: 30px 0;
-    }
-  }
-
-  @media screen and (max-width: 1140px) {
-    .modal {
-      width: 45%;
-    }
-  }
-  @media screen and (max-width: 960px) {
-    .modal {
-      width: 60%;
-    }
-  }
-  @media screen and (max-width: 768px) {
-    .modal {
-      width: 75%;
     }
   }
 }
