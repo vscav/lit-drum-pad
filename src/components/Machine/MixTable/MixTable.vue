@@ -78,10 +78,9 @@ export default class MixTable extends Vue {
   position: fixed;
   top: 60px;
   right: -200px;
-  z-index: -1;
   height: $window-height;
   width: 200px;
-  background: $dark-grey;
+  background: $gradient-grey;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;

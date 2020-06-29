@@ -111,7 +111,7 @@ export default class Bottombar extends Vue {
   height: $bottom-menu-height;
   padding: 10px 5%;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
-  background: $black;
+  background: $gradient-black-bottom;
 
   @include rwd(620) {
     justify-content: space-around;

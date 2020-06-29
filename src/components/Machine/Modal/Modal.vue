@@ -64,7 +64,7 @@ export default class Modal extends Vue {
   z-index: 5;
 
   .modal {
-    background: $black;
+    background: $light-gradient-black;
     overflow-x: auto;
     display: flex;
     flex-direction: column;

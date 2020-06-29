@@ -88,7 +88,7 @@ export default class Topbar extends Vue {
   height: $top-menu-height;
   padding: 10px 5%;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
-  background: $black;
+  background: $gradient-black-top;
 
   @include rwd(875) {
     height: auto;

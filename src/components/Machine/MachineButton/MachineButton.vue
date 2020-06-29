@@ -1,5 +1,6 @@
 <template>
   <button
+    :name="icon"
     @click="click"
     :class="[
       {
