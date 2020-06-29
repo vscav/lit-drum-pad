@@ -8,16 +8,20 @@
       <template v-slot:body>
         <div>
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-            ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-            aliquip ex ea commodo consequat.
+            Lit drum pad is a web application that lets you create beats via a
+            <strong>simple</strong> and <strong>intuitive</strong> interface.
+            Manage each of your tracks by controlling the <strong>gain</strong>.
+            Adjust the <strong>tempo</strong> according to your preferences.
           </p>
           <p>
-            Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat
-            cupidatat non proident, sunt in culpa qui officia deserunt mollit
-            anim id est laborum.
+            <strong>Metro boomin</strong>, <strong>Murda Beatz</strong>,
+            <strong>Pierre Bourne</strong>, <strong>Travis Scott</strong>… Lit
+            Drum Pad provides you with drum kits from renowned and influential
+            artists and producers.
+          </p>
+          <p>
+            It's your turn to let your inspiration speak and create a
+            <strong>catchy rhythm</strong>!
           </p>
         </div>
       </template>

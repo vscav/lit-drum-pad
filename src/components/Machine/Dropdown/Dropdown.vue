@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Emit, Prop, Vue, Component } from "vue-property-decorator";
+import { Prop, Vue, Component } from "vue-property-decorator";
 
 import { KitObject } from "@/types";
 
@@ -67,7 +67,6 @@ export default class VDropdown extends Vue {
     this.active = !this.active;
   }
 
-  @Emit("interface")
   public selectOption(option: string): void {
     this.active = !this.active;
     this.selected = option;

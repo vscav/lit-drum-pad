@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue } from "vue-property-decorator";
 
 import Dropdown from "@/components/Machine/Dropdown/Dropdown.vue";
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";

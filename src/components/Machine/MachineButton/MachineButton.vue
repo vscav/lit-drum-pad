@@ -37,8 +37,6 @@ export default class VButton extends Vue {
   @Prop({ required: false, type: String, default: false })
   readonly icon!: string;
 
-  private tempPressed = false;
-
   public click(): void {
     this.$emit("clicked");
   }

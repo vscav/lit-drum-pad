@@ -47,7 +47,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Emit, Prop, Vue, Watch } from "vue-property-decorator";
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
 
 import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue";
 import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
@@ -135,7 +135,7 @@ export default class Bottombar extends Vue {
 
         .unit {
           font-size: 10px;
-          color: $dark-white;
+          color: $mute;
         }
       }
 

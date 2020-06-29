@@ -33,6 +33,7 @@ export default class SwitchButton extends Vue {
   public valueChanged(newVal): void {
     this.$emit("input", newVal);
   }
+
   @Watch("checked")
   public checkStateChanged(newVal): void {
     this.value = newVal;
