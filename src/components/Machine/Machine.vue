@@ -50,6 +50,8 @@ import Topbar from "@/components/Machine/Topbar/Topbar.vue";
 
 import { KitObject, TrackStateObject } from "@/types";
 
+import presets from "@/presets";
+
 const afBuffers = new Map();
 
 const audioContext = new AudioContext();
@@ -98,45 +100,16 @@ export default class Machine extends Vue {
 
   created() {
     this.readSoundsDirectory(this.currentKit.directory);
-    this.setDefaultTracksStates(false, false, this.dbfs);
-    this.setDefaultPattern(false);
+
+    if (this.currentKit.directory === presets[0].producer) {
+      this.pattern = [...presets[0].pattern];
+      this.tracksStates = [...presets[0].tracksStates];
+    } else {
+      this.setDefaultPattern(false);
+      this.setDefaultTracksStates(false, false, -3);
+    }
 
     this.previousTracksStates = JSON.parse(JSON.stringify(this.tracksStates));
-
-    // TEST (metro-boomin kit)
-    this.pattern[0][0].active = true;
-    this.pattern[0][14].active = true;
-    this.pattern[2][0].active = true;
-    this.pattern[2][1].active = true;
-    this.pattern[2][2].active = true;
-    this.pattern[2][3].active = true;
-    this.pattern[2][4].active = true;
-    this.pattern[2][5].active = true;
-    this.pattern[2][6].active = true;
-    this.pattern[2][7].active = true;
-    this.pattern[2][8].active = true;
-    this.pattern[2][9].active = true;
-    this.pattern[2][12].active = true;
-    this.pattern[2][13].active = true;
-    this.pattern[2][14].active = true;
-    this.pattern[2][16].active = true;
-    this.pattern[2][17].active = true;
-    this.pattern[2][18].active = true;
-    this.pattern[2][19].active = true;
-    this.pattern[2][20].active = true;
-    this.pattern[2][21].active = true;
-    this.pattern[2][22].active = true;
-    this.pattern[2][23].active = true;
-    this.pattern[3][9].active = true;
-    this.pattern[3][11].active = true;
-    this.pattern[3][15].active = true;
-    this.pattern[6][12].active = true;
-    this.pattern[6][14].active = true;
-    this.pattern[7][7].active = true;
-    this.pattern[7][8].active = true;
-    this.pattern[7][10].active = true;
-    this.pattern[7][17].active = true;
-    this.pattern[7][18].active = true;
 
     webAudioTouchUnlock(audioContext).then(
       (unlocked: boolean) => {

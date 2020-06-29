@@ -1,5 +1,5 @@
 <template>
-  <div class="vue-select" @click="toggleDropdown">
+  <div class="select" @click="toggleDropdown">
     <span
       @click="activeDrop"
       class="selected-option"
@@ -16,7 +16,7 @@
       <div
         class="dropdown-options-container"
         v-show="showDropdown"
-        :style="{ height: 39 * numberOfOptions + 'px' }"
+        :style="{ height: 35 * numberOfOptions + 'px' }"
       >
         <div
           class="dropdown-options"
@@ -80,7 +80,7 @@ export default class VDropdown extends Vue {
 <style lang="scss">
 @import "@/scss/_colors.scss";
 
-.vue-select {
+.select {
   position: relative;
   width: 180px;
   background-color: $grey;

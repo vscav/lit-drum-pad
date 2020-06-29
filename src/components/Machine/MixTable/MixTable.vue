@@ -54,12 +54,11 @@ export default class MixTable extends Vue {
 @import "@/scss/_colors.scss";
 
 .mix-table {
-  position: absolute;
+  position: fixed;
   top: 60px;
   right: 0;
   height: calc(100vh - (90px + 60px));
   width: 200px;
-  position: fixed;
   background: $dark-grey;
   display: flex;
   flex-direction: column;
