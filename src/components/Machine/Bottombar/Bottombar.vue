@@ -73,21 +73,21 @@ export default class Bottombar extends Vue {
   private muteMaster = this.mute;
 
   @Watch("muteMaster")
-  onMuteStateChange(muteState: string) {
+  public onMuteStateChange(muteState: string): void {
     this.$emit("mute-master");
   }
 
   @Watch("speed")
-  onTempoChange(tempo: string) {
+  public onTempoChange(tempo: string): void {
     this.$emit("tempo-changed", tempo);
   }
 
   @Watch("volume")
-  onVolumeChange(volume: string) {
+  public onVolumeChange(volume: string): void {
     this.$emit("volume-changed", volume);
   }
 
-  pausePlay(): void {
+  public pausePlay(): void {
     this.$emit("pause-play");
   }
 }

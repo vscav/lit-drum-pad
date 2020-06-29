@@ -42,7 +42,7 @@ export default class Topbar extends Vue {
   @Prop({ required: true, type: Object, default: {} })
   readonly options!: KitObject;
 
-  load(kit: string): void {
+  public load(kit: string): void {
     this.$emit("load", kit);
   }
 

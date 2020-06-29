@@ -171,11 +171,11 @@ export default class Machine extends Vue {
     this.previousTracksStates = JSON.parse(JSON.stringify(after));
   }
 
-  get drumsCount(): number {
+  public get drumsCount(): number {
     return this.drums.length;
   }
 
-  get mutedTracks(): number {
+  public get mutedTracks(): number {
     let count = 0;
     if (this.tracksStates.length) {
       this.tracksStates.forEach((drum) => {
