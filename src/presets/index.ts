@@ -285,6 +285,6 @@ export default [
         volume: -3,
       },
     ],
-    tempo: 120,
+    tempo: 105,
   },
 ];

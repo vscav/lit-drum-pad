@@ -82,7 +82,7 @@ const bufferSize = 2 * audioContext.sampleRate;
 })
 export default class Machine extends Vue {
   private playing = false;
-  private tempo = 105;
+  private tempo = 128;
   private dbfs = -3;
   private mute = false;
   private stepCount = 24;
@@ -120,6 +120,7 @@ export default class Machine extends Vue {
     if (this.currentKit.directory === this.presets[0].producer) {
       this.pattern = [...this.presets[0].pattern];
       this.tracksStates = [...this.presets[0].tracksStates];
+      this.tempo = this.presets[0].tempo;
     } else {
       this.setDefaultPattern(false);
       this.setDefaultTracksStates(false, false, -3);
