@@ -21,7 +21,7 @@
           progress-color="#3fc1d3"
           knob-color="#3fc1d3"
         ></circle-slider>
-        <div>{{ tempo }}</div>
+        <div class="value">{{ tempo }} <span class="unit">bpm</span></div>
       </div>
       <div class="slider">
         <circle-slider
@@ -37,7 +37,7 @@
           progress-color="#3fc1d3"
           knob-color="#3fc1d3"
         ></circle-slider>
-        <div>{{ dbfs }}</div>
+        <div class="value">{{ dbfs }} <span class="unit">db</span></div>
       </div>
       <switch-button v-model="muteMaster" :checked="mute"
         >Mute all</switch-button
@@ -94,6 +94,7 @@ export default class Bottombar extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_sizes.scss";
 @import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
 
@@ -107,7 +108,7 @@ export default class Bottombar extends Vue {
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  height: 90px;
+  height: $bottom-menu-height;
   padding: 10px 5%;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
   background: $black;
@@ -128,6 +129,15 @@ export default class Bottombar extends Vue {
 
     .slider {
       position: relative;
+
+      .value {
+        font-size: 14px;
+
+        .unit {
+          font-size: 10px;
+          color: $dark-white;
+        }
+      }
 
       > div:first-child {
         display: flex;

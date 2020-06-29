@@ -71,6 +71,7 @@ export default class Topbar extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_sizes.scss";
 @import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
 
@@ -84,7 +85,7 @@ export default class Topbar extends Vue {
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
-  height: 60px;
+  height: $top-menu-height;
   padding: 10px 5%;
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
   background: $black;
@@ -92,6 +93,7 @@ export default class Topbar extends Vue {
   @include rwd(875) {
     height: auto;
     flex-direction: column;
+    padding: 10px;
   }
 
   .title {

@@ -70,6 +70,7 @@ export default class MixTable extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_sizes.scss";
 @import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
 
@@ -77,12 +78,13 @@ export default class MixTable extends Vue {
   position: fixed;
   top: 60px;
   right: -200px;
-  height: calc(100vh - (90px + 60px));
+  z-index: -1;
+  height: $window-height;
   width: 200px;
   background: $dark-grey;
   display: flex;
   flex-direction: column;
-  overflow: scroll;
+  overflow-y: scroll;
   transition: right 0.15s ease-in-out;
 
   @include rwd(875) {
@@ -119,6 +121,7 @@ export default class MixTable extends Vue {
     justify-content: space-around;
     width: 100%;
     padding: 10px;
+    height: $step-height;
 
     &:hover {
       background: $black;

@@ -1,0 +1,7 @@
+$top-menu-height: 60px;
+$bottom-menu-height: 90px;
+
+$window-height: calc(100vh - (#{$top-menu-height} + #{$bottom-menu-height}));
+
+$step-height: calc(#{$window-height} / 9);
+$step-width: calc((#{$window-height} / 9) * 3);

@@ -13,6 +13,7 @@ export default class Led extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_sizes.scss";
 @import "@/scss/_colors.scss";
 
 .led {
@@ -20,7 +21,7 @@ export default class Led extends Vue {
   height: auto;
   transition: all 0.2s ease-in-out;
   padding: 0;
-  width: 70px;
+  width: $step-width;
 
   &:before {
     content: "";

@@ -122,10 +122,8 @@ export default class VDropdown extends Vue {
   }
 
   .dropdown-options-container {
-    overflow-y: scroll;
     position: absolute;
     width: 100%;
-    height: 150px;
     z-index: 1;
     background: inherit;
     box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.15),

@@ -97,12 +97,15 @@ export default class Machine extends Vue {
   private tempo = 128;
   private dbfs = -3;
   private mute = false;
+
   private stepCount = 24;
   private currentStep = 0;
+
   private audioTime = 0;
   private secondsPerStep = 0;
   private lastScheduledTime = 0;
   private nextStepTime = 0;
+
   private drums: Array<{ fileName: string }> = [];
   private drumsKits: KitObject = {
     "metro-boomin": "Metro Boomin",
@@ -114,12 +117,15 @@ export default class Machine extends Vue {
     name: "Metro Boomin",
     directory: "metro-boomin",
   };
+
   private tracksStates: Array<TrackStateObject> = [];
   private previousTracksStates: Array<TrackStateObject> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
   private presets: Array<PresetObject> = [];
+
   private isModalVisible = true;
   private isMixTableVisible = true;
+
   private trackIsHovered = false;
   private hoveredIndex = -1;
 
@@ -243,7 +249,6 @@ export default class Machine extends Vue {
 
   public showMixTable(): void {
     this.isMixTableVisible = !this.isMixTableVisible;
-    console.log(this.isMixTableVisible);
   }
 
   public DBFSToGain(dbfs: number): number {
