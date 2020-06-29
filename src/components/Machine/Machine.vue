@@ -115,7 +115,7 @@ export default class Machine extends Vue {
   private previousTracksStates: Array<TrackStateObject> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
   private presets: Array<PresetObject> = [];
-  private isModalVisible = false;
+  private isModalVisible = true;
   private trackIsHovered = false;
   private hoveredIndex = -1;
 

@@ -4,16 +4,24 @@
       Lit Drum Pad.
     </div>
     <div class="controls">
-      <dropdown :placeholder="'Drums Kit'" :options="kits" @interface="load" />
-      <machine-button @clicked="randomize" icon="random" small secondary>
-        Random
-      </machine-button>
-      <machine-button @clicked="clearSteps" icon="clear" small secondary>
-        Clear
-      </machine-button>
-      <machine-button @clicked="showModal" icon="about" small secondary>
-        About
-      </machine-button>
+      <div>
+        <dropdown
+          :placeholder="'Drums Kit'"
+          :options="kits"
+          @interface="load"
+        />
+      </div>
+      <div>
+        <machine-button @clicked="randomize" icon="random" small secondary>
+          Random
+        </machine-button>
+        <machine-button @clicked="clearSteps" icon="clear" small secondary>
+          Clear
+        </machine-button>
+        <machine-button @clicked="showModal" icon="about" small secondary>
+          About
+        </machine-button>
+      </div>
     </div>
   </div>
 </template>
@@ -58,6 +66,7 @@ export default class Topbar extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
 
 .top-bar {
@@ -75,6 +84,11 @@ export default class Topbar extends Vue {
   box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
   background: $black;
 
+  @include rwd(785) {
+    height: auto;
+    flex-direction: column;
+  }
+
   .title {
     margin-right: auto;
     font-family: "Quicksand", sans-serif;
@@ -82,6 +96,11 @@ export default class Topbar extends Vue {
     font-weight: 700;
     font-size: 20px;
     letter-spacing: 2px;
+
+    @include rwd(785) {
+      margin-right: 0;
+      margin-top: 10px;
+    }
   }
 
   .controls {
@@ -90,8 +109,34 @@ export default class Topbar extends Vue {
     align-items: center;
     justify-content: space-between;
 
-    > :not(:first-child) {
-      margin-left: 25px;
+    @include rwd(555) {
+      flex-direction: column;
+    }
+
+    > div {
+      @include rwd(555) {
+        margin-top: 15px;
+      }
+
+      @include rwd(785) {
+        margin: 15px 0;
+      }
+
+      &:not(:first-child) {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        margin-left: 25px;
+
+        @include rwd(555) {
+          margin-left: 0;
+        }
+
+        > :not(:first-child) {
+          margin-left: 25px;
+        }
+      }
     }
   }
 }

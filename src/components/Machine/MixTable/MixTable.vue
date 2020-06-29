@@ -68,6 +68,7 @@ export default class MixTable extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
 
 .mix-table {
@@ -80,6 +81,16 @@ export default class MixTable extends Vue {
   display: flex;
   flex-direction: column;
   overflow: scroll;
+
+  @include rwd(785) {
+    top: 118px;
+    height: calc(100vh - (90px + 118px));
+  }
+
+  @include rwd(555) {
+    top: 163px;
+    height: calc(100vh - (90px + 163px));
+  }
 
   &::-webkit-scrollbar {
     width: 5px;

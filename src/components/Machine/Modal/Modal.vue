@@ -92,7 +92,6 @@ export default class Modal extends Vue {
     .modal-control {
       text-align: center;
       margin: 30px 0;
-      padding-left: 30px;
     }
   }
 

@@ -94,6 +94,7 @@ export default class Bottombar extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
 
 .bottom-bar {
@@ -110,6 +111,10 @@ export default class Bottombar extends Vue {
   padding: 10px 5%;
   box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.02);
   background: $black;
+
+  @include rwd(555) {
+    justify-content: space-around;
+  }
 
   .controls {
     display: flex;

@@ -69,6 +69,7 @@ export default class Sequencer extends Vue {
 </script>
 
 <style lang="scss">
+@import "@/scss/_media.scss";
 @import "@/scss/_colors.scss";
 
 .sequencer {
@@ -77,6 +78,16 @@ export default class Sequencer extends Vue {
   margin-bottom: 90px;
   margin-right: 200px;
   overflow: scroll;
+
+  @include rwd(785) {
+    margin-top: 118px;
+    height: calc(100vh - (90px + 118px));
+  }
+
+  @include rwd(555) {
+    margin-top: 163px;
+    height: calc(100vh - (90px + 163px));
+  }
 
   &::-webkit-scrollbar {
     width: 5px;
@@ -115,4 +126,18 @@ export default class Sequencer extends Vue {
     }
   }
 }
+
+// @media only screen and (max-width: 785px) {
+//   .sequencer {
+//     margin-top: 118px;
+//     height: calc(100vh - (90px + 118px));
+//   }
+// }
+
+// @media only screen and (max-width: 555px) {
+//   .sequencer {
+//     margin-top: 163px;
+//     height: calc(100vh - (90px + 163px));
+//   }
+// }
 </style>
