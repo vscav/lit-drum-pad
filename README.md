@@ -1,6 +1,6 @@
 <br />
 <p align="center">
-  <a href="https://github.com/vscav/lit-drum-machine">
+  <a href="https://lit-drum-pad.herokuapp.com/">
     <img src="src/assets/logo/app-logo-large.png" alt="Logo" width="80">
   </a>
 
@@ -9,7 +9,7 @@
   <p align="center">
     An application to create catchy rhythms !
     <br />
-    <a href="https://github.com/vscav/lit-drum-machine">View online</a>
+    <a href="https://lit-drum-pad.herokuapp.com/">View online</a>
   </p>
 </p>
 
