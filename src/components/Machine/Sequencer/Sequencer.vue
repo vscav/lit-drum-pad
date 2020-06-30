@@ -71,9 +71,6 @@ export default class Sequencer extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_media.scss";
-@import "@/scss/_colors.scss";
-
 .sequencer {
   height: calc(100vh - (90px + 60px));
   margin-top: 60px;

@@ -94,10 +94,6 @@ export default class Bottombar extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_sizes.scss";
-@import "@/scss/_media.scss";
-@import "@/scss/_colors.scss";
-
 .bottom-bar {
   position: fixed;
   bottom: 0;

@@ -1,5 +1,3 @@
-@import "@/scss/_breakpoints.scss";
-
 @mixin xs {
     @media (max-width: #{$screen-sm-min}) {
         @content;

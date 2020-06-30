@@ -36,9 +36,6 @@ export default class StepButton extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_sizes.scss";
-@import "@/scss/_colors.scss";
-
 .stepbutton {
   text-align: center;
   flex: 1 0 auto;

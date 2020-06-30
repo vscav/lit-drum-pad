@@ -71,10 +71,6 @@ export default class Topbar extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_sizes.scss";
-@import "@/scss/_media.scss";
-@import "@/scss/_colors.scss";
-
 .top-bar {
   position: fixed;
   top: 0;

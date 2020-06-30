@@ -13,9 +13,6 @@ export default class Led extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_sizes.scss";
-@import "@/scss/_colors.scss";
-
 .led {
   text-align: center;
   height: auto;

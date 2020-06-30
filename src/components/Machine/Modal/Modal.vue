@@ -38,9 +38,6 @@ export default class Modal extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_media.scss";
-@import "@/scss/_colors.scss";
-
 .modal-fade-enter,
 .modal-fade-leave-active {
   opacity: 0;

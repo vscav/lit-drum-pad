@@ -45,8 +45,6 @@ export default class VButton extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_colors.scss";
-
 .btn {
   letter-spacing: 0.1ex;
   border: none;

@@ -70,10 +70,6 @@ export default class MixTable extends Vue {
 </script>
 
 <style lang="scss">
-@import "@/scss/_sizes.scss";
-@import "@/scss/_media.scss";
-@import "@/scss/_colors.scss";
-
 .mix-table {
   position: fixed;
   top: 60px;

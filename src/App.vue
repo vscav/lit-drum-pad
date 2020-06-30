@@ -17,7 +17,6 @@ export default class App extends Vue {}
 </script>
 
 <style lang="scss">
-@import "@/scss/_colors.scss";
 @import url("https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700&display=swap");
 
 * {
