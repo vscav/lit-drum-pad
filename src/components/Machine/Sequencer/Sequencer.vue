@@ -20,7 +20,7 @@
         :key="`drumCount-${j}`"
         :file="drum.fileName"
         :value="pattern[i][j].active"
-        :highlight="currentStep === j"
+        :highlight="currentStep === j || hoveredIndex == i"
         :row="i"
         :col="j"
         @mouse-down="handleMouseDownOnStep"
