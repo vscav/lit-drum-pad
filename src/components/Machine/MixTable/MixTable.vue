@@ -2,7 +2,7 @@
   <div class="mix-table" :class="{ visible: show }">
     <div
       class="track"
-      :class="{ highlight: hoveredIndex == i }"
+      :class="{ highlight: hoveredIndex === i }"
       v-for="(drum, i) in drums"
       :key="i"
       @mouseenter="handleMouseEnter(i)"

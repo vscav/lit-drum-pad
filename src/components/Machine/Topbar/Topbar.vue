@@ -1,7 +1,7 @@
 <template>
   <div class="top-bar">
     <div class="title">
-      Lit Drum Pad.
+      {{ appName }}
     </div>
     <div class="controls">
       <div>
@@ -46,6 +46,8 @@ import { KitObject } from "@/types";
 export default class Topbar extends Vue {
   @Prop({ required: true, type: Object, default: {} })
   readonly kits!: KitObject;
+
+  private appName: string = process.env.VUE_APP_NAME;
 
   public load(kit: string): void {
     this.$emit("load", kit);

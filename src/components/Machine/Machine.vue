@@ -293,7 +293,8 @@ export default class Machine extends Vue {
     this.isMousePressed = false;
   }
 
-  public handleMouseDownOnStep(row: number, col: number): void {
+  public handleMouseDownOnStep(file: string, row: number, col: number): void {
+    if (!this.pattern[row][col].active) this.playSound(file);
     const newPattern = this.getNewPatternWithStepToggled(
       this.pattern,
       row,
@@ -305,7 +306,7 @@ export default class Machine extends Vue {
 
   public handleMouseEnterOnStep(file: string, row: number, col: number): void {
     if (!this.isMousePressed) return;
-    this.playSound(file);
+    if (!this.pattern[row][col].active) this.playSound(file);
     const newPattern = this.getNewPatternWithStepToggled(
       this.pattern,
       row,
@@ -318,9 +319,9 @@ export default class Machine extends Vue {
     this.playing = !this.playing;
 
     if (this.playing) {
-      audioContext.resume();
+      //audioContext.resume();
       this.updateAudioTime();
-    } else audioContext.suspend();
+    } //else audioContext.suspend();
   }
 
   public muteMaster(): void {

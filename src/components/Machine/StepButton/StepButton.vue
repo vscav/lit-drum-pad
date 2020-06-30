@@ -38,7 +38,7 @@ export default class StepButton extends Vue {
   }
 
   public onMouseDown(): void {
-    this.$emit("mouse-down", this.row, this.col);
+    this.$emit("mouse-down", this.file, this.row, this.col);
   }
 
   public onMouseEnter(): void {
