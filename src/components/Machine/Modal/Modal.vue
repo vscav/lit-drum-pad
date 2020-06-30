@@ -6,6 +6,7 @@
           <slot name="header">
             Default title
           </slot>
+          <img src="../../../assets/logo/app-logo-large.png" />
         </div>
         <div class="modal-body">
           <slot name="body">
@@ -69,7 +70,7 @@ export default class Modal extends Vue {
     width: 30%;
     border-radius: 4px;
     box-shadow: 0 3px 4px 0 rgba(0, 0, 0, 0.25);
-    padding: 50px 10px 25px 10px;
+    padding: 50px 40px 25px 40px;
     text-align: left;
 
     @include xs {
@@ -93,12 +94,19 @@ export default class Modal extends Vue {
     }
 
     .modal-header {
-      padding-left: 30px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+
+      > img {
+        width: 60px;
+        height: auto;
+      }
     }
 
     .modal-body {
       margin-top: 30px;
-      padding-left: 30px;
       line-height: 25px;
 
       p {
