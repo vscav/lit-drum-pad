@@ -6,7 +6,9 @@
       value ? 'color' + ((this.row % 9) + 1) : '',
     ]"
     @click="changeState"
-    @mouseenter="playSound"
+    @mouseup="onMouseUp"
+    @mousedown="onMouseDown"
+    @mouseenter="onMouseEnter"
   >
   </span>
 </template>
@@ -23,14 +25,24 @@ export default class StepButton extends Vue {
   @Prop({ required: true, type: String })
   readonly file!: string;
   @Prop({ required: true, type: Number })
+  readonly col!: number;
+  @Prop({ required: true, type: Number })
   readonly row!: number;
 
   public changeState(): void {
     this.$emit("click", !this.value);
   }
 
-  public playSound(): void {
-    this.$emit("mouse-enter", this.file);
+  public onMouseUp(): void {
+    this.$emit("mouse-up");
+  }
+
+  public onMouseDown(): void {
+    this.$emit("mouse-down", this.row, this.col);
+  }
+
+  public onMouseEnter(): void {
+    this.$emit("mouse-enter", this.file, this.row, this.col);
   }
 }
 </script>
@@ -56,15 +68,15 @@ export default class StepButton extends Vue {
     border-left: 1px solid $lighter-grey;
   }
 
-  &.active {
-    animation-name: stepAnimation;
-    animation-duration: 0.4s;
-    animation-timing-function: ease-out;
-    animation-delay: 0;
-    animation-direction: alternate;
-    animation-iteration-count: 1;
-    animation-play-state: running;
-  }
+  // &.active {
+  //   animation-name: stepAnimation;
+  //   animation-duration: 0.4s;
+  //   animation-timing-function: ease-out;
+  //   animation-delay: 0;
+  //   animation-direction: alternate;
+  //   animation-iteration-count: 1;
+  //   animation-play-state: running;
+  // }
 
   &.highlight {
     background-color: $grey;
@@ -126,18 +138,18 @@ export default class StepButton extends Vue {
     background-color: $light-pink;
   }
 
-  @keyframes stepAnimation {
-    0% {
-      transform: scale(0.5);
-    }
+  // @keyframes stepAnimation {
+  //   0% {
+  //     transform: scale(0.8);
+  //   }
 
-    50% {
-      transform: scale(1.1);
-    }
+  //   50% {
+  //     transform: scale(1.1);
+  //   }
 
-    100% {
-      transform: scale(1);
-    }
-  }
+  //   100% {
+  //     transform: scale(1);
+  //   }
+  // }
 }
 </style>

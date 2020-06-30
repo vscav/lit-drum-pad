@@ -41,7 +41,9 @@
       :pattern="pattern"
       :hoveredIndex="hoveredIndex"
       :alone="!isMixTableVisible"
-      @mouse-enter-on-step="playSound"
+      @mouse-up-on-step="handleMouseUpOnStep"
+      @mouse-down-on-step="handleMouseDownOnStep"
+      @mouse-enter-on-step="handleMouseEnterOnStep"
       @mouse-enter-on-track="associateTrack"
       @mouse-leave-track="deassociateTrack"
     />
@@ -69,13 +71,13 @@
 <script lang="ts">
 import { Component, Vue, Watch } from "vue-property-decorator";
 
-import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
-
 import Bottombar from "@/components/Machine/Bottombar/Bottombar.vue";
 import MixTable from "@/components/Machine/MixTable/MixTable.vue";
 import Modal from "@/components/Machine/Modal/Modal.vue";
 import Sequencer from "@/components/Machine/Sequencer/Sequencer.vue";
 import Topbar from "@/components/Machine/Topbar/Topbar.vue";
+
+import webAudioTouchUnlock from "@/helpers/webAudioTouchUnlock";
 
 import { KitObject, PresetObject, TrackStateObject } from "@/types";
 
@@ -127,6 +129,8 @@ export default class Machine extends Vue {
   private previousTracksStates: Array<TrackStateObject> = [];
   private pattern: Array<Array<{ active: boolean }>> = [];
   private presets: Array<PresetObject> = [];
+
+  private isMousePressed = false;
 
   private isModalVisible = true;
   private isMixTableVisible = true;
@@ -201,6 +205,21 @@ export default class Machine extends Vue {
     } else return -1;
   }
 
+  public getNewPatternWithStepToggled(
+    pattern: Array<Array<{ active: boolean }>>,
+    row: number,
+    col: number
+  ): Array<Array<{ active: boolean }>> {
+    const newPattern = pattern.slice();
+    const step = newPattern[row][col];
+    const newStep = {
+      ...step,
+      active: !step.active,
+    };
+    newPattern[row][col] = newStep;
+    return newPattern;
+  }
+
   public getFolderNameByKitName(
     drumsKit: KitObject,
     kitName: string
@@ -268,6 +287,31 @@ export default class Machine extends Vue {
   public deassociateTrack(): void {
     this.trackIsHovered = false;
     this.hoveredIndex = -1;
+  }
+
+  public handleMouseUpOnStep(): void {
+    this.isMousePressed = false;
+  }
+
+  public handleMouseDownOnStep(row: number, col: number): void {
+    const newPattern = this.getNewPatternWithStepToggled(
+      this.pattern,
+      row,
+      col
+    );
+    this.pattern = newPattern;
+    this.isMousePressed = true;
+  }
+
+  public handleMouseEnterOnStep(file: string, row: number, col: number): void {
+    if (!this.isMousePressed) return;
+    this.playSound(file);
+    const newPattern = this.getNewPatternWithStepToggled(
+      this.pattern,
+      row,
+      col
+    );
+    this.pattern = newPattern;
   }
 
   public pausePlay(): void {

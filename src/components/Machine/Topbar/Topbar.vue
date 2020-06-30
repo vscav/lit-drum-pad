@@ -56,7 +56,6 @@ export default class Topbar extends Vue {
   }
 
   public clearSteps(): void {
-    console.log(this);
     this.$emit("clear-steps");
   }
 

@@ -21,7 +21,9 @@
         :value="pattern[i][j].active"
         :highlight="currentStep == j || hoveredIndex == i"
         :row="i"
-        @click="(val) => (pattern[i][j].active = val)"
+        :col="j"
+        @mouse-down="handleMouseDownOnStep"
+        @mouse-up="handleMouseUpOnStep"
         @mouse-enter="handleMouseEnterOnStep"
       ></step-button>
     </div>
@@ -56,8 +58,16 @@ export default class Sequencer extends Vue {
   @Prop({ required: false, type: Boolean, default: false })
   readonly alone!: boolean;
 
-  public handleMouseEnterOnStep(file: string): void {
-    this.$emit("mouse-enter-on-step", file);
+  public handleMouseUpOnStep(): void {
+    this.$emit("mouse-up-on-step");
+  }
+
+  public handleMouseDownOnStep(row: number, col: number): void {
+    this.$emit("mouse-down-on-step", row, col);
+  }
+
+  public handleMouseEnterOnStep(file: string, row: number, col: number): void {
+    this.$emit("mouse-enter-on-step", file, row, col);
   }
 
   public handleMouseEnterOnTrack(index: number): void {
