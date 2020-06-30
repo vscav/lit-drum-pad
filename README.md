@@ -28,7 +28,9 @@
 ### About The Project
 
 Lit drum pad is a web application that lets you create beats via a simple and intuitive interface. Manage each of your tracks by controlling the gain. Adjust the tempo according to your preferences.
+
 Metro boomin, Murda Beatz, Pierre Bourne, Travis Scott… Lit Drum Pad provides you with drum kits from renowned and influential artists and producers.
+
 It's your turn to let your inspiration speak and create acatchy rhythm!
 
 <!-- BUILT WITH -->
