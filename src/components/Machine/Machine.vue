@@ -112,6 +112,7 @@ export default class Machine extends Vue {
 
   private drums: Array<{ fileName: string }> = [];
   private drumsKits: KitObject = {
+    dmx: "DMX",
     "metro-boomin": "Metro Boomin",
     "murda-beatz": "Murda Beatz",
     "pierre-bourne": "Pierre Bourne",
@@ -316,9 +317,12 @@ export default class Machine extends Vue {
       }
     }
 
-    for (let i = 0; i < this.tracksStates.length; i++) {
-      this.tracksStates[i].mute = false;
-    }
+    // for (let i = 0; i < this.tracksStates.length; i++) {
+    //   this.tracksStates[i].solo = false;
+    //   this.tracksStates[i].mute = false;
+    // }
+
+    // if (this.mute === true) this.mute = false;
   }
 
   public updatePattern(state: boolean): void {
@@ -479,6 +483,9 @@ export default class Machine extends Vue {
   public readSoundsDirectory(directoryName: string): void {
     let filenames: __WebpackModuleApi.RequireContext | undefined;
     switch (directoryName) {
+      case "dmx":
+        filenames = require.context("../../assets/sounds/dmx", false, /\.wav$/);
+        break;
       case "metro-boomin":
         filenames = require.context(
           "../../assets/sounds/metro-boomin",

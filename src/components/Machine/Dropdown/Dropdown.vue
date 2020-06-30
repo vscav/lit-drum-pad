@@ -51,8 +51,8 @@ export default class VDropdown extends Vue {
   private active = false;
 
   mounted() {
-    this.currentPlaceholder = Object.values(this.options)[0];
-    this.selected = Object.values(this.options)[0];
+    this.currentPlaceholder = Object.values(this.options)[1];
+    this.selected = Object.values(this.options)[1];
   }
 
   get numberOfOptions(): number {
