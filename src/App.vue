@@ -10,8 +10,8 @@ import Machine from "@/components/Machine/Machine.vue";
 
 @Component({
   components: {
-    Machine,
-  },
+    Machine
+  }
 })
 export default class App extends Vue {}
 </script>

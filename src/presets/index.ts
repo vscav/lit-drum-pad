@@ -27,7 +27,7 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
+        { active: false }
       ],
       [
         { active: false },
@@ -53,7 +53,7 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
+        { active: false }
       ],
       [
         { active: true },
@@ -79,7 +79,7 @@ export default [
         { active: true },
         { active: true },
         { active: true },
-        { active: true },
+        { active: true }
       ],
       [
         { active: false },
@@ -105,7 +105,7 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
+        { active: false }
       ],
       [
         { active: false },
@@ -131,7 +131,7 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
+        { active: false }
       ],
       [
         { active: false },
@@ -157,7 +157,7 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
+        { active: false }
       ],
       [
         { active: false },
@@ -183,7 +183,7 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
+        { active: false }
       ],
       [
         { active: false },
@@ -209,7 +209,7 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
+        { active: false }
       ],
       [
         { active: false },
@@ -235,56 +235,56 @@ export default [
         { active: false },
         { active: false },
         { active: false },
-        { active: false },
-      ],
+        { active: false }
+      ]
     ],
     tracksStates: [
       {
         mute: false,
         solo: false,
-        volume: 0,
+        volume: 0
       },
       {
         mute: false,
         solo: false,
-        volume: -3,
+        volume: -3
       },
       {
         mute: false,
         solo: false,
-        volume: -6,
+        volume: -6
       },
       {
         mute: false,
         solo: false,
-        volume: -3,
+        volume: -3
       },
       {
         mute: false,
         solo: false,
-        volume: -3,
+        volume: -3
       },
       {
         mute: false,
         solo: false,
-        volume: -3,
+        volume: -3
       },
       {
         mute: false,
         solo: false,
-        volume: -3,
+        volume: -3
       },
       {
         mute: false,
         solo: false,
-        volume: -3,
+        volume: -3
       },
       {
         mute: false,
         solo: false,
-        volume: -3,
-      },
+        volume: -3
+      }
     ],
-    tempo: 105,
-  },
+    tempo: 105
+  }
 ];

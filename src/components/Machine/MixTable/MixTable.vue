@@ -46,8 +46,8 @@ import { TrackStateObject } from "@/types";
 
 @Component({
   components: {
-    SwitchButton,
-  },
+    SwitchButton
+  }
 })
 export default class MixTable extends Vue {
   @Prop({ required: false, type: Array, default: false })

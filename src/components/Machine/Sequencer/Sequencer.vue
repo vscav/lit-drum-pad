@@ -37,13 +37,11 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import Led from "@/components/Machine/Led/Led.vue";
 import StepButton from "@/components/Machine/StepButton/StepButton.vue";
 
-import { TrackStateObject } from "@/types";
-
 @Component({
   components: {
     Led,
-    StepButton,
-  },
+    StepButton
+  }
 })
 export default class Sequencer extends Vue {
   @Prop({ required: false, type: Number, default: false })

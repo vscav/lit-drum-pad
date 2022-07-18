@@ -40,8 +40,8 @@ import { KitObject } from "@/types";
   components: {
     Dropdown,
     MachineButton,
-    Modal,
-  },
+    Modal
+  }
 })
 export default class Topbar extends Vue {
   @Prop({ required: true, type: Object, default: {} })

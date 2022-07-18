@@ -3,7 +3,7 @@
     class="stepbutton"
     :class="[
       { highlight: highlight, active: value },
-      value ? 'color' + ((this.row % 9) + 1) : '',
+      value ? 'color' + ((this.row % 9) + 1) : ''
     ]"
     @click="changeState"
     @mouseup="onMouseUp"

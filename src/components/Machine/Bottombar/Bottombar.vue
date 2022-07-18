@@ -55,8 +55,8 @@ import SwitchButton from "@/components/Machine/SwitchButton/SwitchButton.vue";
 @Component({
   components: {
     MachineButton,
-    SwitchButton,
-  },
+    SwitchButton
+  }
 })
 export default class Bottombar extends Vue {
   @Prop({ required: true, type: Boolean, default: false })
@@ -73,7 +73,7 @@ export default class Bottombar extends Vue {
   private muteMaster = this.mute;
 
   @Watch("muteMaster")
-  public onMuteStateChange(muteState: string): void {
+  public onMuteStateChange(/* muteState: string */): void {
     this.$emit("mute-master");
   }
 

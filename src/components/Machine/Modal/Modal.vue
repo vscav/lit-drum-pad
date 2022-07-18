@@ -28,8 +28,8 @@ import MachineButton from "@/components/Machine/MachineButton/MachineButton.vue"
 
 @Component({
   components: {
-    MachineButton,
-  },
+    MachineButton
+  }
 })
 export default class Modal extends Vue {
   public close(): void {

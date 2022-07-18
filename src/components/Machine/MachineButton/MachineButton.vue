@@ -8,9 +8,9 @@
         secondary: secondary,
         'btn-small': small,
         'btn-medium': medium,
-        'btn-large': large,
+        'btn-large': large
       },
-      icon ? 'icon-' + icon : '',
+      icon ? 'icon-' + icon : ''
     ]"
     class="btn"
   >

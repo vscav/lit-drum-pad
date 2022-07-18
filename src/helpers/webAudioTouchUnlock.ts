@@ -16,7 +16,7 @@ export default function webAudioTouchUnlock(context: AudioContext) {
 
             resolve(true);
           },
-          (reason) => {
+          reason => {
             reject(reason);
           }
         );
