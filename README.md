@@ -8,8 +8,6 @@
 
   <p align="center">
     An application to create catchy rhythms !
-    <br />
-    <a href="https://lit-drum-pad.herokuapp.com/">View online</a>
   </p>
 </p>
 

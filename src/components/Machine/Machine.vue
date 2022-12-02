@@ -95,8 +95,8 @@ const audioContext = new AudioContext();
     MixTable,
     Modal,
     Sequencer,
-    Topbar
-  }
+    Topbar,
+  },
 })
 export default class Machine extends Vue {
   private playing = false;
@@ -118,11 +118,11 @@ export default class Machine extends Vue {
     "metro-boomin": "Metro Boomin",
     "murda-beatz": "Murda Beatz",
     "pierre-bourne": "Pierre Bourne",
-    "travis-scott": "Travis Scott"
+    "travis-scott": "Travis Scott",
   };
   private currentKit: KitObject = {
     name: "Metro Boomin",
-    directory: "metro-boomin"
+    directory: "metro-boomin",
   };
 
   private tracksStates: Array<TrackStateObject> = [];
@@ -179,7 +179,7 @@ export default class Machine extends Vue {
   @Watch("tracksStates", { deep: true })
   public tracksStatesChanged(after) {
     after.filter((p, index) => {
-      Object.keys(p).some(prop => {
+      Object.keys(p).some((prop) => {
         if (
           prop === "solo" &&
           p[prop] !== this.previousTracksStates[index][prop]
@@ -198,7 +198,7 @@ export default class Machine extends Vue {
   public get mutedTracks(): number {
     let count = 0;
     if (this.tracksStates.length) {
-      this.tracksStates.forEach(drum => {
+      this.tracksStates.forEach((drum) => {
         if (drum.mute === true) count++;
       });
       return count;
@@ -214,7 +214,7 @@ export default class Machine extends Vue {
     const step = newPattern[row][col];
     const newStep = {
       ...step,
-      active: !step.active
+      active: !step.active,
     };
     newPattern[row][col] = newStep;
     return newPattern;
@@ -224,7 +224,7 @@ export default class Machine extends Vue {
     drumsKit: KitObject,
     kitName: string
   ): string | undefined {
-    return Object.keys(drumsKit).find(key => drumsKit[key] === kitName);
+    return Object.keys(drumsKit).find((key) => drumsKit[key] === kitName);
   }
 
   public getSchedule(step: number, currentTime: number): number {
@@ -258,7 +258,7 @@ export default class Machine extends Vue {
       this.tracksStates.push({
         mute: mute,
         solo: solo,
-        volume: volume
+        volume: volume,
       });
     }
   }
@@ -333,7 +333,7 @@ export default class Machine extends Vue {
           this.tracksStates[i].mute = this.mute ? true : false;
       }
     } else {
-      this.tracksStates.forEach(track => {
+      this.tracksStates.forEach((track) => {
         track.mute = this.mute ? true : false;
       });
     }
@@ -394,7 +394,7 @@ export default class Machine extends Vue {
         this.tracksStates.push({
           mute: state,
           solo: state,
-          volume: volume
+          volume: volume,
         });
       }
     } else if (this.drumsCount < this.tracksStates.length) {
@@ -475,7 +475,7 @@ export default class Machine extends Vue {
     time = 0
   ): Promise<AudioBufferSourceNode> {
     file = require(`../../assets/sounds/${directory}/${file}`);
-    return this.load(file).then(audioBuffer => {
+    return this.load(file).then((audioBuffer) => {
       const sourceNode = audioContext.createBufferSource();
       const gainNode = audioContext.createGain();
       sourceNode.buffer = audioBuffer;
@@ -562,7 +562,7 @@ export default class Machine extends Vue {
     }
     if (this.drumsCount) this.drums.splice(0, this.drumsCount);
     if (filenames !== undefined)
-      filenames.keys().forEach(filename => {
+      filenames.keys().forEach((filename) => {
         filename = filename.slice(2);
         this.drums.push({ fileName: filename });
       });
@@ -572,10 +572,10 @@ export default class Machine extends Vue {
     return new Promise((resolve, reject) => {
       audioContext.decodeAudioData(
         arrayBuffer,
-        buffer => {
+        (buffer) => {
           return resolve(buffer);
         },
-        err => {
+        (err) => {
           return reject(err);
         }
       );
